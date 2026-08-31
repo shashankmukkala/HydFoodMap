@@ -1,0 +1,82 @@
+import { randomUUID } from "node:crypto";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import type { Cafe } from "@/lib/supabase";
+
+// Dev-only fallback so the map shows real data before Supabase is wired up.
+// Reads/writes a plain JSON file on disk — fine for local development, but
+// this won't survive a serverless/Vercel deploy (read-only filesystem
+// outside /tmp). Once NEXT_PUBLIC_SUPABASE_URL/ANON_KEY are set, the API
+// routes stop calling this entirely and use the real database instead.
+const STORE_DIR = path.join(process.cwd(), "local-data");
+const STORE_PATH = path.join(STORE_DIR, "cafes.json");
+const SEED_PATH = path.join(process.cwd(), "scripts", "seed-cafes.json");
+
+type SeedCafe = Omit<Cafe, "id" | "created_at">;
+
+function ensureStore(): Cafe[] {
+  if (existsSync(STORE_PATH)) {
+    return JSON.parse(readFileSync(STORE_PATH, "utf8")) as Cafe[];
+  }
+
+  let seeded: Cafe[] = [];
+  if (existsSync(SEED_PATH)) {
+    const seed = JSON.parse(readFileSync(SEED_PATH, "utf8")) as SeedCafe[];
+    const now = new Date().toISOString();
+    seeded = seed.map((entry) => ({ ...entry, id: randomUUID(), created_at: now }));
+  }
+
+  mkdirSync(STORE_DIR, { recursive: true });
+  writeFileSync(STORE_PATH, JSON.stringify(seeded, null, 2));
+  return seeded;
+}
+
+function writeStore(cafes: Cafe[]) {
+  mkdirSync(STORE_DIR, { recursive: true });
+  writeFileSync(STORE_PATH, JSON.stringify(cafes, null, 2));
+}
+
+export function localGetAll(): Cafe[] {
+  return ensureStore().sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+}
+
+export function localInsert(input: Partial<Cafe> & { name: string; lng: number; lat: number }): Cafe {
+  const cafes = ensureStore();
+  const cafe: Cafe = {
+    id: randomUUID(),
+    name: input.name,
+    category: input.category ?? null,
+    location: input.location ?? null,
+    cost_for_two: input.cost_for_two ?? null,
+    note: input.note ?? null,
+    lng: input.lng,
+    lat: input.lat,
+    image_url: input.image_url ?? null,
+    tags: input.tags ?? [],
+    hours_text: input.hours_text ?? null,
+    rating: input.rating ?? null,
+    created_at: new Date().toISOString(),
+  };
+  cafes.unshift(cafe);
+  writeStore(cafes);
+  return cafe;
+}
+
+export function localUpdate(id: string, patch: Partial<Cafe>): Cafe | null {
+  const cafes = ensureStore();
+  const index = cafes.findIndex((c) => c.id === id);
+  if (index === -1) return null;
+  cafes[index] = { ...cafes[index], ...patch, id };
+  writeStore(cafes);
+  return cafes[index];
+}
+
+export function localDelete(id: string): boolean {
+  const cafes = ensureStore();
+  const next = cafes.filter((c) => c.id !== id);
+  if (next.length === cafes.length) return false;
+  writeStore(next);
+  return true;
+}

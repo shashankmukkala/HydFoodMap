@@ -1,0 +1,8481 @@
+[
+  {
+    "name": "Shabad Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kukatpally",
+    "cost_for_two": "₹850",
+    "note": null,
+    "lng": 78.4054408,
+    "lat": 17.4930841,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Coffee Cup",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Sainikpuri",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.5424889,
+    "lat": 17.4892154,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Roastery Coffee House",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Specialty Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "True Black Specialty Coffee",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills / Sainikpuri",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.3582455,
+    "lat": 17.440409,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Specialty Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "TRUE BLACK speciality coffee | Jubilee hills",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4051957,
+    "lat": 17.4277035,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Specialty Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Siri Lit Café",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kothapet / Dilsukhnagar",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.5397167,
+    "lat": 17.3697771,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Dome Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kokapet / Gachibowli / Sainikpuri",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.3401058,
+    "lat": 17.3867725,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Conçu",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills / Jubilee Hills / Gachibowli",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4113337,
+    "lat": 17.4276707,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cravery Cafe",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Financial District / Nanakramguda",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4116499,
+    "lat": 17.428318,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "AB's - Absolute Barbecues",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Barbecue & Grills"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Roast CC",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.3826017,
+    "lat": 17.4429952,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Roast - The Caffeine Capital",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Hitech City / Madhapur",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.3825703,
+    "lat": 17.442974,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Specialty Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Coffee Cup",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Sainikpuri",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.5446059,
+    "lat": 17.4862599,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Feranoz",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills / Film Nagar",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4373413,
+    "lat": 17.4103134,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Milano Ice Cream",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills (Road No. 36)",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.404668,
+    "lat": 17.4218332,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Feu - Dessert Bar & Kitchen",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills (Road No. 36)",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.404668,
+    "lat": 17.4218332,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Barbeque Nation",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4502756,
+    "lat": 17.41514,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Pasta Bar Veneto",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,050",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Famous Ice Creams",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Nampally",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.4701477,
+    "lat": 17.3923995,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Roast 24 Seven",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gachibowli",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4125886,
+    "lat": 17.418167,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "24/7 Open",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ministry Of Coffee Affairs",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Miyapur / Madhapur",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.3931938,
+    "lat": 17.4516952,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cravings Cafe",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Attapur",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4294939,
+    "lat": 17.368845,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Van Lavino",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills (Road No. 36)",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.404668,
+    "lat": 17.4218332,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Smoor",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills (Road No. 10)",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cream Stone",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills / Gachibowli / Banjara Hills",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.404668,
+    "lat": 17.4218332,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Zero Forty Brewing",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills (Road No. 10)",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Olive Bistro",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Palamuru Grill & Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Kondapur",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Barbecue & Grills"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Playboy Club - Novotel Hyderabad Convention Centre",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Kothaguda",
+    "cost_for_two": "₹3,000",
+    "note": null,
+    "lng": 78.3638803,
+    "lat": 17.458705,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Third Wave Coffee",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills / Gachibowli / Madhapur / Banjara Hills",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4373519,
+    "lat": 17.410418,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Specialty Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Beyond Coffee",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4026362,
+    "lat": 17.4277742,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Nimrah Cafe and Bakery",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Charminar / Nampally",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.473523,
+    "lat": 17.3615467,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Comic Social",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4124319,
+    "lat": 17.4246837,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Churrolto",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur (Road No. 45)",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.3946789,
+    "lat": 17.4353815,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Olive Bistro & Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills (Durgam Cheruvu)",
+    "cost_for_two": "₹2,200",
+    "note": null,
+    "lng": 78.399589,
+    "lat": 17.428781,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Glasshouse",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.411648,
+    "lat": 17.424458,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Hard Rock Cafe",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills (GVK One)",
+    "cost_for_two": "₹2,500",
+    "note": null,
+    "lng": 78.4484789,
+    "lat": 17.4192848,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Karachi Bakery",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.3768334,
+    "lat": 17.4415728,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Bahar",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Basheer Bagh",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4776447,
+    "lat": 17.4053896,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Jewel of Nizam - The Minar - The Golkonda Resort",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gandipet",
+    "cost_for_two": "₹2,500",
+    "note": null,
+    "lng": 78.3682318,
+    "lat": 17.3417371,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Donut House",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Somajiguda",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4585197,
+    "lat": 17.4255053,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Grove - Sky Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "King And Cardinal Bakery",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Himayath Nagar",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.4864741,
+    "lat": 17.3984765,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Natural Ice Cream",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Srinagar Colony",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.4337951,
+    "lat": 17.431231,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Hyderabadi Chai Adda",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Chai & High Tea"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Aaromale",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills (Film Nagar)",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4078134,
+    "lat": 17.4192182,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Theory Patisserie & Cafe",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.4117079,
+    "lat": 17.4219463,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Eclat",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Gachibowli / Jubilee Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4118376,
+    "lat": 17.4259858,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "ASTER CAFE & KITCHEN",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills (Road No. 12)",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.4374501,
+    "lat": 17.4111223,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Shiso cafe",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.3849508,
+    "lat": 17.4556781,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Sanctuary Bar & Kitchen",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Film Nagar / Jubilee Hills",
+    "cost_for_two": "₹2,200",
+    "note": null,
+    "lng": 78.4485741,
+    "lat": 17.4168233,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Lé Vantage Cafe Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4119958,
+    "lat": 17.4258814,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "MOB - Belgium Beer House",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Film Nagar / Jubilee Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4054691,
+    "lat": 17.4141797,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Hoppery",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills (Road No. 46)",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4044228,
+    "lat": 17.4224189,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Guilt Trip",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Deli 9 Bistro",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gachibowli",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "SodaBottleOpenerWala",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,300",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kaficko",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,300",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Premium",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Oh So Stoned!",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Karkhana",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.5115017,
+    "lat": 17.4732138,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Republic Of Noodles - Lemon Tree Premier",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹1,700",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Drunkyard",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹1,500",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Nandini",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.3883899,
+    "lat": 17.4416911,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Groove",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Sainikpuri",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.5424889,
+    "lat": 17.4892154,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Date Café & Lounge",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur (Kavuri Hills)",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.3952615,
+    "lat": 17.4436488,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Lively",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Fe. cafe & kitchen",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.438515,
+    "lat": 17.4101416,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Gallery Cafe",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4172468,
+    "lat": 17.4209531,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Big Star Café",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Financial District / Gachibowli",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.3337023,
+    "lat": 17.424103,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Heart Cup Coffee",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli / Kondapur",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.3846665,
+    "lat": 17.4431871,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "FIREWATER  Kitchen & Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹1,300",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Prost Brew Pub",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "WOK Republic",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Diners Pavilion",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Eclaire",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Komatose - Holiday Inn Express & Suites",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹1,900",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Sahib’s Barbeque by Ohri’s",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹1,400",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Shah Ghouse Cafe & Restaurant",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Tolichowki",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4118051,
+    "lat": 17.4002904,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Free Flow - Traffic Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,600",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Chocolate Room",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Club8",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Begumpet",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.463016,
+    "lat": 17.446195,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ofen",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Air Cafe Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Sky Lord's Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Classic Ice Cream",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "A S Rao Nagar",
+    "cost_for_two": "₹950",
+    "note": null,
+    "lng": 78.5568336,
+    "lat": 17.4799497,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Humming Bird Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4014902,
+    "lat": 17.4399066,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Hole in the Wall Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4069006,
+    "lat": 17.4208479,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "SkyPark Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.442516,
+    "lat": 17.407909,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Joint Al-Mandi & Cafe",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur / Tolichowki",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.448508,
+    "lat": 17.419992,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "CAFÉ MICO",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Dilsukhnagar / Kothapet",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.5285058,
+    "lat": 17.3683182,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "United Kitchens of India",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,100",
+    "note": null,
+    "lng": 78.4108187,
+    "lat": 17.4237507,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kavanah",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,100",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Urban Asia - Kitchen & Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,300",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ci Gusta!",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur",
+    "cost_for_two": "₹1,050",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "10 Downing Street",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Begumpet",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.463016,
+    "lat": 17.446195,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Coco's Bar & Grill",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,600",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Barbecue & Grills"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mustang",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Chef Inam's Steak House",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Premium",
+      "Chai & High Tea",
+      "Barbecue & Grills"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Whiteboard Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Hitech City",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Hoppipola",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Hazzel Ice Cream Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gachibowli",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Minerva Coffee Shop",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Himayath Nagar",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4864741,
+    "lat": 17.3984765,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Over The Moon",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹2,500",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Vac's Pastries",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4192947,
+    "lat": 17.4318699,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Qube Cafe - Hotel Siesta",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kondapur",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ginger Court Dining Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Madhapur",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Up & Above",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "PG Road",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4813537,
+    "lat": 17.4405194,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Glocal Junction",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Habanero",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "WOFL",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Waffle House",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Hitech City",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "District-N",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,600",
+    "note": null,
+    "lng": 78.403878,
+    "lat": 17.4211835,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Sandwicho",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gandipet",
+    "cost_for_two": "₹1,100",
+    "note": null,
+    "lng": 78.3682318,
+    "lat": 17.3417371,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Premium",
+      "Cafe Food & Coffee",
+      "Fast Food & Pizza"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Shubavsar",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bottles & Chimney",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Begumpet",
+    "cost_for_two": "₹2,500",
+    "note": null,
+    "lng": 78.463016,
+    "lat": 17.446195,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kibbeh Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Begumpet",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.463016,
+    "lat": 17.446195,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Makers of Milkshakes",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kabul Darbar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Lakdikapul",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4626979,
+    "lat": 17.406457,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Guavaz",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kondapur",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Testa Rossa",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4193494,
+    "lat": 17.4306493,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Eskimos",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Gandipet",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.3682318,
+    "lat": 17.3417371,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mavericks Bar & Grill",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Kukatpally",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4054408,
+    "lat": 17.4930841,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Barbecue & Grills"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Other Side",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,500",
+    "note": null,
+    "lng": 78.404668,
+    "lat": 17.4218332,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Tre-Forni Restaurant and Bar - Park Hyatt",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹3,000",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Clever Fox Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Hitech City",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Indulge IceCream",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Barbeque House - Smoke House & Grill",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹1,500",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Barbecue & Grills"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Tap",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.4280061,
+    "lat": 17.4224191,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Frozen Desert",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "A S Rao Nagar",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.5568336,
+    "lat": 17.4799497,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ice Magic",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Tolichowki",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4118051,
+    "lat": 17.4002904,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Blooze Coffee Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cupcake House",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Marredpally",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.5048972,
+    "lat": 17.4507936,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Euphoria",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Sainikpuri",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.5424889,
+    "lat": 17.4892154,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Al Hejaz Cafeteria",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Mehdipatnam",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4342514,
+    "lat": 17.3942627,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bakers Inn",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Gachibowli",
+    "cost_for_two": "₹1,600",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Balaji Mahesh Mithai Bhandar",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,300",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bar 41 - Radisson Blu Plaza Hotel",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ohri's Serengeti",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "N Grill",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,500",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Barbecue & Grills"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Moonshine Project",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,350",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Drunken Poet's Cafe",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Kondapur",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The VUE - Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹950",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Up The Bistro",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gachibowli",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "TiKi Shack - Rooftop Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹850",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe' Reboot",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Deli 9",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4497909,
+    "lat": 17.4149707,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Starbucks",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.4071232,
+    "lat": 17.4329059,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Specialty Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Urban Grill",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Barbecue & Grills"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Second Cup",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Sainikpuri",
+    "cost_for_two": "₹750",
+    "note": null,
+    "lng": 78.5424889,
+    "lat": 17.4892154,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kismet - The Park",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Somajiguda",
+    "cost_for_two": "₹2,400",
+    "note": null,
+    "lng": 78.4585197,
+    "lat": 17.4255053,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Rush Sports Bar & Bowling",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹1,400",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Tea Trails",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Chai & High Tea"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Indique Bistro",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Blanc Glace",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹750",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Subhan Bakery",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Nampally",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.4651338,
+    "lat": 17.3922369,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Eatico",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Gachibowli",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "5th Avenue Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Sainikpuri",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.5424889,
+    "lat": 17.4892154,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Melange",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Film Nagar",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4105031,
+    "lat": 17.4140574,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Sarvi Bakers & Restaurant",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ice Creamery",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Oriental Bar and Kitchen - Park Hyatt",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Rabaat",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "What The Scoop?!",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Manikonda",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.3861689,
+    "lat": 17.3999951,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Galaxy Coffee Shop - Taj Tristar",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "S D Road",
+    "cost_for_two": "₹1,300",
+    "note": null,
+    "lng": 78.4964245,
+    "lat": 17.4404301,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Premium",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Cubano",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Donut Delights",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mix - The Westin",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "But...er",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mighty Small",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Friends Corner",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Marredpally",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.5048972,
+    "lat": 17.4507936,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Taiba Bakery & Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Masab Tank",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.450754,
+    "lat": 17.4029622,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Floating Ice Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Gachibowli",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Stone Waters - Kitchen & Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Obsessive Coffee Disorder",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Autumn Leaf Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹750",
+    "note": null,
+    "lng": 78.4020089,
+    "lat": 17.4337892,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Truffles Bar & Cafe",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.4192947,
+    "lat": 17.4318699,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cinema Social",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "SKYHY",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹1,250",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Pizza Den",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Paradise Circle",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4750701,
+    "lat": 17.3620903,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes",
+      "Fast Food & Pizza"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Drunken Monkey",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.38814,
+    "lat": 17.4420216,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Mocha 35mm",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kondapur",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Driven Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gachibowli",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.3386411,
+    "lat": 17.4219679,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Labonel",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Gachibowli",
+    "cost_for_two": "₹3,000",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Pista House",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Charminar",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4771473,
+    "lat": 17.3705284,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Republic Of Noodles - Lemon Tree Hotel",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹1,700",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Klub Trinity Kitchen & Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,500",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Aqua - The Park",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Somajiguda",
+    "cost_for_two": "₹2,500",
+    "note": null,
+    "lng": 78.4585197,
+    "lat": 17.4255053,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Yogurtbay & Wafflebay",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Flavoroso",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kondapur",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Citrus Cafe - Lemon Tree Hotel",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gachibowli",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Premium",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Niloufer & Bakers",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Lakdikapul",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4626979,
+    "lat": 17.406457,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Liquids",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "iXcream.com",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Hafeezpet",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.3611316,
+    "lat": 17.4834409,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "OTB - Cafe Out Of The Box",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Blue Myst Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gachibowli",
+    "cost_for_two": "₹1,100",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Premium",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Masti Sports Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹2,400",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Chime - Sheraton Hyderabad Hotel",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Food Cocktail",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Chanda Nagar",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.3943669,
+    "lat": 17.4534764,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Reason 9",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "PG Road",
+    "cost_for_two": "₹2,700",
+    "note": null,
+    "lng": 78.4813537,
+    "lat": 17.4405194,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Daily Treats - The Westin",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Hitech City",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Universal Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Himayath Nagar",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4789427,
+    "lat": 17.4057534,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kinghorn Bakers Chariot",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Habsiguda",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.5426918,
+    "lat": 17.4154761,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Slounge - Lemon Tree Premier",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Earth",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cream & Fudge",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Gachibowli",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Froststicks",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Hitech City",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Baskin Robbins",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Hitech City",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Seven Oven",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Barista Lavazza Espresso Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Kondapur",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Specialty Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Fiesta Coffee Shop - Hotel Minerva Grand",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "S D Road",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4964245,
+    "lat": 17.4404301,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Roma's Bake Shop",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Trimulgherry",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.4837317,
+    "lat": 17.4639543,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Delhi Darbar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Balanagar",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.4219645,
+    "lat": 17.4768224,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Reliance Bakery",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Begumpet",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4676014,
+    "lat": 17.4444478,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Step 'N' Eat Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Narayanguda",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4885006,
+    "lat": 17.3981159,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kubeera Palace",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Himayath Nagar",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.4864741,
+    "lat": 17.3984765,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Vertigo - The High Life",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Hyderabad Times Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹850",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mocha",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹850",
+    "note": null,
+    "lng": 78.4448824,
+    "lat": 17.4186379,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Pirate Brew",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹2,400",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "3B's - Buddies, Bar & Barbecue",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,100",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Barbecue & Grills"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Hashtag",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹1,400",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Sky Lounge - Hotel Avasa",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Chilax Cafe Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ohri's Eatmor Coffee Shop",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Citrus Cafe - Lemon Tree Premier",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Hitech City",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Premium",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Uberdeq",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Syn Asian Grill & Bar - Taj Deccan",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹2,500",
+    "note": null,
+    "lng": 78.4509391,
+    "lat": 17.4180939,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Barbecue & Grills"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Game On Sports Bar And Bowling",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Karkhana",
+    "cost_for_two": "₹1,400",
+    "note": null,
+    "lng": 78.5115017,
+    "lat": 17.4732138,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Churros",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Film Nagar",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4105031,
+    "lat": 17.4140574,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bahar Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kukatpally",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.4054408,
+    "lat": 17.4930841,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Universal Restaurant & Bakery Store",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "M.G. Road",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4324898,
+    "lat": 17.3818501,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "KS Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Chanda Nagar",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.3943669,
+    "lat": 17.4534764,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Sweet Basket",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Gachibowli",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Crystal Restaurant & Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Nallakunta",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.50557,
+    "lat": 17.3975005,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "My Cafe Latte",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Karkhana",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.5115017,
+    "lat": 17.4732138,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Swiss Castle",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Air Live",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Delizie Baking Company",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Film Nagar",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4105031,
+    "lat": 17.4140574,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Thinespo Dessert Shack",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kompally",
+    "cost_for_two": "₹750",
+    "note": null,
+    "lng": 78.5096979,
+    "lat": 17.5354868,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Yet to be Named",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Karkhana",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.5115017,
+    "lat": 17.4732138,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Chaitanya's",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Kothaguda",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.3638803,
+    "lat": 17.458705,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Chai & High Tea"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cake Bank",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Himayath Nagar",
+    "cost_for_two": "₹1,600",
+    "note": null,
+    "lng": 78.4864741,
+    "lat": 17.3984765,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Aqua Spirit - Hotel Daspalla",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Paradise Bakery",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Paradise Circle",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4750701,
+    "lat": 17.3620903,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mustafa Sweets & Namkeen",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Lakdikapul",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.4626979,
+    "lat": 17.406457,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Coffee Day",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gachibowli",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.364418,
+    "lat": 17.4575081,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Emerald Mithai Shop",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Waffle World",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Deep Frosts",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Lakdikapul",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.4626979,
+    "lat": 17.406457,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Harry's The Pub - Aditya Park",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Ameerpet",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4482505,
+    "lat": 17.4375012,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Suraj Restaurant & Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Fat Cow Creamery",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Agra Sweets",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kothaguda",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.3646926,
+    "lat": 17.4561835,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cinderella Bakery",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Bowenpally",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.4727373,
+    "lat": 17.4660997,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Underdeck - Taj Banjara",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.4487642,
+    "lat": 17.4162651,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bakers 'Q'",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Amberpet",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.5114709,
+    "lat": 17.3861776,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Flavors Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Madhapur",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mountain Bakery",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4379315,
+    "lat": 17.4262826,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Swishh",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "De Revive Cafe & Restro",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Dilsukhnagar",
+    "cost_for_two": "₹750",
+    "note": null,
+    "lng": 78.5228597,
+    "lat": 17.3684433,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Prachi's Kulfi Celebration",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "PG Road",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4813537,
+    "lat": 17.4405194,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Masqati Rich Ice Cream",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "N-joy Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Ameerpet",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.4482505,
+    "lat": 17.4375012,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Pier 33",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,500",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Beach House",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Madhapur",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.3948138,
+    "lat": 17.4386399,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Blue Bottle Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹750",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Dunkin Donuts",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.4504727,
+    "lat": 17.4132036,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Menchie's Frozen Yogurt",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Brew Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Meridian Cafe & Restaurant",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Panjagutta",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.4517519,
+    "lat": 17.4254245,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cuppa",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Midland Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe 4resta",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹850",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Shamrock - The Irish Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹1,500",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Almond House",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Himayath Nagar",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.4858071,
+    "lat": 17.4011328,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Beer County",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Group Therapy",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Yapral",
+    "cost_for_two": "₹750",
+    "note": null,
+    "lng": 78.5407976,
+    "lat": 17.5030543,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cielito",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kondapur",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "A Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hafeezpet",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.3611316,
+    "lat": 17.4834409,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Temptations",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Tolichowki",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.4118051,
+    "lat": 17.4002904,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Oyster Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Havmor Hotch Potch - Cold Stone Ice Cream",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "PG Road",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4813537,
+    "lat": 17.4405194,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Swaad Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Little Devil Coffee Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Keshav Reddy Sweets",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur",
+    "cost_for_two": "₹850",
+    "note": null,
+    "lng": 78.3952871,
+    "lat": 17.4414835,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Rock Deal Restaurant & Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "ETC",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Coffee Day - The Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Madhapur",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "United Bistro",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "PG Road",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.4813537,
+    "lat": 17.4405194,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Speedy's",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Alwal",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.5088584,
+    "lat": 17.5022292,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Pabrai's Fresh and Naturelle Ice Creams",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Empire State",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4108187,
+    "lat": 17.4237507,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "On The Rocks",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "De Spirits - Swagath De Royal",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Kondapur",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Amore Gourmet Gelato",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Hitech City",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Meghavi O Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bombay Chat & Ice Cream",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "M.G. Road",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4324898,
+    "lat": 17.3818501,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Sultan Bin Ibrahim Masqati",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Charminar",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4746421,
+    "lat": 17.3616024,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Swapna Skybox",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Attapur",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4307278,
+    "lat": 17.3672244,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Coffee Shop - The Manohar",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Begumpet",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.463016,
+    "lat": 17.446195,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Work Friendly",
+      "Quiet",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Arka",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Film Nagar",
+    "cost_for_two": "₹100",
+    "note": null,
+    "lng": 78.4105031,
+    "lat": 17.4140574,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Quiet",
+      "Budget",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "American Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Basheer Bagh",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4776447,
+    "lat": 17.4053896,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cake Basket",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Karkhana",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.5115017,
+    "lat": 17.4732138,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Quiet",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "TGI Fridays",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Kukatpally",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.3889703,
+    "lat": 17.4837372,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Coffee Times - Hotel Daspalla",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,150",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Premium",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Terrassen Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Big Byte",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Srinagar Colony",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4337951,
+    "lat": 17.431231,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Late Night",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ibaco",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Bowenpally",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.4727373,
+    "lat": 17.4660997,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kaafo",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Yapral",
+    "cost_for_two": "₹850",
+    "note": null,
+    "lng": 78.5407976,
+    "lat": 17.5030543,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Late Night",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Little Hut Multicuisine Restaurant and Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Madhapur",
+    "cost_for_two": "₹2,500",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bumblebee Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Plantain Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Manikonda",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.3861689,
+    "lat": 17.3999951,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bliss Bakers & Confectioners",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Miyapur",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.3567628,
+    "lat": 17.4981608,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Sounds & Spirits",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Madhapur",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.3961412,
+    "lat": 17.4425942,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Urban Mingle",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bars N Bowls Restaurant",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Gossip Coffee Shop",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "WeCafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kothaguda",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.3638803,
+    "lat": 17.458705,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cascade - Coffee Shop - Ebony Boutique Hotel",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Roll Darbar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Iceberg",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Softy Den",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Abids",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.477182,
+    "lat": 17.3894783,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ambitto",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Somajiguda",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.4585197,
+    "lat": 17.4255053,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Amethyst - Bombay Duck",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹750",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bits & Bytes - Aalankrita Resort",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Shamirpet",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.5396275,
+    "lat": 17.5565364,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Stallion - Royal Reve Hotel",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "S D Road",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.4964245,
+    "lat": 17.4404301,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Tease - Vivanta by Taj",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Begumpet",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.463016,
+    "lat": 17.446195,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Chai & High Tea"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Scoops Ice Cream",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kondapur",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Eat N Joy",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Srinagar Colony",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.4337951,
+    "lat": 17.431231,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Zyng - Radisson Hyderabad Hitec City",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Jarlie Desserts",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Manikonda",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.3861689,
+    "lat": 17.3999951,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Bake Factory",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kondapur",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mini Melts",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Hitech City",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Firangi Paani",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,600",
+    "note": null,
+    "lng": 78.4505263,
+    "lat": 17.4119579,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "BrownBear",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Begumpet",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.463016,
+    "lat": 17.446195,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Le Cafe - Novotel Hyderabad Convention Centre",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kothaguda",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.3638803,
+    "lat": 17.458705,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Delight24 Bakery & Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Dilsukhnagar",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.5228597,
+    "lat": 17.3684433,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Steamz",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Film Nagar",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4105031,
+    "lat": 17.4140574,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Chai & High Tea"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Condoss - W3",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Film Nagar",
+    "cost_for_two": "₹750",
+    "note": null,
+    "lng": 78.4105031,
+    "lat": 17.4140574,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Deja Vu - The Cafe Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Hangover Kitchen and Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Madhapur",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "La Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Club Republic",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Masqati Ice Cream",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Tolichowki",
+    "cost_for_two": "₹2,500",
+    "note": null,
+    "lng": 78.4118051,
+    "lat": 17.4002904,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mithaiwala",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Dilsukhnagar",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.5228597,
+    "lat": 17.3684433,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Cilantro",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Hitech City",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Spin Bottle & Bowling",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bar One",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Ameerpet",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4485437,
+    "lat": 17.4377161,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Marinos 7 Eleven",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Padmarao Nagar",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.5085153,
+    "lat": 17.4256007,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Rock Stone Ice Cream Factory",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Himayath Nagar",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4864741,
+    "lat": 17.3984765,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Finjaan",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Dairy Den",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "S D Road",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.4964245,
+    "lat": 17.4404301,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Chai Biscuit - Lounge Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Chai & High Tea"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Highlands Whisky Club",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Film Nagar",
+    "cost_for_two": "₹2,200",
+    "note": null,
+    "lng": 78.4105031,
+    "lat": 17.4140574,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Clay Oven Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "A S Rao Nagar",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.5568336,
+    "lat": 17.4799497,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "News Cafe",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Beenz Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹950",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Flames Kebab and Pizza",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Dilsukhnagar",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.5228597,
+    "lat": 17.3684433,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Fast Food & Pizza"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Stop n Go Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "S R Nagar",
+    "cost_for_two": "₹50",
+    "note": null,
+    "lng": 78.4416081,
+    "lat": 17.4417071,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Madhur Bakes and Cakes",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Lakdikapul",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.4626979,
+    "lat": 17.406457,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Living Room - Park Hyatt",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Moon Bean Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Malakpet",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4996484,
+    "lat": 17.3736706,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Baker's Street",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "A S Rao Nagar",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.5568336,
+    "lat": 17.4799497,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Oven Secretz",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Attapur",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4307278,
+    "lat": 17.3672244,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ice Cream Calling Cafe Stone",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Desserts & Bakes",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Madhushala Bar & Restaurant",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Himayath Nagar",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.4864741,
+    "lat": 17.3984765,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Sri Ratanlal Mithai Bhandar",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "S D Road",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.4964245,
+    "lat": 17.4404301,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Royal Darbar Dhaba",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Trimulgherry",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4837317,
+    "lat": 17.4639543,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Graffiti",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cuba Libre",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹1,800",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Sawa Reloaded",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Blow Cafe & Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Matwale Doodh Ghar",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Charminar",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4746421,
+    "lat": 17.3616024,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Lava",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Crystal Coffee Club",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Nallakunta",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.50557,
+    "lat": 17.3975005,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Late Night",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Sam's Bakery and Fast food",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Bowenpally",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4727373,
+    "lat": 17.4660997,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Budget",
+      "Desserts & Bakes",
+      "Fast Food & Pizza"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Slounge - Lemon Tree Hotel",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "House of Pops",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Squeeze - Juice Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Kukatpally",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4054408,
+    "lat": 17.4930841,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Rang Family Restaurant and Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Ameerpet",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.4482505,
+    "lat": 17.4375012,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Waterside Cafe - Taj Banjara",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4487642,
+    "lat": 17.4162651,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Premium",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Altitude - Hyderabad Marriott Hotel & Convention Centre",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Necklace Road",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.4631857,
+    "lat": 17.4233355,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bakewell Cake House",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Tolichowki",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.4118051,
+    "lat": 17.4002904,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bistro by Bottles & Chimney",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Begumpet",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.463016,
+    "lat": 17.446195,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Hari's Heavenly Cakes",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Lingampally",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.316112,
+    "lat": 17.4881832,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ignite Restro Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Himayath Nagar",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.4864741,
+    "lat": 17.3984765,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Spoil",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹2,000",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "MoMo Cafe - Courtyard By Marriott",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Necklace Road",
+    "cost_for_two": "₹2,700",
+    "note": null,
+    "lng": 78.4631857,
+    "lat": 17.4233355,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Premium",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kesariya's",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kondapur",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.3552608,
+    "lat": 17.4600912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Firehouse - Terrace Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Kondapur",
+    "cost_for_two": "₹1,300",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mr Cake",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kukatpally",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4054408,
+    "lat": 17.4930841,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Seacrets",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,350",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Swathi Coffee Shoppe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kacheguda",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.4992403,
+    "lat": 17.389311,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Gryll Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Manikonda",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.3861689,
+    "lat": 17.3999951,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Mid-range",
+      "Late Night",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Akbar Fast Food Corner",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Charminar",
+    "cost_for_two": "₹400",
+    "note": null,
+    "lng": 78.4746421,
+    "lat": 17.3616024,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Fast Food & Pizza"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Olive Mithai Shop",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kukatpally",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.4054408,
+    "lat": 17.4930841,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Selfie Latte",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Himayath Nagar",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.4864741,
+    "lat": 17.3984765,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Chai Kahani",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹1,500",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Premium",
+      "Chai & High Tea"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Dhruva Restaurant & Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Manikonda",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.3861689,
+    "lat": 17.3999951,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "TIC - The Innovators Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Madhapur",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The ThickShake Factory",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kukatpally",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.4054408,
+    "lat": 17.4930841,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Dadu's Mithai Vatika",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "TAGS Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kondapur",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Xtreme Sports Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,300",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kakes N Krisps",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kondapur",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.3730556,
+    "lat": 17.4587912,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "180 Oven",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cocktails",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Flury's",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Vapour Cafe Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Garden Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Film Nagar",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4105031,
+    "lat": 17.4140574,
+    "image_url": null,
+    "tags": [
+      "Outdoor",
+      "Pet Friendly",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Daffodils Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Amberpet",
+    "cost_for_two": "₹750",
+    "note": null,
+    "lng": 78.5145879,
+    "lat": 17.4037522,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Hyderabad Cupcakes",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Lakdikapul",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4626979,
+    "lat": 17.406457,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "FM Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gachibowli",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Hari OM Pure Ghee Sweets",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Chocolate Heaven",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kukatpally",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.4054408,
+    "lat": 17.4930841,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Jashan Express",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Abids",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.477182,
+    "lat": 17.3894783,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Shraddha Temptations",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "S D Road",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4964245,
+    "lat": 17.4404301,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ann's Lounge",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Mehdipatnam",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.4342514,
+    "lat": 17.3942627,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "36 Chhattees BBQ",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,000",
+    "note": null,
+    "lng": 78.3990271,
+    "lat": 17.4384489,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Barbecue & Grills"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "MOB",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Film Nagar",
+    "cost_for_two": "₹2,600",
+    "note": null,
+    "lng": 78.4167784,
+    "lat": 17.4159563,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ohri's Eatmor OCC",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Basheer Bagh",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4776447,
+    "lat": 17.4053896,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Abbott",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹850",
+    "note": null,
+    "lng": 78.4102882,
+    "lat": 17.4308362,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Bilal Ice Cream Parlour",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Nampally",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4701477,
+    "lat": 17.3923995,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Amaravathi Restaurant & Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Nagole",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.5601231,
+    "lat": 17.3775306,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Tipsy Topsy Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Dilsukhnagar",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.5228597,
+    "lat": 17.3684433,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Urvasi Heights Restaurant & Bar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "A S Rao Nagar",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.5568336,
+    "lat": 17.4799497,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Sarvi Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.4497203,
+    "lat": 17.4128658,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Beer House",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Hitech City",
+    "cost_for_two": "₹1,600",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Niloufer",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Lakdikapul",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.4626979,
+    "lat": 17.406457,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Milano",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kothapet",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.5414597,
+    "lat": 17.3732599,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe Kaffeine",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Kompally",
+    "cost_for_two": "₹550",
+    "note": null,
+    "lng": 78.5096979,
+    "lat": 17.5354868,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mr. Iscreamer's Frozen Kingdom",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Hitech City",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Darleys Ice Cream",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Ameerpet",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.4482505,
+    "lat": 17.4375012,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Chai Shop - Taj Banjara",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹150",
+    "note": null,
+    "lng": 78.4487642,
+    "lat": 17.4162651,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Chai & High Tea"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "HyLife Brewing Company",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.3990437,
+    "lat": 17.4383695,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Country Oven",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Madhapur",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.3916304,
+    "lat": 17.4408924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Crave",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹700",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Mist n Creams",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Gachibowli",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Pulp Pressery",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Film Nagar",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.4105031,
+    "lat": 17.4140574,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Blue Sea Tea & Snacks",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Railway Station Road",
+    "cost_for_two": "₹300",
+    "note": null,
+    "lng": 78.5018052,
+    "lat": 17.4339579,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes",
+      "Chai & High Tea"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Old Madras Baking Company",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Gachibowli",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Dublin - ITC Kakatiya",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Begumpet",
+    "cost_for_two": "₹2,500",
+    "note": null,
+    "lng": 78.463016,
+    "lat": 17.446195,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Fresh Loaf",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kones & Stones",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Gachibowli",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "BPM - Beats Per Minute",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Gachibowli",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Budget",
+      "Serves Alcohol",
+      "Late Night",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Ice and Spice",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Tolichowki",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.4118051,
+    "lat": 17.4002904,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Farm",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Jubilee Hills",
+    "cost_for_two": "₹1,600",
+    "note": null,
+    "lng": 78.3990271,
+    "lat": 17.4384489,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Velvet Patisserie",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹250",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Budget",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Morine Bakers",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Mehdipatnam",
+    "cost_for_two": "₹500",
+    "note": null,
+    "lng": 78.4342514,
+    "lat": 17.3942627,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Agra Mithaiwala Chaat And Food Court",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Kukatpally",
+    "cost_for_two": "₹1,200",
+    "note": null,
+    "lng": 78.4054408,
+    "lat": 17.4930841,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Premium",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Moghal Darbar",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Tolichowki",
+    "cost_for_two": "₹600",
+    "note": null,
+    "lng": 78.4118051,
+    "lat": 17.4002904,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Kargeens House Of Sheesha",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Banjara Hills",
+    "cost_for_two": "₹750",
+    "note": null,
+    "lng": 78.4399014,
+    "lat": 17.4177464,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe 555",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Masab Tank",
+    "cost_for_two": "₹200",
+    "note": null,
+    "lng": 78.4512671,
+    "lat": 17.4029924,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "The Bar - Novotel Hyderabad Convention Centre",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "Kothaguda",
+    "cost_for_two": "₹2,200",
+    "note": null,
+    "lng": 78.3638803,
+    "lat": 17.458705,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Premium",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Penalty Box Cafe",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gandipet",
+    "cost_for_two": "₹650",
+    "note": null,
+    "lng": 78.3682318,
+    "lat": 17.3417371,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Cafe +",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Sainikpuri",
+    "cost_for_two": "₹800",
+    "note": null,
+    "lng": 78.5383527,
+    "lat": 17.4904534,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Mid-range",
+      "Cafe Food & Coffee"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Haagen-Dazs",
+    "category": "Premium Dessert Place & Patisserie",
+    "location": "Hitech City",
+    "cost_for_two": "₹450",
+    "note": null,
+    "lng": 78.3851526,
+    "lat": 17.4696885,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Mid-range",
+      "Desserts & Bakes"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Playstreat",
+    "category": "Classic Cafe & Specialty Coffee Shop",
+    "location": "Gachibowli",
+    "cost_for_two": "₹350",
+    "note": null,
+    "lng": 78.3519638,
+    "lat": 17.4436222,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Work Friendly",
+      "Budget",
+      "Multi-cuisine"
+    ],
+    "hours_text": null,
+    "rating": null
+  },
+  {
+    "name": "Lazeez Multicuisine Restaurant - Royal Reve Hotel",
+    "category": "Cafe-Style Restaurant / Bar (With Alcohol)",
+    "location": "S D Road",
+    "cost_for_two": "₹900",
+    "note": null,
+    "lng": 78.4964245,
+    "lat": 17.4404301,
+    "image_url": null,
+    "tags": [
+      "Indoor",
+      "Lively",
+      "Mid-range",
+      "Serves Alcohol",
+      "Bistro Bites & Drinks"
+    ],
+    "hours_text": null,
+    "rating": null
+  }
+]
