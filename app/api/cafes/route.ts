@@ -12,7 +12,14 @@ export async function GET() {
     .select("*")
     .order("created_at", { ascending: false });
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) {
+    return NextResponse.json(localGetAll());
+  }
+
+  if (!data || data.length === 0) {
+    return NextResponse.json(localGetAll());
+  }
+
   return NextResponse.json(data);
 }
 
