@@ -5,21 +5,37 @@ import type { CafeEvent } from "@/lib/supabase";
 
 // Dev-only fallback, same pattern as lib/localCafeStore.ts — used until
 // Supabase is configured. Starts empty; there's no seed data for events.
+// On a serverless deploy (Vercel etc.) the filesystem outside /tmp is
+// read-only, so writes fall back to an in-memory cache instead of throwing.
 const STORE_DIR = path.join(process.cwd(), "local-data");
 const STORE_PATH = path.join(STORE_DIR, "events.json");
 
+let memoryCache: CafeEvent[] | null = null;
+
 function ensureStore(): CafeEvent[] {
+  if (memoryCache) return memoryCache;
+
   if (existsSync(STORE_PATH)) {
     return JSON.parse(readFileSync(STORE_PATH, "utf8")) as CafeEvent[];
   }
-  mkdirSync(STORE_DIR, { recursive: true });
-  writeFileSync(STORE_PATH, "[]");
+
+  try {
+    mkdirSync(STORE_DIR, { recursive: true });
+    writeFileSync(STORE_PATH, "[]");
+  } catch {
+    memoryCache = [];
+  }
   return [];
 }
 
 function writeStore(events: CafeEvent[]) {
-  mkdirSync(STORE_DIR, { recursive: true });
-  writeFileSync(STORE_PATH, JSON.stringify(events, null, 2));
+  try {
+    mkdirSync(STORE_DIR, { recursive: true });
+    writeFileSync(STORE_PATH, JSON.stringify(events, null, 2));
+    memoryCache = null;
+  } catch {
+    memoryCache = events;
+  }
 }
 
 export function localGetAllEvents(): CafeEvent[] {

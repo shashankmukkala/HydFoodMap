@@ -3,22 +3,38 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { Review } from "@/lib/supabase";
 
-// Dev-only fallback, same pattern as lib/localCafeStore.ts.
+// Dev-only fallback, same pattern as lib/localCafeStore.ts. On a serverless
+// deploy (Vercel etc.) the filesystem outside /tmp is read-only, so writes
+// fall back to an in-memory cache instead of throwing.
 const STORE_DIR = path.join(process.cwd(), "local-data");
 const STORE_PATH = path.join(STORE_DIR, "reviews.json");
 
+let memoryCache: Review[] | null = null;
+
 function ensureStore(): Review[] {
+  if (memoryCache) return memoryCache;
+
   if (existsSync(STORE_PATH)) {
     return JSON.parse(readFileSync(STORE_PATH, "utf8")) as Review[];
   }
-  mkdirSync(STORE_DIR, { recursive: true });
-  writeFileSync(STORE_PATH, "[]");
+
+  try {
+    mkdirSync(STORE_DIR, { recursive: true });
+    writeFileSync(STORE_PATH, "[]");
+  } catch {
+    memoryCache = [];
+  }
   return [];
 }
 
 function writeStore(reviews: Review[]) {
-  mkdirSync(STORE_DIR, { recursive: true });
-  writeFileSync(STORE_PATH, JSON.stringify(reviews, null, 2));
+  try {
+    mkdirSync(STORE_DIR, { recursive: true });
+    writeFileSync(STORE_PATH, JSON.stringify(reviews, null, 2));
+    memoryCache = null;
+  } catch {
+    memoryCache = reviews;
+  }
 }
 
 export function localGetReviewsForCafe(cafeId: string): Review[] {
