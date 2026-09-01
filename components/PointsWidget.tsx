@@ -4,10 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { POINTS, usePoints } from "@/lib/usePoints";
 
 const EARN_ROWS = [
-  { icon: "⭐", label: "Rate a cafe", pts: POINTS.RATE },
-  { icon: "💬", label: "Add a comment", pts: POINTS.COMMENT },
-  { icon: "📸", label: "Add a photo", pts: POINTS.PHOTO },
-  { icon: "🍽️", label: "Share your favourite dish", pts: POINTS.FAVORITE_FOOD },
+  { icon: "📍", label: "Post a review — verified from the cafe", pts: POINTS.REVIEW },
 ];
 
 type PointsWidgetProps = {
@@ -62,7 +59,7 @@ export default function PointsWidget({ collapsed = false }: PointsWidgetProps) {
       </button>
 
       {open && (
-        <div className="panel-elevated absolute bottom-full left-0 z-30 mb-2 w-60 max-w-[80vw] rounded-2xl bg-white p-3.5 text-xs text-neutral-600 dark:bg-neutral-900 dark:text-neutral-300">
+        <div className="panel-elevated absolute bottom-full left-0 z-30 mb-2 w-60 max-w-[80vw] rounded-2xl p-3.5 text-xs text-neutral-600 dark:text-neutral-300">
           <div className="mb-2 text-[13px] font-semibold text-neutral-900 dark:text-neutral-100">
             Earn points as you go
           </div>

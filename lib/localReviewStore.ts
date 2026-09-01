@@ -45,6 +45,7 @@ export function localGetReviewsForCafe(cafeId: string): Review[] {
 
 export function localInsertReview(input: {
   cafe_id: string;
+  user_id: string;
   rating: number;
   comment: string | null;
   favorite_food: string | null;
@@ -55,6 +56,7 @@ export function localInsertReview(input: {
   const review: Review = {
     id: randomUUID(),
     cafe_id: input.cafe_id,
+    user_id: input.user_id,
     rating: input.rating,
     comment: input.comment,
     favorite_food: input.favorite_food,

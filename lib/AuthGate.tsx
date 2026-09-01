@@ -11,7 +11,7 @@ type AuthGateContextValue = {
 const AuthGateContext = createContext<AuthGateContextValue | null>(null);
 
 export function AuthGateProvider({ children }: { children: React.ReactNode }) {
-  const { isSignedIn, signIn } = useAuth();
+  const { isSignedIn } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const pendingAction = useRef<(() => void) | null>(null);
 
@@ -27,8 +27,7 @@ export function AuthGateProvider({ children }: { children: React.ReactNode }) {
     [isSignedIn]
   );
 
-  function handleSignedIn(phone: string) {
-    signIn(phone);
+  function handleSignedIn() {
     setModalOpen(false);
     const action = pendingAction.current;
     pendingAction.current = null;

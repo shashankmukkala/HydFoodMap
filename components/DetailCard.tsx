@@ -58,7 +58,13 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
     });
   }
   const hasLongNote = !!cafe?.note && cafe.note.length > 90;
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}`;
+  // Prefer Google's own link for the business (from new_data.json's `url`
+  // field) over building directions from our own geocoded lat/lng — our
+  // coordinates are good enough to place a map pin but can be road-level
+  // rather than building-level for addresses with no plot number (see the
+  // Churrolto Film Nagar case). Falls back to lat/lng for cafes with no
+  // source URL, e.g. ones pinned directly by an admin.
+  const directionsUrl = cafe?.maps_url || `https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}`;
 
   async function share() {
     const url = `${window.location.origin}${window.location.pathname}?lat=${item.lat}&lng=${item.lng}`;
@@ -80,20 +86,20 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
   }
 
   return (
-    <div className="panel-elevated w-full overflow-hidden rounded-2xl bg-white/95 backdrop-blur dark:bg-neutral-900/95">
-      <div className="flex gap-3 p-4 pb-0">
+    <div className="panel-elevated w-full shrink-0 overflow-hidden rounded-3xl">
+      <div className="flex gap-2.5 p-3.5 pb-0">
         {cafe?.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={cafe.image_url}
             alt={cafe.name}
-            className="h-16 w-16 shrink-0 rounded-xl object-cover"
+            className="h-14 w-14 shrink-0 rounded-xl object-cover"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = "none";
             }}
           />
         ) : (
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-2xl dark:bg-amber-950">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-xl dark:bg-amber-950">
             {isCafe && cafe ? cafeIcon(cafe) : "📢"}
           </div>
         )}
@@ -101,21 +107,21 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
-              <div className="truncate text-base font-semibold text-neutral-900 dark:text-neutral-100">
+              <div className="truncate text-[15px] font-semibold text-neutral-900 dark:text-neutral-100">
                 {item.name}
               </div>
-              <div className="mt-0.5 truncate text-xs text-neutral-400">
+              <div className="mt-0.5 truncate text-[11px] text-neutral-400">
                 {cafe?.location ?? `${item.lat.toFixed(5)}, ${item.lng.toFixed(5)}`}
               </div>
               {isCafe && cafe?.cost_for_two && (
-                <div className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
+                <div className="mt-0.5 text-[11px] text-neutral-500 dark:text-neutral-400">
                   💰 {cafe.cost_for_two} for two
                 </div>
               )}
             </div>
             <button
               onClick={onClose}
-              className="shrink-0 rounded-full p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800"
+              className="shrink-0 rounded-full p-1.5 text-neutral-400 hover:bg-white/10 hover:text-neutral-200"
               aria-label="Close"
             >
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
@@ -125,9 +131,9 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
           </div>
 
           {isCafe && (cafe?.category || cafe?.tags.length) && (
-            <div className="mt-2 flex flex-wrap gap-1.5">
+            <div className="mt-1.5 flex flex-wrap gap-1">
               {cafe?.category && (
-                <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-neutral-200">
                   {cafe.category in CATEGORY_SHORT_LABELS
                     ? CATEGORY_SHORT_LABELS[cafe.category as Category]
                     : cafe.category}
@@ -136,7 +142,7 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
               {cafe?.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-medium text-amber-600 dark:bg-amber-950 dark:text-amber-300"
+                  className="rounded-full bg-amber-950 px-2 py-0.5 text-[10px] font-medium text-amber-300"
                 >
                   {tag}
                 </span>
@@ -177,12 +183,12 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
         </div>
       </div>
 
-      <div className="mt-3 flex items-center gap-2 border-t border-neutral-100 px-4 py-2.5 dark:border-neutral-800">
+      <div className="mt-2 flex items-center gap-1 border-t border-neutral-100 px-3 py-2 dark:border-neutral-800">
         <a
           href={directionsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-neutral-200 hover:bg-white/10"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
             <path d="M3 11l18-8-8 18-2-8-8-2z" />
@@ -192,7 +198,7 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
         {isCafe && (
           <button
             onClick={() => requireAuth(() => toggle(item.id))}
-            className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 ${bookmarked ? "text-amber-500" : "text-neutral-700 dark:text-neutral-200"}`}
+            className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium hover:bg-white/10 ${bookmarked ? "text-amber-500" : "text-neutral-700 dark:text-neutral-200"}`}
           >
             <svg
               viewBox="0 0 24 24"
@@ -208,7 +214,7 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
         )}
         <button
           onClick={share}
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-neutral-200 hover:bg-white/10"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
             <circle cx="18" cy="5" r="2.5" />
@@ -223,7 +229,7 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
           <div ref={collectionsRef} className="relative flex-1">
             <button
               onClick={() => setCollectionsOpen((v) => !v)}
-              className={`flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 ${inCollectionCount > 0 ? "text-amber-500" : "text-neutral-700 dark:text-neutral-200"}`}
+              className={`flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium hover:bg-white/10 ${inCollectionCount > 0 ? "text-amber-500" : "text-neutral-700 dark:text-neutral-200"}`}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
                 <path d="M4 6h6l2 2h8v10H4V6z" />
@@ -232,7 +238,7 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
             </button>
 
             {collectionsOpen && (
-              <div className="panel-elevated absolute right-0 bottom-full z-20 mb-2 w-56 rounded-2xl bg-white p-3 dark:bg-neutral-900">
+              <div className="panel-elevated absolute right-0 bottom-full z-20 mb-2 w-56 rounded-2xl p-3">
                 <div className="mb-2 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                   Add to collection
                 </div>
@@ -252,7 +258,7 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
                               : addCafeToCollection(collection.id, item.id)
                           )
                         }
-                        className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                        className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-white/10"
                       >
                         <span
                           className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${inThis ? "border-amber-500 bg-amber-500 text-white" : "border-neutral-300 dark:border-neutral-600"}`}
@@ -317,7 +323,7 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
         </div>
       )}
 
-      {isCafe && <ReviewsSection key={item.id} cafeId={item.id} isVisited={isVisited(item.id)} />}
+      {isCafe && <ReviewsSection key={item.id} cafeId={item.id} cafeLat={item.lat} cafeLng={item.lng} />}
     </div>
   );
 }

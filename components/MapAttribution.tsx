@@ -11,7 +11,7 @@ export default function MapAttribution() {
   return (
     <div className="pointer-events-auto absolute bottom-4 left-4 z-10">
       {open && (
-        <div className="panel-elevated mb-2 w-max max-w-[220px] rounded-xl bg-white/95 px-3 py-2 text-[10px] leading-snug text-neutral-500 backdrop-blur dark:bg-neutral-900/95 dark:text-neutral-400">
+        <div className="panel-elevated mb-2 w-max max-w-[220px] rounded-xl px-3 py-2 text-[10px] leading-snug text-neutral-500 dark:text-neutral-400">
           <a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer" className="hover:underline">
             OpenFreeMap
           </a>
@@ -30,7 +30,7 @@ export default function MapAttribution() {
         onClick={() => setOpen((v) => !v)}
         aria-label="Map data attribution"
         aria-expanded={open}
-        className="flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-[11px] font-semibold text-neutral-500 shadow-sm backdrop-blur hover:text-neutral-700 dark:bg-neutral-900/90 dark:text-neutral-400 dark:hover:text-neutral-200"
+        className="panel-elevated flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
       >
         i
       </button>

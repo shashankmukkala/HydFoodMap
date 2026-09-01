@@ -48,7 +48,7 @@ export default function FeedPanel(props: FeedPanelProps) {
         <button
           key={item.id}
           onClick={() => (kind === "cafe" ? props.onSelect(item as Cafe) : props.onSelect(item as Billboard))}
-          className="flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800"
+          className="flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-white/10"
         >
           <span className="text-lg leading-none">{kind === "cafe" ? cafeIcon(item as Cafe) : icon}</span>
           <div className="min-w-0 flex-1">

@@ -19,7 +19,7 @@ type PanelShellProps = {
 // different content, instead of each having its own header layout.
 export default function PanelShell({ title, subtitle, headerAction, onClose, footer, children }: PanelShellProps) {
   return (
-    <div className="panel-elevated flex max-h-full w-full flex-col rounded-2xl bg-white/95 backdrop-blur dark:bg-neutral-900/95">
+    <div className="panel-elevated flex max-h-full w-full flex-col rounded-3xl">
       <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3.5 dark:border-neutral-800/80">
         <div className="min-w-0">
           <div className="truncate text-[13.5px] font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
@@ -32,7 +32,7 @@ export default function PanelShell({ title, subtitle, headerAction, onClose, foo
           {onClose && (
             <button
               onClick={onClose}
-              className="rounded-full p-1.5 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800"
+              className="rounded-full p-1.5 text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-200"
               aria-label="Close"
             >
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" className="h-4 w-4">

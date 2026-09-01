@@ -15,9 +15,11 @@ import {
   GENERAL_POI_LAYER_IDS,
   DEFAULT_MAP_CENTER,
   KEEP_POI_CLASSES,
+  MAP_BACKGROUND_COLOR,
   OPENFREEMAP_STYLE_URL,
   ROAD_LINE_COLOR_OVERRIDES,
 } from "@/lib/mapStyle";
+import { darkenMapStyle } from "@/lib/darkenMapStyle";
 
 type PlacingMode = "cafe" | "billboard" | null;
 
@@ -59,6 +61,14 @@ export default function Map({ placingMode, onMapClick, onMapReady }: MapProps) {
     map.addControl(new NavigationControl({ visualizePitch: true }), "bottom-right");
 
     map.on("load", () => {
+      // Generic pass first (inverts every layer's colors — see
+      // lib/darkenMapStyle.ts for why this beats hand-tuning ~90 layers),
+      // then the hand-picked building/road overrides below run after and
+      // win, since those need real design choices the generic inversion
+      // can't make on its own (a height-based ramp, road hierarchy).
+      darkenMapStyle(map);
+      map.setPaintProperty("background", "background-color", MAP_BACKGROUND_COLOR);
+
       const layers = map.getStyle().layers ?? [];
       const buildingLayer = layers.find(
         (layer) => layer.type === "fill-extrusion" && layer.id.includes("building")

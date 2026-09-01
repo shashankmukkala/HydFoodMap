@@ -4,6 +4,8 @@ import { useState } from "react";
 import type { Cafe } from "@/lib/supabase";
 import { TAG_GROUPS, TAG_ICONS } from "@/lib/tags";
 import { CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
+import PanelShell from "@/components/PanelShell";
+import { useReverseGeocode } from "@/lib/useReverseGeocode";
 
 type PlaceCafeFormProps = {
   coords: { lng: number; lat: number };
@@ -12,6 +14,8 @@ type PlaceCafeFormProps = {
 };
 
 export default function PlaceCafeForm({ coords, onCancel, onCreated }: PlaceCafeFormProps) {
+  const { address, status: addressStatus } = useReverseGeocode(coords);
+
   const [name, setName] = useState("");
   const [category, setCategory] = useState<Category | "">("");
   const [location, setLocation] = useState("");
@@ -60,15 +64,25 @@ export default function PlaceCafeForm({ coords, onCancel, onCreated }: PlaceCafe
   }
 
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/30">
-      <form
-        onSubmit={handleSubmit}
-        className="max-h-[90vh] w-96 overflow-y-auto rounded-xl bg-white p-5 shadow-2xl dark:bg-neutral-900 dark:text-neutral-100"
-      >
-        <h2 className="text-base font-semibold">Pin a cafe</h2>
-        <p className="mt-0.5 text-xs text-neutral-400">
-          {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}
-        </p>
+    <PanelShell title="Pin a cafe" onClose={onCancel}>
+      <form onSubmit={handleSubmit} className="px-2 pb-2">
+        <div className="rounded-lg bg-neutral-50 px-3 py-2 text-xs dark:bg-neutral-800/60">
+          {addressStatus === "loading" && <span className="text-neutral-400">Locating…</span>}
+          {addressStatus === "error" && (
+            <span className="text-amber-600 dark:text-amber-400">
+              Couldn&apos;t resolve a real address for this point — drag the pin on the map onto the
+              cafe&apos;s actual building before saving.
+            </span>
+          )}
+          {addressStatus === "idle" && address && (
+            <>
+              <span className="font-medium text-neutral-700 dark:text-neutral-200">{address}</span>
+              <div className="mt-0.5 text-neutral-400">
+                {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)} · drag the pin on the map to adjust
+              </div>
+            </>
+          )}
+        </div>
 
         <label className="mt-4 block text-xs font-medium text-neutral-600">Name</label>
         <input
@@ -176,7 +190,7 @@ export default function PlaceCafeForm({ coords, onCancel, onCreated }: PlaceCafe
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-md px-3 py-2 text-sm text-neutral-500 hover:bg-neutral-100"
+            className="rounded-md px-3 py-2 text-sm text-neutral-400 hover:bg-white/10"
           >
             Cancel
           </button>
@@ -189,6 +203,6 @@ export default function PlaceCafeForm({ coords, onCancel, onCreated }: PlaceCafe
           </button>
         </div>
       </form>
-    </div>
+    </PanelShell>
   );
 }

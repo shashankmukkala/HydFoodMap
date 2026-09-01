@@ -13,76 +13,85 @@ export const DEFAULT_BEARING = -17;
 
 export const OPENFREEMAP_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 
-// Light grey ramp, keyed off render_height, so taller buildings read as
-// subtly darker without the map turning into a wall of orange.
+// Dark charcoal ramp, keyed off render_height, so taller buildings read as
+// subtly lighter — the opposite direction from a light-theme map, where
+// height reads as "darker" — so they still stand out with some depth
+// instead of the map turning into a flat black wall of silhouettes.
 export const BUILDING_HEIGHT_COLOR_RAMP: ExpressionSpecification = [
   "interpolate",
   ["linear"],
   ["get", "render_height"],
   0,
-  "#f3f4f6",
+  "#28282c",
   15,
-  "#e5e7eb",
+  "#313136",
   40,
-  "#d1d5db",
+  "#3a3a41",
   80,
-  "#b3b8be",
+  "#45454e",
   150,
-  "#8f959c",
+  "#55555f",
 ];
 
 export const BUILDING_LAYER_ID = "building-3d";
 
 // Roads default to the "liberty" style's yellow/cream palette; overridden
-// here to a neutral grey hierarchy (darker = higher class) to match the
-// grey building palette above. This includes the "casing" (outline) layers
-// under major roads — those default to an orange (#e9ac77), not the light
-// neutral tone they look like at a glance, so they need overriding too or
-// every trunk/motorway/link road keeps a visible orange edge.
+// here to very faint, low-alpha whites (higher class = slightly more
+// opaque, but even motorways stay subtle) so the road network reads as a
+// quiet structural hint rather than a bright grid competing with the
+// aurora backdrop and cafe pins for attention. Casings (the outline layers
+// under major roads, orange #e9ac77 in the light style) are pushed even
+// fainter than their road, and dropped almost to nothing for track/rail —
+// present for edge definition at high zoom, invisible at a glance.
 export const ROAD_LINE_COLOR_OVERRIDES: Record<string, string> = {
-  road_motorway: "#8b8f96",
-  road_trunk_primary: "#8b8f96",
-  road_secondary_tertiary: "#a8acb3",
-  road_minor: "#b8bcc2",
-  road_link: "#a8acb3",
-  road_service_track: "#c2c6cb",
-  road_path_pedestrian: "#cfd3d8",
-  road_major_rail: "#9aa0a6",
-  road_transit_rail: "#9aa0a6",
-  road_motorway_casing: "#e5e7eb",
-  road_trunk_primary_casing: "#e5e7eb",
-  road_secondary_tertiary_casing: "#e5e7eb",
-  road_link_casing: "#e5e7eb",
-  road_motorway_link_casing: "#e5e7eb",
-  bridge_motorway: "#8b8f96",
-  bridge_trunk_primary: "#8b8f96",
-  bridge_secondary_tertiary: "#a8acb3",
-  bridge_street: "#b8bcc2",
-  bridge_link: "#a8acb3",
-  bridge_service_track: "#c2c6cb",
-  bridge_path_pedestrian: "#cfd3d8",
-  bridge_major_rail: "#9aa0a6",
-  bridge_transit_rail: "#9aa0a6",
-  bridge_motorway_casing: "#e5e7eb",
-  bridge_trunk_primary_casing: "#e5e7eb",
-  bridge_secondary_tertiary_casing: "#e5e7eb",
-  bridge_link_casing: "#e5e7eb",
-  bridge_motorway_link_casing: "#e5e7eb",
-  tunnel_motorway: "#8b8f96",
-  tunnel_trunk_primary: "#8b8f96",
-  tunnel_secondary_tertiary: "#a8acb3",
-  tunnel_minor: "#b8bcc2",
-  tunnel_link: "#a8acb3",
-  tunnel_service_track: "#c2c6cb",
-  tunnel_path_pedestrian: "#cfd3d8",
-  tunnel_major_rail: "#9aa0a6",
-  tunnel_transit_rail: "#9aa0a6",
-  tunnel_motorway_casing: "#e5e7eb",
-  tunnel_trunk_primary_casing: "#e5e7eb",
-  tunnel_secondary_tertiary_casing: "#e5e7eb",
-  tunnel_link_casing: "#e5e7eb",
-  tunnel_motorway_link_casing: "#e5e7eb",
+  road_motorway: "rgba(255,255,255,0.30)",
+  road_trunk_primary: "rgba(255,255,255,0.30)",
+  road_secondary_tertiary: "rgba(255,255,255,0.22)",
+  road_minor: "rgba(255,255,255,0.15)",
+  road_link: "rgba(255,255,255,0.22)",
+  road_service_track: "rgba(255,255,255,0.08)",
+  road_path_pedestrian: "rgba(255,255,255,0.10)",
+  road_major_rail: "rgba(255,255,255,0.16)",
+  road_transit_rail: "rgba(255,255,255,0.16)",
+  road_motorway_casing: "rgba(255,255,255,0.06)",
+  road_trunk_primary_casing: "rgba(255,255,255,0.06)",
+  road_secondary_tertiary_casing: "rgba(255,255,255,0.06)",
+  road_link_casing: "rgba(255,255,255,0.06)",
+  road_motorway_link_casing: "rgba(255,255,255,0.06)",
+  bridge_motorway: "rgba(255,255,255,0.30)",
+  bridge_trunk_primary: "rgba(255,255,255,0.30)",
+  bridge_secondary_tertiary: "rgba(255,255,255,0.22)",
+  bridge_street: "rgba(255,255,255,0.15)",
+  bridge_link: "rgba(255,255,255,0.22)",
+  bridge_service_track: "rgba(255,255,255,0.08)",
+  bridge_path_pedestrian: "rgba(255,255,255,0.10)",
+  bridge_major_rail: "rgba(255,255,255,0.16)",
+  bridge_transit_rail: "rgba(255,255,255,0.16)",
+  bridge_motorway_casing: "rgba(255,255,255,0.06)",
+  bridge_trunk_primary_casing: "rgba(255,255,255,0.06)",
+  bridge_secondary_tertiary_casing: "rgba(255,255,255,0.06)",
+  bridge_link_casing: "rgba(255,255,255,0.06)",
+  bridge_motorway_link_casing: "rgba(255,255,255,0.06)",
+  tunnel_motorway: "rgba(255,255,255,0.30)",
+  tunnel_trunk_primary: "rgba(255,255,255,0.30)",
+  tunnel_secondary_tertiary: "rgba(255,255,255,0.22)",
+  tunnel_minor: "rgba(255,255,255,0.15)",
+  tunnel_link: "rgba(255,255,255,0.22)",
+  tunnel_service_track: "rgba(255,255,255,0.08)",
+  tunnel_path_pedestrian: "rgba(255,255,255,0.10)",
+  tunnel_major_rail: "rgba(255,255,255,0.16)",
+  tunnel_transit_rail: "rgba(255,255,255,0.16)",
+  tunnel_motorway_casing: "rgba(255,255,255,0.06)",
+  tunnel_trunk_primary_casing: "rgba(255,255,255,0.06)",
+  tunnel_secondary_tertiary_casing: "rgba(255,255,255,0.06)",
+  tunnel_link_casing: "rgba(255,255,255,0.06)",
+  tunnel_motorway_link_casing: "rgba(255,255,255,0.06)",
 };
+
+// Matches the aurora canvas backdrop behind the map (see
+// BACKGROUND_GRADIENTS' shared dark base in lib/categories.ts) so the map
+// doesn't read as a visually distinct near-black from the page around it.
+export const MAP_BACKGROUND_COLOR = "#0b0b0d";
 
 // General-interest POI layers in OpenFreeMap's "liberty" style (poi_r1/r7/r20,
 // source-layer "poi") render every OSM point of interest — hospitals,

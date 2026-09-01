@@ -42,7 +42,7 @@ export default function EventsPanel({ events, isAdmin, onAddClick, onDelete }: E
       {upcoming.map((event) => (
         <div
           key={event.id}
-          className="group flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+          className="group flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-white/10"
         >
           <div className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-lg bg-amber-50 leading-none dark:bg-amber-950">
             <span className="text-[10px] font-medium text-amber-500 uppercase">
@@ -69,7 +69,7 @@ export default function EventsPanel({ events, isAdmin, onAddClick, onDelete }: E
           {isAdmin && (
             <button
               onClick={() => onDelete(event.id)}
-              className="shrink-0 rounded-full p-1.5 text-neutral-300 opacity-100 hover:bg-neutral-200 hover:text-neutral-600 sm:opacity-0 sm:group-hover:opacity-100 dark:hover:bg-neutral-700"
+              className="shrink-0 rounded-full p-1.5 text-neutral-300 opacity-100 hover:bg-white/10 hover:text-neutral-100 sm:opacity-0 sm:group-hover:opacity-100"
               aria-label={`Delete ${event.name}`}
             >
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">

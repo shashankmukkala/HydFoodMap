@@ -51,7 +51,7 @@ export default function CollectionsPanel({
         headerAction={
           <button
             onClick={() => setOpenId(null)}
-            className="rounded-full p-1.5 text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            className="rounded-full p-1.5 text-neutral-400 hover:bg-white/10"
             aria-label="Back to collections"
           >
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
@@ -70,7 +70,7 @@ export default function CollectionsPanel({
           <button
             key={cafe.id}
             onClick={() => onSelectCafe(cafe)}
-            className="flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            className="flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-white/10"
           >
             <span className="text-lg leading-none">☕</span>
             <div className="min-w-0 flex-1">
@@ -118,7 +118,7 @@ export default function CollectionsPanel({
       {collections.map((collection) => (
         <div
           key={collection.id}
-          className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+          className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-white/10"
         >
           <button onClick={() => setOpenId(collection.id)} className="flex min-w-0 flex-1 items-center gap-3 text-left">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-50 text-base dark:bg-amber-950">
@@ -135,7 +135,7 @@ export default function CollectionsPanel({
           </button>
           <button
             onClick={() => onDelete(collection.id)}
-            className="shrink-0 rounded-full p-1.5 text-neutral-300 opacity-100 hover:bg-neutral-200 hover:text-neutral-600 sm:opacity-0 sm:group-hover:opacity-100 dark:hover:bg-neutral-700"
+            className="shrink-0 rounded-full p-1.5 text-neutral-300 opacity-100 hover:bg-white/10 hover:text-neutral-100 sm:opacity-0 sm:group-hover:opacity-100"
             aria-label={`Delete ${collection.name}`}
           >
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">

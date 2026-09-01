@@ -95,10 +95,20 @@ export default function Sidebar({
 
   // `forceExpanded` is used for the mobile drawer, which always renders the
   // full (non-collapsed) layout regardless of the desktop rail's state.
+  //
+  // The collapse/expand toggle sits inline here, beside the logo, in
+  // BOTH the expanded and collapsed desktop states — not in a separate
+  // row above it (that read as a stray floating element breaking the
+  // panel's curve — see the -right-3 footgun this replaced earlier). The
+  // collapsed rail is sized (see the w-[96px] on the rail below) with
+  // enough room for the logo + toggle side by side at a tighter gap, so
+  // this doesn't need special-casing per collapsed state the way it used
+  // to. Never shown on the mobile drawer (forceExpanded), which closes
+  // via the Sheet's own X instead.
   function renderBrand(forceExpanded: boolean) {
     const isCollapsed = collapsed && !forceExpanded;
     return (
-      <div className="mb-5 flex items-center gap-2.5 px-0.5">
+      <div className="mb-5 flex items-center gap-2 px-0.5">
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-sm">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
             <path d="M4 9h13a3 3 0 0 1 0 6h-1" />
@@ -107,7 +117,7 @@ export default function Sidebar({
           </svg>
         </span>
         <div
-          className={`overflow-hidden ${SIDEBAR_TRANSITION} ${
+          className={`min-w-0 flex-1 overflow-hidden ${SIDEBAR_TRANSITION} ${
             isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"
           }`}
         >
@@ -115,6 +125,7 @@ export default function Sidebar({
             HydCafeMap
           </div>
         </div>
+        {!forceExpanded && collapseToggleButton()}
       </div>
     );
   }
@@ -137,7 +148,7 @@ export default function Sidebar({
               className={`group flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium ${SIDEBAR_TRANSITION} ${
                 isActive
                   ? "bg-amber-500/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400"
-                  : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-800/70 dark:hover:text-neutral-100"
+                  : "text-neutral-400 hover:bg-white/10 hover:text-neutral-100"
               }`}
             >
               <span className={`shrink-0 ${isActive ? "text-amber-500 dark:text-amber-400" : ""}`}>{item.icon}</span>
@@ -174,6 +185,28 @@ export default function Sidebar({
     );
   }
 
+  function collapseToggleButton() {
+    return (
+      <button
+        onClick={() => setCollapsed((v) => !v)}
+        aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-neutral-400 hover:bg-white/10 hover:text-amber-400"
+      >
+        <svg
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={`h-3.5 w-3.5 transition-transform duration-300 ease-in-out ${collapsed ? "rotate-180" : ""}`}
+        >
+          <path d="M12 5l-5 5 5 5" />
+        </svg>
+      </button>
+    );
+  }
+
   const desktopContent = (
     <>
       {renderBrand(false)}
@@ -201,36 +234,23 @@ export default function Sidebar({
 
   return (
     <>
-      {/* Desktop rail — the collapse toggle lives outside the scrollable
-          <aside> so it isn't clipped (an element with overflow-y set but
-          not overflow-x still gets its horizontal overflow auto-clipped
-          per spec, which cut the button off and drew a phantom scrollbar).
-          Every piece of content inside stays mounted across collapse/expand
-          and animates via the same duration/easing as the rail itself —
+      {/* Desktop rail — the collapse toggle is a normal in-flow button
+          inside the panel now (see renderCollapseToggle), not floating
+          outside it on the edge. It used to sit absolutely positioned at
+          -right-3, half outside the <aside>'s rounded bounds, to look like
+          a detached edge control — but that also meant it was a separate
+          floating element straddling the gap between this panel and
+          whatever sits next to it, which read as a visual seam/gap rather
+          than one clean curved shape. Being fully inside removes that.
+          Every piece of content stays mounted across collapse/expand and
+          animates via the same duration/easing as the rail itself —
           swapping different components in and out mid-animation is what
-          caused the jump/glitch this replaces. Padding stays constant too
+          caused a jump/glitch this replaces. Padding stays constant too
           (only width changes) so nothing inside reflows vertically. */}
-      <div className={`relative hidden h-full shrink-0 lg:block ${SIDEBAR_TRANSITION} ${collapsed ? "w-[76px]" : "w-64"}`}>
-        <aside className="panel-elevated flex h-full w-full flex-col gap-1 overflow-y-auto overflow-x-hidden rounded-2xl bg-white/95 p-3.5 backdrop-blur dark:bg-neutral-900/95">
+      <div className={`relative hidden h-full shrink-0 lg:block ${SIDEBAR_TRANSITION} ${collapsed ? "w-[96px]" : "w-64"}`}>
+        <aside className="panel-elevated flex h-full w-full flex-col gap-1 overflow-y-auto overflow-x-hidden rounded-3xl p-3.5">
           {desktopContent}
         </aside>
-        <button
-          onClick={() => setCollapsed((v) => !v)}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className="absolute top-4 -right-3 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-500 shadow-sm hover:text-amber-600 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400"
-        >
-          <svg
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className={`h-3.5 w-3.5 transition-transform duration-300 ease-in-out ${collapsed ? "rotate-180" : ""}`}
-          >
-            <path d="M12 5l-5 5 5 5" />
-          </svg>
-        </button>
       </div>
 
       {/* Mobile drawer */}

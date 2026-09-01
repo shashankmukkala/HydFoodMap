@@ -4,12 +4,22 @@ import { useEffect, useRef, useState } from "react";
 import type { Review } from "@/lib/supabase";
 import { POINTS, usePoints } from "@/lib/usePoints";
 import { useRequireAuth } from "@/lib/AuthGate";
+import { useAuth } from "@/lib/useAuth";
+import { distanceMeters, VISIT_RADIUS_METERS } from "@/lib/geo";
 
 type ReviewsSectionProps = {
   cafeId: string;
-  /** Reviews are gated behind marking the cafe as visited first. */
-  isVisited: boolean;
+  cafeLat: number;
+  cafeLng: number;
 };
+
+type GateState =
+  | { status: "idle" }
+  | { status: "confirm" }
+  | { status: "locating" }
+  | { status: "ready"; lat: number; lng: number }
+  | { status: "too-far" }
+  | { status: "error"; message: string };
 
 function timeAgo(iso: string) {
   const diffMs = Date.now() - new Date(iso).getTime();
@@ -30,19 +40,22 @@ function readAsDataUrl(file: File): Promise<string> {
   });
 }
 
-export default function ReviewsSection({ cafeId, isVisited }: ReviewsSectionProps) {
+export default function ReviewsSection({ cafeId, cafeLat, cafeLng }: ReviewsSectionProps) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loadedForId, setLoadedForId] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState(false);
+  const [gate, setGate] = useState<GateState>({ status: "idle" });
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [favoriteFood, setFavoriteFood] = useState("");
   const [photoDataUrl, setPhotoDataUrl] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const loading = loadedForId !== cafeId;
   const { addPoints } = usePoints();
   const requireAuth = useRequireAuth();
+  const { session } = useAuth();
 
   useEffect(() => {
     let cancelled = false;
@@ -64,6 +77,53 @@ export default function ReviewsSection({ cafeId, isVisited }: ReviewsSectionProp
   }, [cafeId]);
 
   const average = reviews.length > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length : null;
+  const alreadyReviewed = !!session && reviews.some((r) => r.user_id === session.user.id);
+
+  // Reviews can only be written from the cafe's actual location — checked
+  // live via the browser's geolocation, not a self-reported "I've been
+  // here" checkbox (the server re-checks this independently, since a
+  // client can't be trusted not to fake it — see app/api/cafes/[id]/reviews).
+  //
+  // Two-step on purpose: jumping straight to the browser's native location
+  // prompt with zero context reads as a random, unexplained permission
+  // request and drives people to just hit "Block". Explaining *why* first
+  // (and requiring its own explicit tap) also keeps the geolocation call
+  // inside a direct user gesture, which some browsers require anyway.
+  function startReview() {
+    requireAuth(() => {
+      setFormOpen(true);
+      setGate({ status: "confirm" });
+    });
+  }
+
+  function checkLocation() {
+    setGate({ status: "locating" });
+    if (!navigator.geolocation) {
+      setGate({ status: "error", message: "This browser can't share your location." });
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const dist = distanceMeters(
+          { lat: pos.coords.latitude, lng: pos.coords.longitude },
+          { lat: cafeLat, lng: cafeLng }
+        );
+        if (dist > VISIT_RADIUS_METERS) {
+          setGate({ status: "too-far" });
+        } else {
+          setGate({ status: "ready", lat: pos.coords.latitude, lng: pos.coords.longitude });
+        }
+      },
+      () => setGate({ status: "error", message: "Couldn't get your location — check location permissions." }),
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
+
+  function cancelReview() {
+    setFormOpen(false);
+    setGate({ status: "idle" });
+    setSubmitError(null);
+  }
 
   async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -77,36 +137,40 @@ export default function ReviewsSection({ cafeId, isVisited }: ReviewsSectionProp
 
   async function submitReview(e: React.FormEvent) {
     e.preventDefault();
-    if (rating === 0) return;
+    if (rating === 0 || gate.status !== "ready" || !session) return;
     setSubmitting(true);
+    setSubmitError(null);
     try {
       const res = await fetch(`/api/cafes/${cafeId}/reviews`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({
           rating,
           comment: comment || null,
           favorite_food: favoriteFood || null,
           photo_url: photoDataUrl,
+          lat: gate.lat,
+          lng: gate.lng,
         }),
       });
-      if (!res.ok) throw new Error(await res.text());
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || "Couldn't post your review.");
+      }
       const review: Review = await res.json();
       setReviews((prev) => [review, ...prev]);
-
-      let earned = POINTS.RATE;
-      if (comment) earned += POINTS.COMMENT;
-      if (photoDataUrl) earned += POINTS.PHOTO;
-      if (favoriteFood) earned += POINTS.FAVORITE_FOOD;
-      addPoints(earned);
+      addPoints(POINTS.REVIEW);
 
       setRating(0);
       setComment("");
       setFavoriteFood("");
       setPhotoDataUrl(null);
-      setFormOpen(false);
-    } catch {
-      // best-effort — form just stays open so they can retry
+      cancelReview();
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Couldn't post your review.");
     } finally {
       setSubmitting(false);
     }
@@ -124,81 +188,141 @@ export default function ReviewsSection({ cafeId, isVisited }: ReviewsSectionProp
               </span>
             </>
           ) : (
-            <span className="text-xs text-neutral-400">{loading ? "Loading reviews…" : "No reviews yet"}</span>
+            <span className="text-xs text-neutral-400">{loading ? "Loading reviews…" : "Be the first to review"}</span>
           )}
         </div>
-        {isVisited ? (
-          <button
-            onClick={() => requireAuth(() => setFormOpen((v) => !v))}
-            className="text-xs font-medium text-amber-600 hover:underline dark:text-amber-400"
-          >
-            {formOpen ? "Cancel" : "Write a review"}
-          </button>
-        ) : (
-          <span className="text-xs text-neutral-400">Mark as visited to review</span>
-        )}
+        {!formOpen &&
+          (alreadyReviewed ? (
+            <span className="text-xs text-neutral-400">You&apos;ve reviewed this place</span>
+          ) : (
+            <button onClick={startReview} className="text-xs font-medium text-amber-600 hover:underline dark:text-amber-400">
+              Write a review
+            </button>
+          ))}
       </div>
 
-      {formOpen && isVisited && (
-        <form onSubmit={submitReview} className="mt-2.5 space-y-2">
-          <div className="flex gap-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                type="button"
-                onClick={() => setRating((prev) => (prev === star ? 0 : star))}
-                className={`text-xl leading-none ${star <= rating ? "text-amber-400" : "text-neutral-200 dark:text-neutral-700"}`}
-                aria-label={`${star} star${star > 1 ? "s" : ""}`}
-              >
-                ★
-              </button>
-            ))}
-          </div>
-          <input
-            value={favoriteFood}
-            onChange={(e) => setFavoriteFood(e.target.value)}
-            placeholder="Food you liked the most (optional, +5 pts)"
-            className="w-full rounded-md border border-neutral-200 px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-neutral-700 dark:bg-neutral-800"
-          />
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            rows={2}
-            placeholder="What did you think? (optional, +5 pts)"
-            className="w-full rounded-md border border-neutral-200 px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-neutral-700 dark:bg-neutral-800"
-          />
+      {!formOpen && !loading && reviews.length === 0 && (
+        <p className="mt-1 text-xs text-neutral-400">
+          Every review here is verified from the cafe itself — no reviews copied from elsewhere.
+        </p>
+      )}
 
-          <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
-          {photoDataUrl ? (
-            <div className="flex items-center gap-2">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={photoDataUrl} alt="Review attachment" className="h-12 w-12 rounded-md object-cover" />
-              <button
-                type="button"
-                onClick={() => setPhotoDataUrl(null)}
-                className="text-xs text-neutral-400 hover:underline"
-              >
-                Remove photo
+      {formOpen && (
+        <div className="mt-2.5">
+          {gate.status === "confirm" && (
+            <div className="rounded-md bg-neutral-50 px-2.5 py-2 text-xs text-neutral-600 dark:bg-neutral-800/60 dark:text-neutral-300">
+              <p>We&apos;ll ask your browser for your location, just to confirm you&apos;re at this cafe — that&apos;s what keeps reviews here real. It&apos;s only checked once, right now.</p>
+              <div className="mt-2 flex gap-2">
+                <button
+                  type="button"
+                  onClick={checkLocation}
+                  className="rounded-md bg-amber-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-600"
+                >
+                  Share location & continue
+                </button>
+                <button
+                  type="button"
+                  onClick={cancelReview}
+                  className="rounded-md px-3 py-1.5 text-xs text-neutral-400 hover:bg-white/10"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+          {gate.status === "locating" && (
+            <p className="text-xs text-neutral-400">Checking you&apos;re actually here…</p>
+          )}
+          {gate.status === "too-far" && (
+            <div className="rounded-md bg-amber-50 px-2.5 py-2 text-xs text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
+              You need to be at the cafe to leave a review — this keeps reviews real.{" "}
+              <button onClick={cancelReview} className="font-medium underline">
+                Close
               </button>
             </div>
-          ) : (
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="rounded-md border border-dashed border-neutral-300 px-2.5 py-1.5 text-xs text-neutral-500 hover:border-amber-400 hover:text-amber-500 dark:border-neutral-600 dark:text-neutral-400"
-            >
-              📸 Add a photo (optional, +10 pts)
-            </button>
+          )}
+          {gate.status === "error" && (
+            <div className="rounded-md bg-red-50 px-2.5 py-2 text-xs text-red-600 dark:bg-red-950/50 dark:text-red-400">
+              {gate.message}{" "}
+              <button onClick={cancelReview} className="font-medium underline">
+                Close
+              </button>
+            </div>
           )}
 
-          <button
-            type="submit"
-            disabled={rating === 0 || submitting}
-            className="rounded-md bg-amber-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-600 disabled:opacity-50"
-          >
-            {submitting ? "Posting…" : "Post review"}
-          </button>
-        </form>
+          {gate.status === "ready" && (
+            <form onSubmit={submitReview} className="space-y-2">
+              <div className="flex gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setRating((prev) => (prev === star ? 0 : star))}
+                    className={`text-xl leading-none ${star <= rating ? "text-amber-400" : "text-neutral-200 dark:text-neutral-700"}`}
+                    aria-label={`${star} star${star > 1 ? "s" : ""}`}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
+              <input
+                value={favoriteFood}
+                onChange={(e) => setFavoriteFood(e.target.value)}
+                placeholder="Food you liked the most (optional)"
+                className="w-full rounded-md border border-neutral-200 px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-neutral-700 dark:bg-neutral-800"
+              />
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                rows={2}
+                placeholder="What did you think? (optional)"
+                className="w-full rounded-md border border-neutral-200 px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-neutral-700 dark:bg-neutral-800"
+              />
+
+              <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+              {photoDataUrl ? (
+                <div className="flex items-center gap-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={photoDataUrl} alt="Review attachment" className="h-12 w-12 rounded-md object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setPhotoDataUrl(null)}
+                    className="text-xs text-neutral-400 hover:underline"
+                  >
+                    Remove photo
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="rounded-md border border-dashed border-neutral-300 px-2.5 py-1.5 text-xs text-neutral-500 hover:border-amber-400 hover:text-amber-500 dark:border-neutral-600 dark:text-neutral-400"
+                >
+                  📸 Add a photo (optional)
+                </button>
+              )}
+
+              {submitError && <p className="text-xs text-red-500">{submitError}</p>}
+
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  disabled={rating === 0 || submitting}
+                  className="rounded-md bg-amber-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-600 disabled:opacity-50"
+                >
+                  {submitting ? "Posting…" : "Post review"}
+                </button>
+                <button
+                  type="button"
+                  onClick={cancelReview}
+                  className="rounded-md px-3 py-1.5 text-xs text-neutral-400 hover:bg-white/10"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       )}
 
       {reviews.length > 0 && (

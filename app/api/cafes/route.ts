@@ -25,7 +25,8 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { name, category, location, cost_for_two, note, lng, lat, image_url, tags, hours_text } = body;
+  const { name, category, location, cost_for_two, note, lng, lat, image_url, tags, hours_text, maps_url, rating } =
+    body;
 
   if (!name || typeof lng !== "number" || typeof lat !== "number") {
     return NextResponse.json({ error: "name, lng, and lat are required" }, { status: 400 });
@@ -43,6 +44,8 @@ export async function POST(request: NextRequest) {
       image_url: image_url || null,
       tags: Array.isArray(tags) ? tags : [],
       hours_text: hours_text || null,
+      maps_url: maps_url || null,
+      rating: typeof rating === "number" ? rating : null,
     });
     return NextResponse.json(cafe, { status: 201 });
   }
@@ -60,6 +63,8 @@ export async function POST(request: NextRequest) {
       image_url: image_url || null,
       tags: Array.isArray(tags) ? tags : [],
       hours_text: hours_text || null,
+      maps_url: maps_url || null,
+      rating: typeof rating === "number" ? rating : null,
     })
     .select()
     .single();

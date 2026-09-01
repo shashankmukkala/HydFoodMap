@@ -2,9 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Map as MapLibreMap } from "maplibre-gl";
-import SearchBox from "@/components/SearchBox";
+import SearchBox, { type SearchGroupMatch } from "@/components/SearchBox";
 import { DEFAULT_BEARING, DEFAULT_PITCH } from "@/lib/mapStyle";
-import { useTheme } from "@/lib/useTheme";
 import { useAuth } from "@/lib/useAuth";
 import { useRequireAuth } from "@/lib/AuthGate";
 import WeatherWidget from "@/components/WeatherWidget";
@@ -17,29 +16,38 @@ type TopBarProps = {
   map: MapLibreMap | null;
   cafes: Cafe[];
   onSelectCafe: (cafe: Cafe) => void;
+  onGroupMatch: (match: SearchGroupMatch) => void;
+  searchClearSignal?: number;
+  searchDismissDropdownSignal?: number;
   onMenuClick: () => void;
   activeCategory: Category | null;
   onSelectCategory: (category: Category | null) => void;
   activeTags: Set<Tag>;
   onToggleTag: (tag: Tag) => void;
+  minRating: number;
+  onSelectMinRating: (rating: number) => void;
 };
 
 export default function TopBar({
   map,
   cafes,
   onSelectCafe,
+  onGroupMatch,
+  searchClearSignal,
+  searchDismissDropdownSignal,
   onMenuClick,
   activeCategory,
   onSelectCategory,
   activeTags,
   onToggleTag,
+  minRating,
+  onSelectMinRating,
 }: TopBarProps) {
   const [is3D, setIs3D] = useState(false);
   const [typeOpen, setTypeOpen] = useState(false);
   const [vibeOpen, setVibeOpen] = useState(false);
   const typeRef = useRef<HTMLDivElement>(null);
   const vibeRef = useRef<HTMLDivElement>(null);
-  const { theme, toggleTheme } = useTheme();
   const { isSignedIn, phone } = useAuth();
   const requireAuth = useRequireAuth();
 
@@ -61,11 +69,11 @@ export default function TopBar({
   }
 
   return (
-    <div className="panel-elevated flex flex-wrap items-center gap-2 rounded-2xl bg-white/95 px-3 py-2.5 backdrop-blur sm:gap-3 sm:px-4 sm:py-3 dark:bg-neutral-900/95">
+    <div className="panel-elevated flex flex-wrap items-center gap-1.5 rounded-3xl px-2.5 py-2 sm:gap-2 sm:px-3 sm:py-2">
       <button
         onClick={onMenuClick}
         aria-label="Open menu"
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 lg:hidden dark:bg-neutral-800 dark:text-neutral-200"
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 lg:hidden dark:bg-neutral-800 dark:text-neutral-200"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
           <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
@@ -73,13 +81,20 @@ export default function TopBar({
       </button>
 
       <div className="w-40 min-w-0 shrink grow sm:w-64 sm:grow-0">
-        <SearchBox map={map} cafes={cafes} onSelectCafe={onSelectCafe} />
+        <SearchBox
+          map={map}
+          cafes={cafes}
+          onSelectCafe={onSelectCafe}
+          onGroupMatch={onGroupMatch}
+          clearSignal={searchClearSignal}
+          dismissDropdownSignal={searchDismissDropdownSignal}
+        />
       </div>
 
       <div ref={typeRef} className="relative">
         <button
           onClick={() => setTypeOpen((v) => !v)}
-          className={`flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
+          className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors ${
             activeCategory
               ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
               : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
@@ -89,7 +104,7 @@ export default function TopBar({
         </button>
 
         {typeOpen && (
-          <div className="panel-elevated absolute top-full left-0 z-20 mt-2 w-56 rounded-2xl bg-white p-3 dark:bg-neutral-900">
+          <div className="panel-elevated absolute top-full left-0 z-20 mt-2 w-56 rounded-2xl p-3">
             <div className="mb-2 text-xs font-semibold text-neutral-500 dark:text-neutral-400">Cafe type</div>
             <div className="flex flex-wrap gap-1.5">
               <Chip
@@ -121,8 +136,8 @@ export default function TopBar({
       <div ref={vibeRef} className="relative">
         <button
           onClick={() => setVibeOpen((v) => !v)}
-          className={`flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
-            activeTags.size > 0
+          className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors ${
+            activeTags.size > 0 || minRating > 0
               ? "bg-amber-500 text-white"
               : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
           }`}
@@ -131,23 +146,47 @@ export default function TopBar({
             <path d="M4 6h12M6 10h8M8 14h4" strokeLinecap="round" />
           </svg>
           Filters
-          {activeTags.size > 0 && <span className="rounded-full bg-white/25 px-1.5">{activeTags.size}</span>}
+          {(activeTags.size > 0 || minRating > 0) && (
+            <span className="rounded-full bg-white/25 px-1.5">{activeTags.size + (minRating > 0 ? 1 : 0)}</span>
+          )}
         </button>
 
         {vibeOpen && (
-          <div className="panel-elevated no-scrollbar absolute top-full left-0 z-20 mt-2 max-h-[70vh] w-72 max-w-[85vw] space-y-3 overflow-y-auto rounded-2xl bg-white p-3 dark:bg-neutral-900">
+          <div className="panel-elevated no-scrollbar absolute top-full left-0 z-20 mt-2 max-h-[70vh] w-72 max-w-[85vw] space-y-3 overflow-y-auto rounded-2xl p-3">
             <div className="flex items-center justify-between">
               <div className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                 Drill down by vibe, price, cuisine or hours
               </div>
-              {activeTags.size > 0 && (
+              {(activeTags.size > 0 || minRating > 0) && (
                 <button
-                  onClick={() => [...activeTags].forEach((tag) => onToggleTag(tag))}
+                  onClick={() => {
+                    [...activeTags].forEach((tag) => onToggleTag(tag));
+                    onSelectMinRating(0);
+                  }}
                   className="shrink-0 text-[11px] font-medium text-amber-600 hover:underline dark:text-amber-400"
                 >
                   Clear
                 </button>
               )}
+            </div>
+            <div>
+              <div className="mb-1.5 text-[11px] font-semibold tracking-wide text-neutral-400 uppercase">
+                Verified rating
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                <Chip active={minRating === 0} onClick={() => onSelectMinRating(0)}>
+                  Any
+                </Chip>
+                {[3, 4, 4.5].map((threshold) => (
+                  <Chip
+                    key={threshold}
+                    active={minRating === threshold}
+                    onClick={() => onSelectMinRating(minRating === threshold ? 0 : threshold)}
+                  >
+                    ★ {threshold}+
+                  </Chip>
+                ))}
+              </div>
             </div>
             {TAG_GROUPS.map((group) => (
               <div key={group.key}>
@@ -167,33 +206,17 @@ export default function TopBar({
         )}
       </div>
 
-      <div className="hidden h-8 w-px bg-neutral-200 sm:block dark:bg-neutral-800" />
+      <div className="hidden h-6 w-px bg-neutral-200 sm:block dark:bg-neutral-800" />
 
       <div className="hidden items-center gap-2 sm:flex">
         <WeatherWidget pill />
         <AirQualityWidget pill />
       </div>
 
-      <div className="ml-auto flex items-center gap-2">
-        <button
-          onClick={toggleTheme}
-          aria-label="Toggle dark mode"
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
-        >
-          {theme === "dark" ? (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
-              <circle cx="12" cy="12" r="4.5" />
-              <path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8" />
-            </svg>
-          ) : (
-            <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-              <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" />
-            </svg>
-          )}
-        </button>
+      <div className="ml-auto flex items-center gap-1.5">
         <button
           onClick={toggle3D}
-          className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
+          className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium whitespace-nowrap transition-colors ${
             is3D ? "bg-emerald-800 text-white" : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200"
           }`}
         >
@@ -205,15 +228,15 @@ export default function TopBar({
         </button>
         {isSignedIn ? (
           <div
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-500 text-sm font-semibold text-white"
-            title={`Signed in · +91 ${phone}`}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-sm font-semibold text-white"
+            title={`Signed in · +${phone}`}
           >
             {phone?.slice(-2)}
           </div>
         ) : (
           <button
             onClick={() => requireAuth(() => {})}
-            className="flex items-center gap-1.5 rounded-full bg-neutral-900 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-white hover:bg-neutral-800 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+            className="flex items-center gap-1.5 rounded-full bg-neutral-900 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white hover:bg-neutral-800 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
           >
             Sign in
           </button>
@@ -236,7 +259,7 @@ function Chip({
     <button
       type="button"
       onClick={onClick}
-      className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors ${
+      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
         active
           ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
           : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"

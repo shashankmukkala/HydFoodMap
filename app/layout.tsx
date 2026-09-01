@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { THEME_INIT_SCRIPT } from "@/lib/useTheme";
 import { AuthGateProvider } from "@/lib/AuthGate";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
@@ -25,16 +24,16 @@ export const metadata: Metadata = {
   description: "An interactive 3D map of Hyderabad — cafes and billboards.",
 };
 
+// Dark is the only theme now — no toggle, no stored preference, no
+// light-mode CSS to keep in sync. Applied here directly (not via a
+// client-side hook adding a class after hydration) so there's no
+// flash-of-light-theme on first paint.
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistMono.variable, "font-sans", sans.variable)}
-      suppressHydrationWarning
+      className={cn("h-full", "antialiased", "dark", geistMono.variable, "font-sans", sans.variable)}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
-      </head>
       <body className="h-full overflow-hidden">
         <TooltipProvider delay={200}>
           <AuthGateProvider>{children}</AuthGateProvider>

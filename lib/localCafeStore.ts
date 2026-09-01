@@ -76,6 +76,7 @@ export function localInsert(input: Partial<Cafe> & { name: string; lng: number; 
     image_url: input.image_url ?? null,
     tags: input.tags ?? [],
     hours_text: input.hours_text ?? null,
+    maps_url: input.maps_url ?? null,
     rating: input.rating ?? null,
     created_at: new Date().toISOString(),
   };

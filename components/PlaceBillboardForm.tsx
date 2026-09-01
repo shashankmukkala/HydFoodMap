@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import type { Billboard } from "@/lib/supabase";
+import PanelShell from "@/components/PanelShell";
+import { useReverseGeocode } from "@/lib/useReverseGeocode";
 
 type PlaceBillboardFormProps = {
   coords: { lng: number; lat: number };
@@ -10,6 +12,8 @@ type PlaceBillboardFormProps = {
 };
 
 export default function PlaceBillboardForm({ coords, onCancel, onCreated }: PlaceBillboardFormProps) {
+  const { address, status: addressStatus } = useReverseGeocode(coords);
+
   const [name, setName] = useState("");
   const [widthM, setWidthM] = useState(10);
   const [heightM, setHeightM] = useState(5);
@@ -46,12 +50,25 @@ export default function PlaceBillboardForm({ coords, onCancel, onCreated }: Plac
   }
 
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/30">
-      <form onSubmit={handleSubmit} className="w-80 rounded-xl bg-white p-5 shadow-2xl dark:bg-neutral-900 dark:text-neutral-100">
-        <h2 className="text-base font-semibold">Place a billboard</h2>
-        <p className="mt-0.5 text-xs text-neutral-400">
-          {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}
-        </p>
+    <PanelShell title="Place a billboard" onClose={onCancel}>
+      <form onSubmit={handleSubmit} className="px-2 pb-2">
+        <div className="rounded-lg bg-neutral-50 px-3 py-2 text-xs dark:bg-neutral-800/60">
+          {addressStatus === "loading" && <span className="text-neutral-400">Locating…</span>}
+          {addressStatus === "error" && (
+            <span className="text-amber-600 dark:text-amber-400">
+              Couldn&apos;t resolve a real address for this point — drag the pin on the map to adjust it
+              before saving.
+            </span>
+          )}
+          {addressStatus === "idle" && address && (
+            <>
+              <span className="font-medium text-neutral-700 dark:text-neutral-200">{address}</span>
+              <div className="mt-0.5 text-neutral-400">
+                {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)} · drag the pin on the map to adjust
+              </div>
+            </>
+          )}
+        </div>
 
         <label className="mt-4 block text-xs font-medium text-neutral-600">Name</label>
         <input
@@ -100,7 +117,7 @@ export default function PlaceBillboardForm({ coords, onCancel, onCreated }: Plac
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-md px-3 py-2 text-sm text-neutral-500 hover:bg-neutral-100"
+            className="rounded-md px-3 py-2 text-sm text-neutral-400 hover:bg-white/10"
           >
             Cancel
           </button>
@@ -113,6 +130,6 @@ export default function PlaceBillboardForm({ coords, onCancel, onCreated }: Plac
           </button>
         </div>
       </form>
-    </div>
+    </PanelShell>
   );
 }

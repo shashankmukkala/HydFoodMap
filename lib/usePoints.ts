@@ -2,14 +2,15 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 
-// Points earned for review actions. Redemption (vouchers etc.) isn't wired
-// up yet — this just tracks the running balance so the UI has something
-// real to show once redemption ships.
+// A single flat reward for posting a genuine (location-verified) review —
+// deliberately NOT per-field (comment/photo/favorite food used to each add
+// their own points). Paying extra for a longer review rewards padding, not
+// honesty, which is exactly the incentive a "no fake reviews" platform
+// shouldn't create. Redemption (vouchers etc.) isn't wired up yet — this
+// just tracks the running balance so the UI has something real to show
+// once redemption ships.
 export const POINTS = {
-  RATE: 5,
-  COMMENT: 5,
-  PHOTO: 10,
-  FAVORITE_FOOD: 5,
+  REVIEW: 10,
 } as const;
 
 const STORAGE_KEY = "hydcafemap:points";

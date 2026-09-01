@@ -95,7 +95,7 @@ export default function PlaceEventForm({ onCancel, onCreated }: PlaceEventFormPr
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-md px-3 py-2 text-sm text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            className="rounded-md px-3 py-2 text-sm text-neutral-400 hover:bg-white/10"
           >
             Cancel
           </button>

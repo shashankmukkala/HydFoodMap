@@ -26,8 +26,8 @@ export default function BillboardLayer({ map, billboards }: BillboardLayerProps)
   useEffect(() => {
     if (!map) return;
 
-    let renderer: THREE.WebGLRenderer;
-    let scene: THREE.Scene;
+    let renderer: THREE.WebGLRenderer | undefined;
+    let scene: THREE.Scene | undefined;
     let camera: THREE.Camera;
 
     const layer: CustomLayerInterface = {
@@ -57,9 +57,29 @@ export default function BillboardLayer({ map, billboards }: BillboardLayerProps)
       render(gl, args) {
         const m = new THREE.Matrix4().fromArray(args.defaultProjectionData.mainMatrix);
         camera.projectionMatrix = m;
-        renderer.resetState();
-        renderer.render(scene, camera);
+        renderer!.resetState();
+        renderer!.render(scene!, camera);
         map!.triggerRepaint();
+      },
+
+      // Called by maplibre when the layer is removed (map.removeLayer) or
+      // the map itself is torn down — without this the renderer's WebGL
+      // resources (and every panel's geometry/material) leaked on every
+      // remove/re-add cycle. In dev, React Strict Mode mounts this effect
+      // twice (mount -> cleanup -> mount) specifically to catch bugs like
+      // this; left undisposed, the second onAdd's WebGLRenderer collided
+      // with the first's over the same canvas/GL context and crashed with
+      // "Cannot read properties of null (reading 'alpha')".
+      onRemove() {
+        for (const mesh of panelsRef.current.values()) {
+          scene?.remove(mesh);
+          mesh.geometry.dispose();
+          (mesh.material as THREE.Material).dispose();
+        }
+        panelsRef.current.clear();
+        renderer?.dispose();
+        renderer = undefined;
+        scene = undefined;
       },
     };
 
@@ -88,6 +108,7 @@ export default function BillboardLayer({ map, billboards }: BillboardLayerProps)
     }
 
     function rebuildPanels() {
+      if (!scene) return;
       for (const mesh of panelsRef.current.values()) {
         scene.remove(mesh);
         mesh.geometry.dispose();
@@ -104,6 +125,7 @@ export default function BillboardLayer({ map, billboards }: BillboardLayerProps)
 
     (layer as CustomLayerInterface & { rebuildPanels: () => void }).rebuildPanels = rebuildPanels;
 
+    if (map.getLayer(LAYER_ID)) map.removeLayer(LAYER_ID);
     map.addLayer(layer);
 
     return () => {
