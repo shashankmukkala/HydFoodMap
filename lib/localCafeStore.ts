@@ -69,6 +69,8 @@ export function localInsert(input: Partial<Cafe> & { name: string; lng: number; 
     name: input.name,
     category: input.category ?? null,
     location: input.location ?? null,
+    address: input.address ?? null,
+    website_or_instagram: input.website_or_instagram ?? null,
     cost_for_two: input.cost_for_two ?? null,
     note: input.note ?? null,
     lng: input.lng,

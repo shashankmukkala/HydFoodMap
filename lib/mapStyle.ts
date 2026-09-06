@@ -11,6 +11,17 @@ export const DEFAULT_PITCH = 55;
 export const DEFAULT_ZOOM = 15.5;
 export const DEFAULT_BEARING = -17;
 
+// Telangana viewport guard. MapLibre uses a rectangular camera boundary;
+// this deliberately follows the state's outermost extent closely enough to
+// keep the browsing experience inside Telangana without allowing a world
+// wrap or a zoomed-out national view.
+export const TELANGANA_BOUNDS: [[number, number], [number, number]] = [
+  [77.15, 15.75],
+  [81.45, 20.15],
+];
+export const TELANGANA_MIN_ZOOM = 8.65;
+export const TELANGANA_MAX_ZOOM = 19;
+
 export const OPENFREEMAP_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 
 // Dark charcoal ramp, keyed off render_height, so taller buildings read as

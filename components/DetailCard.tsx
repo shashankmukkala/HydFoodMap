@@ -86,20 +86,20 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
   }
 
   return (
-    <div className="panel-elevated w-full shrink-0 overflow-hidden rounded-3xl">
+    <div className={`detail-card panel-elevated w-full shrink-0 overflow-hidden rounded-3xl ${isCafe ? "detail-card-cafe" : "detail-card-ad"}`}>
       <div className="flex gap-2.5 p-3.5 pb-0">
         {cafe?.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={cafe.image_url}
             alt={cafe.name}
-            className="h-14 w-14 shrink-0 rounded-xl object-cover"
+            className="detail-card-logo h-14 w-14 shrink-0 rounded-xl object-cover"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = "none";
             }}
           />
         ) : (
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-xl dark:bg-amber-950">
+          <div className="detail-card-logo flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-xl dark:bg-amber-950">
             {isCafe && cafe ? cafeIcon(cafe) : "📢"}
           </div>
         )}
@@ -111,8 +111,13 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
                 {item.name}
               </div>
               <div className="mt-0.5 truncate text-[11px] text-neutral-400">
-                {cafe?.location ?? `${item.lat.toFixed(5)}, ${item.lng.toFixed(5)}`}
+                {cafe?.location ?? (billboard?.ad_type === "rail" ? "Centre map sponsor" : `${item.lat.toFixed(5)}, ${item.lng.toFixed(5)}`)}
               </div>
+              {isCafe && cafe?.address && (
+                <div className="mt-1 text-[11px] leading-4 text-neutral-500 dark:text-neutral-400">
+                  {cafe.address}
+                </div>
+              )}
               {isCafe && cafe?.cost_for_two && (
                 <div className="mt-0.5 text-[11px] text-neutral-500 dark:text-neutral-400">
                   💰 {cafe.cost_for_two} for two
@@ -154,12 +159,26 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
             <div className="mt-2 text-xs text-neutral-500 dark:text-neutral-400">🕒 {cafe.hours_text}</div>
           )}
 
-          {isCafe && cafe?.note && (
-            <p
-              className={`mt-2 text-sm text-neutral-600 dark:text-neutral-300 ${expanded ? "" : "line-clamp-2"}`}
+          {isCafe && cafe?.website_or_instagram && (
+            <a
+              href={cafe.website_or_instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 block truncate text-xs font-medium text-amber-600 hover:underline dark:text-amber-400"
             >
-              {cafe.note}
-            </p>
+              Website or Instagram
+            </a>
+          )}
+
+          {isCafe && cafe?.note && (
+            <div className="mt-3 rounded-2xl border border-amber-900/40 bg-amber-950/35 px-3 py-2.5">
+              <div className="text-[10px] font-semibold tracking-[0.16em] text-amber-400 uppercase">Famous for</div>
+              <p
+                className={`mt-1 text-sm leading-5 text-amber-50/90 ${expanded ? "" : "line-clamp-2"}`}
+              >
+                {cafe.note}
+              </p>
+            </div>
           )}
           {isCafe && hasLongNote && (
             <button
@@ -171,30 +190,44 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
           )}
 
           {billboard && (
-            <div className="mt-2 flex flex-wrap gap-2 text-[11px] text-neutral-500 dark:text-neutral-400">
-              <span className="rounded-full bg-neutral-100 px-2.5 py-1 dark:bg-neutral-800">
-                {billboard.width_m}m × {billboard.height_m}m
-              </span>
-              <span className="rounded-full bg-neutral-100 px-2.5 py-1 dark:bg-neutral-800">
-                heading {billboard.heading_deg}°
-              </span>
+            <div className="mt-3 rounded-2xl border border-amber-900/40 bg-amber-950/35 px-3 py-2.5">
+              <div className="text-[10px] font-semibold tracking-[0.16em] text-amber-400 uppercase">Sponsored placement</div>
+              <div className="mt-1 text-sm font-medium text-amber-50">{billboard.name}</div>
+              {billboard.target_url && (
+                <a
+                  href={billboard.target_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-block text-xs font-medium text-amber-300 hover:underline"
+                >
+                  Visit brand
+                </a>
+              )}
             </div>
           )}
+
         </div>
       </div>
 
       <div className="mt-2 flex items-center gap-1 border-t border-neutral-100 px-3 py-2 dark:border-neutral-800">
-        <a
-          href={directionsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-neutral-200 hover:bg-white/10"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
-            <path d="M3 11l18-8-8 18-2-8-8-2z" />
-          </svg>
-          Directions
-        </a>
+        {billboard?.ad_type === "rail" ? (
+          <span className="flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-emerald-300/80">
+            <span aria-hidden="true">▦</span>
+            Map rail placement
+          </span>
+        ) : (
+          <a
+            href={directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-medium text-neutral-200 hover:bg-white/10"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
+              <path d="M3 11l18-8-8 18-2-8-8-2z" />
+            </svg>
+            Directions
+          </a>
+        )}
         {isCafe && (
           <button
             onClick={() => requireAuth(() => toggle(item.id))}

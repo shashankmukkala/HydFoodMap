@@ -5,7 +5,7 @@ import ExplorerWidget from "@/components/ExplorerWidget";
 import PointsWidget from "@/components/PointsWidget";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
-export type FeedTab = "billboards" | "saved" | "visited" | "collections" | null;
+export type FeedTab = "billboards" | "ad-enquiries" | "saved" | "visited" | "collections" | null;
 
 type SidebarProps = {
   activeTab: FeedTab;
@@ -13,6 +13,12 @@ type SidebarProps = {
   onExplore: () => void;
   /** Billboards are a paid ad product, not something visitors browse — admin-only. */
   showBillboards?: boolean;
+  /** Public navigation is an on-demand drawer so the map can remain full-screen. */
+  publicMode?: boolean;
+  onPlaceCafe?: () => void;
+  onPlaceBillboard?: () => void;
+  onPlaceAircraft?: () => void;
+  onPlaceRail?: () => void;
   visitedCount: number;
   /** Mobile only: whether the drawer is open. Ignored at the lg breakpoint, where the rail is always visible. */
   mobileOpen: boolean;
@@ -77,11 +83,26 @@ const TAIL_NAV_ITEMS: { tab: FeedTab; label: string; icon: React.ReactNode }[] =
   },
 ];
 
+const AD_ENQUIRIES_NAV_ITEM = {
+  tab: "ad-enquiries" as FeedTab,
+  label: "Ad enquiries",
+  icon: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
+      <path d="M4 6h16v12H4zM7 10h6M7 14h10" />
+    </svg>
+  ),
+};
+
 export default function Sidebar({
   activeTab,
   onSelectTab,
   onExplore,
   showBillboards = false,
+  publicMode = false,
+  onPlaceCafe,
+  onPlaceBillboard,
+  onPlaceAircraft,
+  onPlaceRail,
   visitedCount,
   mobileOpen,
   onMobileClose,
@@ -90,7 +111,8 @@ export default function Sidebar({
   const navItems = [
     ...BASE_NAV_ITEMS,
     ...(showBillboards ? [BILLBOARDS_NAV_ITEM] : []),
-    ...TAIL_NAV_ITEMS,
+    ...(showBillboards ? [AD_ENQUIRIES_NAV_ITEM] : []),
+    ...(!showBillboards ? TAIL_NAV_ITEMS : []),
   ];
 
   // `forceExpanded` is used for the mobile drawer, which always renders the
@@ -109,7 +131,7 @@ export default function Sidebar({
     const isCollapsed = collapsed && !forceExpanded;
     return (
       <div className="mb-5 flex items-center gap-2 px-0.5">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-sm">
+        <span className="brand-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white shadow-sm">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
             <path d="M4 9h13a3 3 0 0 1 0 6h-1" />
             <path d="M4 9v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9" />
@@ -147,11 +169,11 @@ export default function Sidebar({
               }}
               className={`group flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium ${SIDEBAR_TRANSITION} ${
                 isActive
-                  ? "bg-amber-500/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400"
+                  ? "nav-item-active"
                   : "text-neutral-400 hover:bg-white/10 hover:text-neutral-100"
               }`}
             >
-              <span className={`shrink-0 ${isActive ? "text-amber-500 dark:text-amber-400" : ""}`}>{item.icon}</span>
+              <span className={`shrink-0 ${isActive ? "nav-item-icon-active" : ""}`}>{item.icon}</span>
               <span
                 className={`overflow-hidden whitespace-nowrap ${SIDEBAR_TRANSITION} ${
                   isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"
@@ -162,6 +184,67 @@ export default function Sidebar({
             </button>
           );
         })}
+        {showBillboards && onPlaceBillboard && onPlaceAircraft && onPlaceRail && (
+          <div className="mt-4 border-t border-white/10 pt-3">
+            <div className={`mb-1.5 px-3 text-[10px] font-semibold tracking-[0.16em] text-neutral-500 uppercase ${isCollapsed ? "sr-only" : ""}`}>
+              Ad placements
+            </div>
+            {onPlaceCafe && (
+              <button
+                onClick={() => {
+                  onPlaceCafe();
+                  onMobileClose();
+                }}
+                title={isCollapsed ? "Pin a cafe" : undefined}
+                className="group flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-100"
+              >
+                <span className="shrink-0">☕</span>
+                <span className={`overflow-hidden whitespace-nowrap ${SIDEBAR_TRANSITION} ${isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"}`}>
+                  Pin a cafe
+                </span>
+              </button>
+            )}
+            <button
+              onClick={() => {
+                onPlaceBillboard();
+                onMobileClose();
+              }}
+              title={isCollapsed ? "Place billboard" : undefined}
+              className="group flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-100"
+            >
+              <span className="shrink-0">📢</span>
+              <span className={`overflow-hidden whitespace-nowrap ${SIDEBAR_TRANSITION} ${isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"}`}>
+                Place billboard
+              </span>
+            </button>
+            <button
+              onClick={() => {
+                onPlaceRail();
+                onMobileClose();
+              }}
+              title={isCollapsed ? "Place rail ad" : undefined}
+              className="group flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-100"
+            >
+              <span className="shrink-0">▦</span>
+              <span className={`overflow-hidden whitespace-nowrap ${SIDEBAR_TRANSITION} ${isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"}`}>
+                Place rail ad
+              </span>
+            </button>
+            <button
+              onClick={() => {
+                onPlaceAircraft();
+                onMobileClose();
+              }}
+              title={isCollapsed ? "Aircraft banner" : undefined}
+              className="group flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-100"
+            >
+              <span className="shrink-0">✈</span>
+              <span className={`overflow-hidden whitespace-nowrap ${SIDEBAR_TRANSITION} ${isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"}`}>
+                Aircraft banner
+              </span>
+            </button>
+          </div>
+        )}
       </nav>
     );
   }
@@ -213,8 +296,8 @@ export default function Sidebar({
       {renderNav(false)}
 
       <div className="mt-auto flex flex-col gap-2 pt-4">
-        <ExplorerWidget visitedCount={visitedCount} collapsed={collapsed} />
-        <PointsWidget collapsed={collapsed} />
+        {!showBillboards && <ExplorerWidget visitedCount={visitedCount} collapsed={collapsed} />}
+        {!showBillboards && <PointsWidget collapsed={collapsed} />}
         {renderFooter(false)}
       </div>
     </>
@@ -225,8 +308,8 @@ export default function Sidebar({
       {renderBrand(true)}
       {renderNav(true)}
       <div className="mt-auto flex flex-col gap-2 pt-4">
-        <ExplorerWidget visitedCount={visitedCount} />
-        <PointsWidget />
+        {!showBillboards && <ExplorerWidget visitedCount={visitedCount} />}
+        {!showBillboards && <PointsWidget />}
         {renderFooter(true)}
       </div>
     </>
@@ -247,15 +330,15 @@ export default function Sidebar({
           swapping different components in and out mid-animation is what
           caused a jump/glitch this replaces. Padding stays constant too
           (only width changes) so nothing inside reflows vertically. */}
-      <div className={`relative hidden h-full shrink-0 lg:block ${SIDEBAR_TRANSITION} ${collapsed ? "w-[96px]" : "w-64"}`}>
+      {!publicMode && <div className={`relative hidden h-full shrink-0 lg:block ${SIDEBAR_TRANSITION} ${collapsed ? "w-[96px]" : "w-64"}`}>
         <aside className="panel-elevated flex h-full w-full flex-col gap-1 overflow-y-auto overflow-x-hidden rounded-3xl p-3.5">
           {desktopContent}
         </aside>
-      </div>
+      </div>}
 
       {/* Mobile drawer */}
       <Sheet open={mobileOpen} onOpenChange={(open) => !open && onMobileClose()}>
-        <SheetContent side="left" className="flex w-72 max-w-[85vw] flex-col gap-1 bg-white p-4 lg:hidden dark:bg-neutral-900">
+        <SheetContent side="left" className={`navigation-drawer flex w-72 max-w-[85vw] flex-col gap-1 p-4 ${publicMode ? "" : "lg:hidden"}`}>
           <SheetTitle className="sr-only">Navigation</SheetTitle>
           {mobileContent}
         </SheetContent>

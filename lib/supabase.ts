@@ -49,7 +49,10 @@ export function createAuthedClient(accessToken: string): SupabaseClient {
 export type Billboard = {
   id: string;
   name: string;
+  ad_type: "billboard" | "aircraft" | "rail";
+  slot_number: number | null;
   image_url: string | null;
+  target_url: string | null;
   lng: number;
   lat: number;
   elevation_m: number;
@@ -66,6 +69,10 @@ export type Cafe = {
   category: string | null;
   /** Neighbourhood/area, e.g. "Banjara Hills" — distinct from the full address. */
   location: string | null;
+  /** Full street address for the cafe. */
+  address: string | null;
+  /** Primary public website or social profile supplied for the cafe. */
+  website_or_instagram: string | null;
   /** Display string as entered, e.g. "₹850" — an approximate cost for two. */
   cost_for_two: string | null;
   note: string | null;
@@ -108,6 +115,7 @@ export type CafeEvent = {
 export type Review = {
   id: string;
   cafe_id: string;
+  checkin_id?: string | null;
   user_id: string;
   rating: number;
   comment: string | null;

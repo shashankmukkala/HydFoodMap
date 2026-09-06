@@ -44,6 +44,7 @@ export default function PlaceCafeForm({ coords, onCancel, onCreated }: PlaceCafe
           name,
           category: category || null,
           location: location || null,
+          address: address || null,
           cost_for_two: costForTwo || null,
           note: note || null,
           lng: coords.lng,

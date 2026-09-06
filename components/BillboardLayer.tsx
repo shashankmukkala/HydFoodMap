@@ -21,7 +21,7 @@ export default function BillboardLayer({ map, billboards }: BillboardLayerProps)
   useEffect(() => {
     billboardsRef.current = billboards;
   }, [billboards]);
-  const panelsRef = useRef<Map<string, THREE.Mesh>>(new globalThis.Map());
+  const panelsRef = useRef<Map<string, THREE.Object3D>>(new globalThis.Map());
 
   useEffect(() => {
     if (!map) return;
@@ -71,10 +71,9 @@ export default function BillboardLayer({ map, billboards }: BillboardLayerProps)
       // with the first's over the same canvas/GL context and crashed with
       // "Cannot read properties of null (reading 'alpha')".
       onRemove() {
-        for (const mesh of panelsRef.current.values()) {
-          scene?.remove(mesh);
-          mesh.geometry.dispose();
-          (mesh.material as THREE.Material).dispose();
+        for (const object of panelsRef.current.values()) {
+          scene?.remove(object);
+          disposeObject(object);
         }
         panelsRef.current.clear();
         renderer?.dispose();
@@ -83,40 +82,60 @@ export default function BillboardLayer({ map, billboards }: BillboardLayerProps)
       },
     };
 
-    function panelMesh(billboard: Billboard) {
-      const origin = MercatorCoordinate.fromLngLat(
-        [billboard.lng, billboard.lat],
-        billboard.elevation_m
+    function applyTexture(material: THREE.MeshStandardMaterial, billboard: Billboard) {
+      if (!billboard.image_url) return;
+      new THREE.TextureLoader().load(
+        billboard.image_url,
+        (texture) => {
+          material.map = texture;
+          material.color.set(0xffffff);
+          material.needsUpdate = true;
+          map?.triggerRepaint();
+        },
+        undefined,
+        () => {
+          // Keep the warm fallback when a remote asset is unavailable.
+        }
       );
+    }
+
+    function panelMesh(billboard: Billboard) {
+      const origin = MercatorCoordinate.fromLngLat([billboard.lng, billboard.lat], billboard.elevation_m);
       const scale = origin.meterInMercatorCoordinateUnits();
 
-      const geometry = new THREE.PlaneGeometry(billboard.width_m, billboard.height_m);
-      const material = new THREE.MeshStandardMaterial({
-        color: 0xff7a3d,
-        side: THREE.DoubleSide,
-      });
-      const mesh = new THREE.Mesh(geometry, material);
-
+      const material = new THREE.MeshStandardMaterial({ color: 0xff7a3d, side: THREE.DoubleSide });
+      const mesh = new THREE.Mesh(new THREE.PlaneGeometry(billboard.width_m, billboard.height_m), material);
       mesh.position.set(origin.x, origin.y, origin.z);
       mesh.scale.set(scale, scale, scale);
-      // Stand the plane upright, then apply heading.
       mesh.rotation.x = Math.PI / 2;
-      mesh.rotation.y = (billboard.heading_deg * Math.PI) / 180;
       mesh.geometry.translate(0, billboard.height_m / 2, 0);
+      applyTexture(material, billboard);
 
       return mesh;
     }
 
+    function disposeObject(object: THREE.Object3D) {
+      object.traverse((child) => {
+        if (!(child instanceof THREE.Mesh)) return;
+        child.geometry.dispose();
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        materials.forEach((material) => {
+          material.map?.dispose();
+          material.dispose();
+        });
+      });
+    }
+
     function rebuildPanels() {
       if (!scene) return;
-      for (const mesh of panelsRef.current.values()) {
-        scene.remove(mesh);
-        mesh.geometry.dispose();
-        (mesh.material as THREE.Material).dispose();
+      for (const object of panelsRef.current.values()) {
+        scene.remove(object);
+        disposeObject(object);
       }
       panelsRef.current.clear();
 
       for (const billboard of billboardsRef.current) {
+        if (billboard.ad_type === "aircraft" || billboard.ad_type === "rail") continue;
         const mesh = panelMesh(billboard);
         scene.add(mesh);
         panelsRef.current.set(billboard.id, mesh);

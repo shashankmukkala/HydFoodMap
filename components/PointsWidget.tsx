@@ -33,7 +33,7 @@ export default function PointsWidget({ collapsed = false }: PointsWidgetProps) {
       <button
         onClick={() => setOpen((v) => !v)}
         title={collapsed ? `${points} points` : undefined}
-        className={`flex w-full items-center rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 text-left ring-1 ring-amber-100 transition-all duration-300 ease-in-out dark:from-amber-950/60 dark:to-amber-950/40 dark:ring-amber-900/50 ${
+        className={`points-widget flex w-full items-center rounded-2xl text-left transition-all duration-300 ease-in-out ${
           collapsed ? "justify-center gap-0 px-2 py-3" : "justify-between gap-2 p-3.5"
         }`}
       >

@@ -13,17 +13,23 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { name, image_url, lng, lat, elevation_m, width_m, height_m, heading_deg } = body;
+  const { name, ad_type, slot_number, image_url, target_url, lng, lat, elevation_m, width_m, height_m, heading_deg } = body;
 
   if (!name || typeof lng !== "number" || typeof lat !== "number") {
     return NextResponse.json({ error: "name, lng, and lat are required" }, { status: 400 });
+  }
+  if (ad_type === "rail" && (!Number.isInteger(slot_number) || slot_number < 1 || slot_number > 5)) {
+    return NextResponse.json({ error: "Rail ads require a slot number from 1 to 5." }, { status: 400 });
   }
 
   const { data, error } = await supabase
     .from("billboards")
     .insert({
       name,
+      ad_type: ad_type === "aircraft" ? "aircraft" : ad_type === "rail" ? "rail" : "billboard",
+      slot_number: ad_type === "rail" && Number.isInteger(slot_number) && slot_number >= 1 && slot_number <= 5 ? slot_number : null,
       image_url: image_url ?? null,
+      target_url: target_url ?? null,
       lng,
       lat,
       elevation_m: elevation_m ?? 0,

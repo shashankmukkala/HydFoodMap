@@ -6,9 +6,12 @@ import MapView from "@/components/Map";
 import CafeMarkers from "@/components/CafeMarkers";
 import PendingMarker from "@/components/PendingMarker";
 import BillboardLayer from "@/components/BillboardLayer";
+import BillboardMarkers from "@/components/BillboardMarkers";
+import AircraftAdOverlay from "@/components/AircraftAdOverlay";
 import ModelLayer from "@/components/ModelLayer";
 import PlaceCafeForm from "@/components/PlaceCafeForm";
 import PlaceBillboardForm from "@/components/PlaceBillboardForm";
+import PlaceRailAdForm from "@/components/PlaceRailAdForm";
 import PlaceEventForm from "@/components/PlaceEventForm";
 import TopBar from "@/components/TopBar";
 import SearchResultsPanel from "@/components/SearchResultsPanel";
@@ -18,9 +21,10 @@ import Sidebar, { type FeedTab } from "@/components/Sidebar";
 import FeedPanel from "@/components/FeedPanel";
 import EventsPanel from "@/components/EventsPanel";
 import DetailCard from "@/components/DetailCard";
-import FloatingActions from "@/components/FloatingActions";
 import MapAttribution from "@/components/MapAttribution";
 import CollectionsPanel from "@/components/CollectionsPanel";
+import AdRail from "@/components/AdRail";
+import AdEnquiriesPanel, { type AdEnquiry } from "@/components/AdEnquiriesPanel";
 import { useBookmarks } from "@/lib/useBookmarks";
 import { useVisitTracking } from "@/lib/useVisitTracking";
 import { useCollections } from "@/lib/useCollections";
@@ -30,7 +34,7 @@ import { BACKGROUND_GRADIENTS, CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_
 import type { Billboard, Cafe, CafeEvent } from "@/lib/supabase";
 import type { CafeRating } from "@/app/api/cafes/ratings/route";
 
-type PlacingMode = "cafe" | "billboard" | null;
+type PlacingMode = "cafe" | "billboard" | "aircraft" | "rail" | null;
 type Selected = { kind: "cafe"; item: Cafe } | { kind: "billboard"; item: Billboard } | null;
 
 type MapExperienceProps = {
@@ -51,6 +55,8 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   const [placingMode, setPlacingMode] = useState<PlacingMode>(null);
   const [pendingCoords, setPendingCoords] = useState<{ lng: number; lat: number } | null>(null);
   const [eventFormOpen, setEventFormOpen] = useState(false);
+  const [eventsOpen, setEventsOpen] = useState(false);
+  const [adEnquiries, setAdEnquiries] = useState<AdEnquiry[]>([]);
   const [feedTab, setFeedTab] = useState<FeedTab>(null);
   const [activeTags, setActiveTags] = useState<Set<Tag>>(new Set());
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
@@ -85,7 +91,13 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       .then((res) => res.json())
       .then((data) => data && typeof data === "object" && setRatings(data))
       .catch(() => {});
-  }, []);
+    if (isAdmin) {
+      fetch("/api/ad-enquiries")
+        .then((res) => res.json())
+        .then((data) => Array.isArray(data) && setAdEnquiries(data))
+        .catch(() => {});
+    }
+  }, [isAdmin]);
 
   // Tags and rating narrow meaningfully alongside a search (a manually
   // picked "Quiet" tag chip plus a typed area both make sense together),
@@ -161,6 +173,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   // never left alone with nothing beside it either.
   const realPanelCount = (selected ? 1 : 0) + (resultsMatch ? 1 : 0) + (feedTab ? 1 : 0);
   const showEvents = realPanelCount < 2;
+  const upcomingEventCount = events.filter((event) => event.event_date >= new Date().toISOString().slice(0, 10)).length;
 
   // The results list's carousel page normally shows 5 rows, but that's
   // only guaranteed to fit when it's the only panel in the column. Once
@@ -321,7 +334,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   );
 
   function handleMapClick(lngLat: { lng: number; lat: number }) {
-    if (!isAdmin || !placingMode) return;
+    if (!isAdmin || !placingMode || placingMode === "aircraft") return;
     setPendingCoords(lngLat);
   }
 
@@ -394,11 +407,13 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       return;
     }
     setSelected({ kind: "billboard", item: billboard });
-    map?.flyTo({
-      center: [billboard.lng, billboard.lat],
-      zoom: Math.max(map.getZoom(), 16),
-      essential: true,
-    });
+    if (billboard.ad_type !== "rail") {
+      map?.flyTo({
+        center: [billboard.lng, billboard.lat],
+        zoom: Math.max(map.getZoom(), 16),
+        essential: true,
+      });
+    }
   }
 
   async function deleteEvent(id: string) {
@@ -407,6 +422,25 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       await fetch(`/api/events/${id}`, { method: "DELETE" });
     } catch {
       // best-effort — event stays removed from view even if the request fails
+    }
+  }
+
+  function startAircraftPlacement() {
+    if (!isAdmin || !map) return;
+    const center = map.getCenter();
+    setPlacingMode("aircraft");
+    setPendingCoords({ lng: center.lng, lat: center.lat });
+    setSelected(null);
+    setFeedTab(null);
+  }
+
+  async function deleteBillboard(id: string) {
+    setBillboards((prev) => prev.filter((billboard) => billboard.id !== id));
+    if (selected?.kind === "billboard" && selected.item.id === id) setSelected(null);
+    try {
+      await fetch(`/api/billboards/${id}`, { method: "DELETE" });
+    } catch {
+      // Keep the placement removed from the current view if the request fails.
     }
   }
 
@@ -423,10 +457,20 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     setSelected(null);
   }
 
+  async function updateAdEnquiry(id: string, status: "approved" | "rejected") {
+    const response = await fetch(`/api/ad-enquiries/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    if (!response.ok) return;
+    setAdEnquiries((current) => current.map((item) => (item.id === id ? { ...item, status } : item)));
+  }
+
   const bgKey: Category | "all" = activeCategory ?? "all";
 
   return (
-    <div className="relative isolate flex h-dvh w-dvw gap-1 overflow-hidden p-1 sm:gap-1.5 sm:p-2">
+    <div className={`map-experience-shell relative isolate flex h-dvh w-dvw gap-1 overflow-hidden p-1 pb-[calc(0.25rem+env(safe-area-inset-bottom))] sm:gap-1.5 sm:p-2 ${isAdmin ? "is-admin" : "is-public"}`}>
       {/* The aurora backdrop lives on this fixed base layer's own
           background (not a separately z-indexed overlay child) — a
           negative-z-index element only stays contained "behind its own
@@ -450,17 +494,24 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
         ))}
       </div>
 
+      <div className="map-sidebar-rail">
       <Sidebar
         activeTab={feedTab}
         onSelectTab={handleSelectTab}
         onExplore={handleExplore}
         showBillboards={isAdmin}
+        publicMode={!isAdmin}
+        onPlaceCafe={() => toggleMode("cafe")}
+        onPlaceBillboard={() => toggleMode("billboard")}
+        onPlaceAircraft={startAircraftPlacement}
+        onPlaceRail={() => toggleMode("rail")}
         visitedCount={visitedCount}
         mobileOpen={mobileNavOpen}
         onMobileClose={() => setMobileNavOpen(false)}
       />
+      </div>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-2 overflow-y-auto sm:gap-3 lg:overflow-hidden">
+      <div className="map-main-shell min-h-0 flex min-w-0 flex-1 flex-col gap-2 overflow-y-auto sm:gap-3 lg:overflow-hidden">
         {isAdmin && (
           <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex justify-center pt-2">
             <div className="rounded-full bg-neutral-900 px-4 py-1 text-xs font-medium tracking-wide text-white uppercase">
@@ -484,29 +535,59 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
             searchClearSignal={searchClearSignal}
             searchDismissDropdownSignal={searchDismissDropdownSignal}
             onMenuClick={() => setMobileNavOpen(true)}
+            publicMode={!isAdmin}
             activeCategory={activeCategory}
             onSelectCategory={selectCategoryManually}
             activeTags={activeTags}
             onToggleTag={toggleTag}
             minRating={minRating}
             onSelectMinRating={selectMinRatingManually}
+            events={events}
           />
         </div>
 
         <OnboardingBanner />
 
-        <div className="relative z-10 flex min-h-0 flex-1 flex-col gap-1.5 sm:gap-2 lg:flex-row">
-          <div className="relative h-[50vh] min-w-0 shrink-0 overflow-hidden rounded-3xl shadow-xl lg:h-auto lg:flex-1">
-            <MapView placingMode={placingMode} onMapClick={handleMapClick} onMapReady={setMap} />
+        {!isAdmin && (
+          <button
+            type="button"
+            className="news-launcher"
+            aria-expanded={eventsOpen}
+            onClick={() => setEventsOpen((open) => !open)}
+          >
+            <span className="news-launcher-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 17h16M6 17V9l6-4 6 4v8M9 17v-5h6v5" />
+              </svg>
+            </span>
+            <span>News</span>
+            <span className="news-launcher-count">{upcomingEventCount.toString().padStart(2, "0")}</span>
+          </button>
+        )}
+
+        <div className="map-content-layer relative z-10 flex min-h-0 flex-1 flex-col gap-1.5 sm:gap-2 lg:flex-row">
+          <div className="map-canvas-shell relative h-[min(56dvh,34rem)] min-h-[18rem] min-w-0 shrink-0 overflow-hidden rounded-3xl shadow-xl sm:h-[50vh] lg:h-auto lg:flex-1">
+            <MapView placingMode={placingMode} onMapClick={handleMapClick} onMapReady={setMap} showRotationControls />
             <CafeMarkers
               map={map}
               cafes={displayedCafes}
               selectedId={selected?.kind === "cafe" ? selected.item.id : null}
               onSelect={selectCafeFromMap}
             />
+            <BillboardMarkers
+              map={map}
+              billboards={billboards}
+              selectedId={selected?.kind === "billboard" ? selected.item.id : null}
+              onSelect={selectBillboard}
+            />
+            <AircraftAdOverlay
+              billboards={billboards}
+              selectedId={selected?.kind === "billboard" ? selected.item.id : null}
+              onSelect={selectBillboard}
+            />
             <BillboardLayer map={map} billboards={billboards} />
             <ModelLayer map={map} />
-            {isAdmin && <PendingMarker map={map} coords={pendingCoords} onDragEnd={setPendingCoords} />}
+            {isAdmin && placingMode !== "aircraft" && <PendingMarker map={map} coords={pendingCoords} onDragEnd={setPendingCoords} />}
 
             <div className="panel-elevated pointer-events-none absolute top-4 left-4 z-10 rounded-full px-3.5 py-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-200">
               Showing {displayedCafes.length} spot{displayedCafes.length === 1 ? "" : "s"}
@@ -514,11 +595,8 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
 
             <MapAttribution />
 
-            {isAdmin && (
-              <div className="pointer-events-auto absolute right-4 bottom-36 z-10">
-                <FloatingActions placingMode={placingMode} onToggleMode={toggleMode} />
-              </div>
-            )}
+            {!isAdmin && <AdRail billboards={billboards} onSelect={selectBillboard} />}
+
 
             {placingMode && !pendingCoords && (
               <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center">
@@ -530,7 +608,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
             )}
           </div>
 
-          <div ref={rightColumnRef} className="flex w-full flex-col gap-1.5 sm:gap-2 lg:w-96 lg:shrink-0 lg:overflow-y-auto">
+          <div ref={rightColumnRef} className="map-panels-column flex w-full min-w-0 flex-col gap-1.5 sm:gap-2 lg:w-96 lg:shrink-0 lg:overflow-y-auto">
             {isAdmin && pendingCoords && placingMode === "cafe" && (
               <PlaceCafeForm
                 coords={pendingCoords}
@@ -542,9 +620,21 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
               />
             )}
 
-            {isAdmin && pendingCoords && placingMode === "billboard" && (
+            {isAdmin && placingMode === "rail" && (
+              <PlaceRailAdForm
+                existing={billboards}
+                onCancel={cancelPlacement}
+                onCreated={(billboard) => {
+                  setBillboards((prev) => [billboard, ...prev]);
+                  cancelPlacement();
+                }}
+              />
+            )}
+
+            {isAdmin && pendingCoords && (placingMode === "billboard" || placingMode === "aircraft") && (
               <PlaceBillboardForm
                 coords={pendingCoords}
+                initialAdType={placingMode === "aircraft" ? "aircraft" : "billboard"}
                 onCancel={cancelPlacement}
                 onCreated={(billboard) => {
                   setBillboards((prev) => [billboard, ...prev]);
@@ -579,6 +669,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
                 emptyLabel="No billboards yet."
                 items={billboards}
                 onSelect={selectBillboard}
+                onDelete={deleteBillboard}
                 onClose={() => setFeedTab(null)}
               />
             )}
@@ -625,13 +716,17 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
               />
             )}
 
-            {showEvents && (
+            {showEvents && (isAdmin || eventsOpen) && (
               <EventsPanel
                 events={events}
                 isAdmin={isAdmin}
                 onAddClick={() => setEventFormOpen(true)}
                 onDelete={deleteEvent}
+                onClose={!isAdmin ? () => setEventsOpen(false) : undefined}
               />
+            )}
+            {isAdmin && feedTab === "ad-enquiries" && (
+              <AdEnquiriesPanel enquiries={adEnquiries} onStatus={updateAdEnquiry} onClose={() => setFeedTab(null)} />
             )}
           </div>
         </div>
