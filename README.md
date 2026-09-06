@@ -42,9 +42,21 @@ Implemented:
 - Responsive map controls for zoom, rotation, tilt, and reset north.
 - Mobile-friendly forms, drawers, safe-area spacing, and horizontal ad slots.
 
+- Admin role table (`admins`) with an `is_admin()` check used by database policies.
+- Admin-only read and status updates on advertising enquiries.
+
 Still MVP or pending:
 
-- Admin route authentication and role protection.
+- Admin route authentication and role protection. The `admins` table and
+  `is_admin()` now exist and gate the enquiry API, but the `/admin` page
+  itself is still reachable by anyone.
+- Category and tag filters do not match the current 85-place dataset. The
+  live records carry 43 free-text categories and 19 tags, while
+  `lib/categories.ts` and `lib/tags.ts` still hold the previous vocabulary,
+  so every Type chip currently matches zero cafes.
+- Cafe `hours_text`, `cost_for_two`, and most `image_url` values are empty
+  in the live data, so those detail rows and any "open now" filter cannot
+  render yet.
 - Automatic conversion of approved enquiries into live ads.
 - Real UPI QR code and UPI ID configuration.
 - Payment gateway or automated payment reconciliation.
@@ -271,10 +283,11 @@ lib/
   useCollections.ts                 Current local collections store
   usePoints.ts                      Current local points store
   AuthGate.tsx                      Sign-in/auth gate behavior
+  adminAuth.ts                      Server-side admin check for API routes
   geo.ts                            Distance and geographic helpers
 
 supabase/migrations/
-  0001 through 0021                Database schema history
+  0001 through 0022                Database schema history
 ```
 
 ## Routes
@@ -301,9 +314,9 @@ supabase/migrations/
 | `DELETE /api/events/[id]` | Delete an event |
 | `GET/POST /api/billboards` | List/create billboard formats |
 | `DELETE /api/billboards/[id]` | Delete an ad |
-| `POST /api/ad-enquiries` | Submit advertiser enquiry |
-| `GET /api/ad-enquiries` | Admin enquiry listing |
-| `PATCH /api/ad-enquiries/[id]` | Approve or reject enquiry |
+| `POST /api/ad-enquiries` | Submit advertiser enquiry (public) |
+| `GET /api/ad-enquiries` | Admin enquiry listing. Requires an admin bearer token |
+| `PATCH /api/ad-enquiries/[id]` | Approve or reject enquiry. Requires an admin bearer token |
 | `GET /api/geocode` | Geocode search proxy |
 
 ## Database Migrations
@@ -322,13 +335,55 @@ Important recent migrations:
 - `0012_cafe_address_contact.sql`: cafe address/contact fields.
 - `0013_billboard_target_url.sql`: click destination URL.
 - `0014_review_checkins.sql`: location-verified review check-ins.
-- `0015_billboard_ad_type.sql` through `0017_aircraft_banner_ad_type.sql`: billboard and aircraft formats.
+- `0015_billboard_ad_type.sql`: creates `ad_type`, initially `billboard` only.
+- `0016_remove_balloon_ad_type.sql`: intentional no-op, kept so numbering stays continuous.
+- `0017_aircraft_banner_ad_type.sql`: widens `ad_type` to include `aircraft`.
 - `0018_ad_enquiries.sql`: advertiser enquiry table.
 - `0019_ad_enquiry_format.sql`: enquiry format selection.
 - `0020_ad_enquiry_payment_proof.sql`: payment proof URL.
 - `0021_rail_ads.sql`: rail ad type, slot number, slot validation, and unique slot protection.
+- `0022_admin_role_and_enquiry_access.sql`: `admins` table, `is_admin()`, and admin-only enquiry read/update.
 
-For a fresh project, run all migrations from `0001` through `0021`. For the current rail publisher, `0021_rail_ads.sql` is required.
+For a fresh project, run all migrations from `0001` through `0022`. For the current rail publisher, `0021_rail_ads.sql` is required.
+
+### Notes on the ad_type history
+
+`0015` and `0016` previously added an experimental format and then dropped
+the `ad_type` column outright, while `0017` was left empty. That combination
+made a clean `0001` onward replay fail at `0021`, because `0021` adds a
+constraint referencing a column that no longer existed. The discontinued
+format has been removed from the history: `0015` now creates the column,
+`0016` is a no-op placeholder, and `0017` widens the allowed values. Every
+statement is guarded with `if exists` / `if not exists`, so re-running the
+sequence against an existing database is safe.
+
+### Admin setup
+
+Database policies check membership of the `admins` table, so an admin must
+be granted once per project:
+
+1. Run `0022_admin_role_and_enquiry_access.sql`.
+2. Sign in through the app's phone OTP so an `auth.users` row exists.
+3. Grant the role:
+
+```sql
+insert into public.admins (user_id, note)
+select id, 'owner' from auth.users
+where phone = '+91XXXXXXXXXX'
+on conflict (user_id) do nothing;
+```
+
+4. Confirm with:
+
+```sql
+select u.phone, a.note
+from public.admins a
+join auth.users u on u.id = a.user_id;
+```
+
+There is deliberately no insert policy on `admins`, so membership can only
+be changed with the service role through the SQL editor or dashboard. A
+signed-in user cannot add themselves.
 
 ## Local Setup
 
@@ -439,8 +494,14 @@ The MapLibre rectangle prevents normal panning and zooming outside the close Tel
 
 Before production:
 
-1. Protect `/admin` with Supabase Auth and an explicit admin role.
+1. Protect `/admin` with Supabase Auth and an explicit admin role. The
+   `admins` table and `is_admin()` from `0022` are the intended basis; the
+   page and its remaining write routes still need to use them.
 2. Replace open MVP write policies with least-privilege RLS policies.
+   `cafes`, `events`, and `billboards` still carry the `using (true)` insert,
+   update, and delete policies from `0001` and `0003`, so the public anon key
+   can write to them directly. `reviews`, `review_checkins`, `bookmarks`,
+   `collections`, `points_ledger`, and `ad_enquiries` are already scoped.
 3. Replace the placeholder QR and UPI ID on `/advertise`.
 4. Add Supabase Storage for banner images and payment proof.
 5. Add an admin preview and activation window for approved ads.
