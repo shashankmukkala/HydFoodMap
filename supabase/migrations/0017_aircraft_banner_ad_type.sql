@@ -1,6 +1,5 @@
--- Add the aircraft-towed banner format after removing the experimental
--- balloon format. Existing placements remain standard billboards.
-
+-- Add the aircraft-towed banner format. Existing placements remain standard
+-- billboards through the default set in 0015.
 alter table public.billboards
   add column if not exists ad_type text not null default 'billboard';
 

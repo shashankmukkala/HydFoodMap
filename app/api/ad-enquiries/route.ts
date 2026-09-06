@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
+import { requireAdmin } from "@/lib/adminAuth";
 
 function clean(value: unknown, max: number) {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
@@ -48,9 +49,21 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ ok: true }, { status: 201 });
 }
 
-export async function GET() {
+// Enquiries carry advertiser contact details and a payment-proof URL, so
+// this is admin-only. It reads through the caller's own token rather than
+// the anon client: the anon role has no select policy on ad_enquiries at
+// all (see 0022), which is why this endpoint previously returned an empty
+// list no matter how many enquiries had been submitted.
+export async function GET(request: NextRequest) {
   if (!isSupabaseConfigured()) return NextResponse.json([]);
-  const { data, error } = await supabase.from("ad_enquiries").select("*").order("created_at", { ascending: false });
+
+  const auth = await requireAdmin(request);
+  if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
+
+  const { data, error } = await auth.client
+    .from("ad_enquiries")
+    .select("*")
+    .order("created_at", { ascending: false });
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json(data);
 }

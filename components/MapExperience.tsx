@@ -29,6 +29,7 @@ import { useBookmarks } from "@/lib/useBookmarks";
 import { useVisitTracking } from "@/lib/useVisitTracking";
 import { useCollections } from "@/lib/useCollections";
 import { useRequireAuth } from "@/lib/AuthGate";
+import { useAuth } from "@/lib/useAuth";
 import { TAG_ICONS, type Tag } from "@/lib/tags";
 import { BACKGROUND_GRADIENTS, CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
 import type { Billboard, Cafe, CafeEvent } from "@/lib/supabase";
@@ -73,6 +74,8 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   const { visitedCount, visitedIds } = useVisitTracking();
   const { collections, createCollection, deleteCollection } = useCollections();
   const requireAuth = useRequireAuth();
+  const { session } = useAuth();
+  const accessToken = session?.access_token ?? null;
 
   useEffect(() => {
     fetch("/api/cafes")
@@ -91,13 +94,17 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       .then((res) => res.json())
       .then((data) => data && typeof data === "object" && setRatings(data))
       .catch(() => {});
-    if (isAdmin) {
-      fetch("/api/ad-enquiries")
-        .then((res) => res.json())
+    // The enquiry inbox is admin-only server-side, so it needs the signed-in
+    // admin's token. Skipped entirely while signed out — without a token the
+    // request can only come back 401, and firing it anyway would just log a
+    // failure on every public admin page load.
+    if (isAdmin && accessToken) {
+      fetch("/api/ad-enquiries", { headers: { Authorization: `Bearer ${accessToken}` } })
+        .then((res) => (res.ok ? res.json() : []))
         .then((data) => Array.isArray(data) && setAdEnquiries(data))
         .catch(() => {});
     }
-  }, [isAdmin]);
+  }, [isAdmin, accessToken]);
 
   // Tags and rating narrow meaningfully alongside a search (a manually
   // picked "Quiet" tag chip plus a typed area both make sense together),
@@ -458,9 +465,10 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   }
 
   async function updateAdEnquiry(id: string, status: "approved" | "rejected") {
+    if (!accessToken) return;
     const response = await fetch(`/api/ad-enquiries/${id}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
       body: JSON.stringify({ status }),
     });
     if (!response.ok) return;

@@ -1,5 +1,12 @@
--- Remove the experimental balloon format before introducing the aircraft
--- banner format. Existing records are preserved as standard billboards.
-update billboards set ad_type = 'billboard' where ad_type = 'balloon';
-alter table billboards drop constraint if exists billboards_ad_type_check;
-alter table billboards drop column if exists ad_type;
+-- Intentionally a no-op.
+--
+-- This slot previously held an experimental format that was dropped before
+-- release. It also dropped the ad_type column outright, which left 0021's
+-- constraint referencing a column that no longer existed and broke a clean
+-- 0001 -> 0021 replay. The format is gone from the product entirely, so the
+-- add/remove pair has been collapsed: 0015 now creates ad_type and 0017
+-- widens it to include aircraft.
+--
+-- The file is kept (rather than deleted) so migration numbering stays
+-- continuous and README references to 0001-0021 remain accurate.
+select 1;
