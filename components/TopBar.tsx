@@ -9,6 +9,8 @@ import { useAuth } from "@/lib/useAuth";
 import { useRequireAuth } from "@/lib/AuthGate";
 import WeatherWidget from "@/components/WeatherWidget";
 import AirQualityWidget from "@/components/AirQualityWidget";
+import NotificationsBell from "@/components/NotificationsBell";
+import WelcomeBonusCard from "@/components/WelcomeBonusCard";
 import LiveTicker from "@/components/LiveTicker";
 import { CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
 import { TAG_GROUPS, TAG_ICONS, type Tag } from "@/lib/tags";
@@ -87,7 +89,7 @@ export default function TopBar({
       <button
         onClick={onMenuClick}
         aria-label="Open menu"
-        className={`menu-trigger flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 sm:h-8 sm:w-8 ${publicMode ? "" : "lg:hidden"} dark:bg-neutral-800 dark:text-neutral-200`}
+        className={`menu-trigger flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-700 transition-colors hover:bg-emerald-100 hover:text-emerald-700 sm:h-8 sm:w-8 ${publicMode ? "" : "lg:hidden"} dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-300`}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
           <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
@@ -117,7 +119,7 @@ export default function TopBar({
           className={`flex min-h-10 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors sm:min-h-0 ${
             activeTags.size > 0 || minRating > 0 || maxDistanceKm > 0
               ? "bg-amber-500 text-white"
-              : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
+              : "bg-neutral-100 text-neutral-700 hover:bg-emerald-100 hover:text-emerald-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-300"
           }`}
         >
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-3.5 w-3.5">
@@ -242,7 +244,9 @@ export default function TopBar({
         <button
           onClick={toggle3D}
           className={`flex min-h-10 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium whitespace-nowrap transition-colors sm:min-h-0 ${
-            is3D ? "bg-emerald-800 text-white" : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200"
+            is3D
+              ? "bg-emerald-800 text-white"
+              : "bg-neutral-100 text-neutral-700 hover:bg-emerald-100 hover:text-emerald-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-300"
           }`}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
@@ -255,6 +259,8 @@ export default function TopBar({
             bookmarks under their own identity — admin is a single
             trusted operator, not someone who needs (or should be
             prompted) to sign in with a Google account. */}
+        {publicMode && isSignedIn && <WelcomeBonusCard />}
+        {publicMode && isSignedIn && <NotificationsBell />}
         {publicMode &&
           (isSignedIn ? (
             <Link
@@ -272,7 +278,7 @@ export default function TopBar({
           ) : (
             <button
               onClick={() => requireAuth(() => {})}
-              className="flex min-h-10 items-center gap-1.5 rounded-full bg-neutral-900 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white hover:bg-neutral-800 sm:min-h-0 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+              className="flex min-h-10 items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-emerald-700 sm:min-h-0"
             >
               Sign in
             </button>
@@ -297,8 +303,8 @@ function Chip({
       onClick={onClick}
       className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
         active
-          ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
-          : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
+          ? "bg-emerald-600 text-white"
+          : "bg-neutral-100 text-neutral-600 hover:bg-emerald-100 hover:text-emerald-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-300"
       }`}
     >
       {children}

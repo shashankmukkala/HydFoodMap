@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/lib/useAuth";
 import { supabase } from "@/lib/supabase";
 import type { Profile } from "@/lib/supabase";
+import type { LeaderboardEntry } from "@/app/api/leaderboard/route";
 
 // Personal details for a signed-in (Google) user. The profiles row
 // itself always exists by the time this loads — a database trigger
@@ -19,6 +20,7 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [stats, setStats] = useState<LeaderboardEntry | null>(null);
 
   // Flip into "loading" the moment a session appears — adjusted during
   // render (React's recommended pattern for state driven by a prop/
@@ -49,6 +51,20 @@ export default function ProfilePage() {
         }
         setProfileLoading(false);
       });
+    return () => {
+      cancelled = true;
+    };
+  }, [session]);
+
+  useEffect(() => {
+    if (!session) return;
+    let cancelled = false;
+    fetch("/api/leaderboard", { headers: { Authorization: `Bearer ${session.access_token}` } })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled && data?.me) setStats(data.me);
+      })
+      .catch(() => {});
     return () => {
       cancelled = true;
     };
@@ -122,6 +138,25 @@ export default function ProfilePage() {
               <p className="truncate text-xs text-neutral-400">{email}</p>
             </div>
           </div>
+
+          {stats && (
+            <div className="profile-stats-row">
+              <div className="profile-stat">
+                <span className="profile-stat-value">{stats.visitedCount}</span>
+                <span className="profile-stat-label">Visited</span>
+              </div>
+              <div className="profile-stat">
+                <span className="profile-stat-value">{stats.points}</span>
+                <span className="profile-stat-label">Points</span>
+              </div>
+              <Link href="/leaderboard" className="profile-stat profile-stat-link">
+                <span className="profile-stat-value">#{stats.rank}</span>
+                <span className="profile-stat-label">Rank</span>
+              </Link>
+            </div>
+          )}
+
+          {stats && <p className="profile-redeem-note">Redeem your points for discounts or cash — coming soon!</p>}
 
           <form onSubmit={handleSave} className="space-y-2.5">
             <label className="block text-[11px] font-medium tracking-wide text-neutral-400 uppercase">

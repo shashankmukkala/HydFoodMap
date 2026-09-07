@@ -55,24 +55,6 @@ export function useAuth() {
     return { error: error?.message ?? null };
   }, []);
 
-  // Password sign-in keyed by a plain ID (an email-shaped string in
-  // auth.users, but never actually emailed anything — email_confirm is
-  // set true at creation time so no delivery/verification step exists),
-  // not a phone number — no SMS involved at all, which is the point: used
-  // for /admin, which needs to work regardless of whether an SMS provider
-  // is configured (see the Send SMS hook setup), and an admin's own login
-  // shouldn't depend on SMS delivery as a new way to get locked out. The
-  // account itself is created out-of-band via scripts/create-admin.mjs
-  // (service-role only — see that script and the `admins` table's RLS),
-  // never by self-signup here.
-  const signInWithPassword = useCallback(async (id: string, password: string) => {
-    if (!isSupabaseConfigured()) return { error: NOT_CONFIGURED_ERROR };
-    const trimmed = id.trim();
-    if (!trimmed || !password) return { error: "Enter your admin ID and password." };
-    const { error } = await supabase.auth.signInWithPassword({ email: trimmed, password });
-    return { error: error?.message ?? null };
-  }, []);
-
   const signOut = useCallback(async () => {
     if (!isSupabaseConfigured()) return;
     await supabase.auth.signOut();
@@ -86,7 +68,6 @@ export function useAuth() {
     isSignedIn: !!session,
     loading,
     signInWithGoogle,
-    signInWithPassword,
     signOut,
   };
 }

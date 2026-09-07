@@ -5,9 +5,12 @@ import type { Billboard, Cafe } from "@/lib/supabase";
 import { useBookmarks } from "@/lib/useBookmarks";
 import { useCollections } from "@/lib/useCollections";
 import { useVisitTracking } from "@/lib/useVisitTracking";
+import { usePoints } from "@/lib/usePoints";
 import { useRequireAuth } from "@/lib/AuthGate";
 import { CATEGORY_ICONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
 import ReviewsSection from "@/components/ReviewsSection";
+import EditCafeTaxonomy from "@/components/EditCafeTaxonomy";
+import VisitCheckin from "@/components/VisitCheckin";
 
 function cafeIcon(cafe: Cafe) {
   if (cafe.category && cafe.category in CATEGORY_ICONS) return CATEGORY_ICONS[cafe.category as Category];
@@ -15,16 +18,26 @@ function cafeIcon(cafe: Cafe) {
 }
 
 type DetailCardProps =
-  | { kind: "cafe"; item: Cafe; onClose: () => void }
-  | { kind: "billboard"; item: Billboard; onClose: () => void };
+  | {
+      kind: "cafe";
+      item: Cafe;
+      onClose: () => void;
+      isAdmin?: boolean;
+      onCafeUpdated?: (cafe: Cafe) => void;
+      /** Admin console's own session token — see EditCafeTaxonomy's Props comment. */
+      adminAccessToken?: string | null;
+    }
+  | { kind: "billboard"; item: Billboard; onClose: () => void; isAdmin?: boolean };
 
-export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
+export default function DetailCard(props: DetailCardProps) {
+  const { kind, item, onClose, isAdmin = false } = props;
   const isCafe = kind === "cafe";
   const cafe = isCafe ? (item as Cafe) : null;
   const billboard = !isCafe ? (item as Billboard) : null;
   const { isBookmarked, toggle } = useBookmarks();
   const { collections, createCollection, addCafeToCollection, removeCafeFromCollection } = useCollections();
-  const { isVisited, setVisited } = useVisitTracking();
+  const { isVisited, markVisitedLocally } = useVisitTracking();
+  const { addPoints } = usePoints();
   const requireAuth = useRequireAuth();
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -335,35 +348,36 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
         )}
       </div>
 
-      {isCafe && (
-        <div className="flex items-center justify-between border-t border-neutral-100 px-4 py-2.5 dark:border-neutral-800">
-          <span className="text-xs font-medium text-neutral-600 dark:text-neutral-300">Have you been here?</span>
-          <div className="flex gap-1.5">
-            <button
-              onClick={() => requireAuth(() => setVisited(item.id, true))}
-              className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                isVisited(item.id)
-                  ? "bg-green-500 text-white"
-                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300"
-              }`}
-            >
-              ✓ Visited
-            </button>
-            <button
-              onClick={() => requireAuth(() => setVisited(item.id, false))}
-              className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                !isVisited(item.id)
-                  ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
-                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300"
-              }`}
-            >
-              Not yet
-            </button>
-          </div>
-        </div>
+      {/* Posting a review and logging a visit are visitor actions — the
+          account signed into /admin is the operator, not someone checking
+          in at a cafe, so neither applies there. Admins get category/tag
+          editing instead (below) — correcting the data, not reacting to
+          it. A visit only counts once GPS-verified (VisitCheckin), same
+          rigor as a review — see lib/useLocationCheckin.ts. */}
+      {isCafe && !isAdmin && (
+        <VisitCheckin
+          cafeId={item.id}
+          cafeLat={item.lat}
+          cafeLng={item.lng}
+          visitedBefore={isVisited(item.id)}
+          onLogged={(points) => {
+            markVisitedLocally(item.id);
+            addPoints(points);
+          }}
+        />
       )}
 
-      {isCafe && <ReviewsSection key={item.id} cafeId={item.id} cafeLat={item.lat} cafeLng={item.lng} />}
+      {isCafe && cafe && (
+        <ReviewsSection key={item.id} cafeId={item.id} cafeLat={item.lat} cafeLng={item.lng} isAdmin={isAdmin} />
+      )}
+
+      {isCafe && cafe && isAdmin && (
+        <EditCafeTaxonomy
+          cafe={cafe}
+          accessToken={props.kind === "cafe" ? props.adminAccessToken ?? null : null}
+          onSaved={(updated) => props.kind === "cafe" && props.onCafeUpdated?.(updated)}
+        />
+      )}
     </div>
   );
 }

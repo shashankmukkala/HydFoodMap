@@ -1,11 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { POINTS, usePoints } from "@/lib/usePoints";
+import { usePoints } from "@/lib/usePoints";
+import type { PointsConfigEntry } from "@/app/api/points-config/route";
 
-const EARN_ROWS = [
-  { icon: "📍", label: "Post a review — verified from the cafe", pts: POINTS.REVIEW },
-];
+const EARN_ROW_META: Record<PointsConfigEntry["action"], { icon: string; label: string }> = {
+  review: { icon: "📍", label: "Post a review — verified from the cafe" },
+  visit: { icon: "🚶", label: "Verify a visit (first time)" },
+  photo: { icon: "📸", label: "Add a photo to your review" },
+  repeat_visit: { icon: "🔁", label: "Verify a return visit" },
+};
 
 type PointsWidgetProps = {
   /** Sidebar rail is icon-only — same DOM, just animates down via CSS so
@@ -17,7 +21,16 @@ type PointsWidgetProps = {
 export default function PointsWidget({ collapsed = false }: PointsWidgetProps) {
   const { points } = usePoints();
   const [open, setOpen] = useState(false);
+  const [earnRows, setEarnRows] = useState<PointsConfigEntry[]>([]);
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open || earnRows.length > 0) return;
+    fetch("/api/points-config")
+      .then((res) => res.json())
+      .then((data) => Array.isArray(data) && setEarnRows(data))
+      .catch(() => {});
+  }, [open, earnRows.length]);
 
   useEffect(() => {
     if (!open) return;
@@ -64,14 +77,14 @@ export default function PointsWidget({ collapsed = false }: PointsWidgetProps) {
             Earn points as you go
           </div>
           <ul className="space-y-1.5">
-            {EARN_ROWS.map((row) => (
-              <li key={row.label} className="flex items-center justify-between gap-2">
+            {earnRows.map((row) => (
+              <li key={row.action} className="flex items-center justify-between gap-2">
                 <span className="flex items-center gap-1.5 text-neutral-600 dark:text-neutral-300">
-                  <span>{row.icon}</span>
-                  {row.label}
+                  <span>{EARN_ROW_META[row.action].icon}</span>
+                  {EARN_ROW_META[row.action].label}
                 </span>
                 <span className="shrink-0 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-600 dark:bg-amber-950 dark:text-amber-300">
-                  +{row.pts}
+                  +{row.amount}
                 </span>
               </li>
             ))}

@@ -4,21 +4,19 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/lib/useAuth";
 import { supabase } from "@/lib/supabase";
 
-// A single flat reward for posting a genuine (location-verified) review —
-// deliberately NOT per-field (comment/photo/favorite food used to each add
-// their own points). Paying extra for a longer review rewards padding, not
-// honesty, which is exactly the incentive a "no fake reviews" platform
-// shouldn't create. Redemption (vouchers etc.) isn't wired up yet — this
-// just tracks the running balance so the UI has something real to show
-// once redemption ships.
+// Historical default shown before app/api/points-config's live values load
+// — the actual reward is admin-configurable now (0029_points_config_and_
+// leaderboard.sql) and read server-side by the award_review_points/
+// award_visit_points triggers, not by the client.
 export const POINTS = {
   REVIEW: 10,
 } as const;
 
-// Per-account via the `points_ledger` table (0008, reason constraint
-// fixed in 0025) — each row is one earn event, so the balance is always
-// sum(amount) and never drifts from what was actually awarded. Not
-// per-browser localStorage — see useBookmarks.ts for the same reasoning.
+// Per-account via the `points_ledger` table (0008, reason constraint most
+// recently extended in 0029) — each row is one earn event, so the balance
+// is always sum(amount) and never drifts from what was actually awarded.
+// Not per-browser localStorage — see useBookmarks.ts for the same
+// reasoning.
 export function usePoints() {
   const { session } = useAuth();
   const [points, setPoints] = useState(0);
@@ -34,34 +32,34 @@ export function usePoints() {
     setPoints(0);
   }
 
-  useEffect(() => {
+  const refresh = useCallback(() => {
     if (!session) return;
-    let cancelled = false;
-    supabase
+    return supabase
       .from("points_ledger")
       .select("amount")
       .eq("user_id", session.user.id)
       .then(({ data }) => {
-        if (!cancelled && data) setPoints(data.reduce((sum, row) => sum + (row.amount as number), 0));
+        if (data) setPoints(data.reduce((sum, row) => sum + (row.amount as number), 0));
       });
-    return () => {
-      cancelled = true;
-    };
   }, [session]);
 
-  const addPoints = useCallback(
-    (amount: number) => {
-      if (amount <= 0 || !session) return;
-      setPoints((prev) => prev + amount);
-      supabase
-        .from("points_ledger")
-        .insert({ user_id: session.user.id, amount, reason: "review" })
-        .then(({ error }) => {
-          if (error) setPoints((prev) => prev - amount);
-        });
-    },
-    [session]
-  );
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
-  return { points, addPoints };
+  // Local-only optimistic bump — NOT a write to points_ledger. Every real
+  // award now happens server-side (a security-definer trigger tied to a
+  // verified action, or an admin route using the service role); there is
+  // deliberately no RLS insert policy left for a client to write its own
+  // points_ledger rows any more (0029 dropped it — a user could
+  // previously insert any {amount, reason} row into their own ledger,
+  // since RLS only checked ownership, never the value). This just moves
+  // the visible number instantly while the real row lands, and refresh()
+  // reconciles it against the database on the next call.
+  const addPoints = useCallback((amount: number) => {
+    if (amount <= 0) return;
+    setPoints((prev) => prev + amount);
+  }, []);
+
+  return { points, addPoints, refresh };
 }

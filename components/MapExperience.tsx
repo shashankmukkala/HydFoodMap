@@ -24,14 +24,11 @@ import DetailCard from "@/components/DetailCard";
 import MapAttribution from "@/components/MapAttribution";
 import CollectionsPanel from "@/components/CollectionsPanel";
 import AdRail from "@/components/AdRail";
-import AdEnquiriesPanel, { type AdEnquiry } from "@/components/AdEnquiriesPanel";
-import UsersPanel from "@/components/UsersPanel";
-import type { AdminUserSummary } from "@/app/api/admin/users/route";
 import { useBookmarks } from "@/lib/useBookmarks";
 import { useVisitTracking } from "@/lib/useVisitTracking";
 import { useCollections } from "@/lib/useCollections";
 import { useRequireAuth } from "@/lib/AuthGate";
-import { useAuth } from "@/lib/useAuth";
+import { useAdminAuth } from "@/lib/useAdminAuth";
 import { TAG_ICONS, type Tag } from "@/lib/tags";
 import { BACKGROUND_GRADIENTS, CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
 import { distanceMeters } from "@/lib/geo";
@@ -60,10 +57,6 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   const [pendingCoords, setPendingCoords] = useState<{ lng: number; lat: number } | null>(null);
   const [eventFormOpen, setEventFormOpen] = useState(false);
   const [eventsOpen, setEventsOpen] = useState(false);
-  const [adEnquiries, setAdEnquiries] = useState<AdEnquiry[]>([]);
-  const [users, setUsers] = useState<AdminUserSummary[]>([]);
-  const [usersLoading, setUsersLoading] = useState(false);
-  const [usersError, setUsersError] = useState<string | null>(null);
   const [feedTab, setFeedTab] = useState<FeedTab>(null);
   const [activeTags, setActiveTags] = useState<Set<Tag>>(new Set());
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
@@ -88,8 +81,15 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   const { visitedCount, visitedIds } = useVisitTracking();
   const { collections, createCollection, deleteCollection } = useCollections();
   const requireAuth = useRequireAuth();
-  const { session } = useAuth();
-  const accessToken = session?.access_token ?? null;
+  // Only ever has a session on /admin (a separate client/session from the
+  // public site's useAuth — see lib/supabase.ts's adminSupabase) — reads
+  // as signed-out on the public map, so this is safe to call
+  // unconditionally rather than only when isAdmin. Threaded down into
+  // DetailCard's admin-only edit form (EditCafeTaxonomy), which can't
+  // call this itself without mounting the admin client on every public
+  // page load too.
+  const { session: adminSession } = useAdminAuth();
+  const adminAccessToken = adminSession?.access_token ?? null;
 
   useEffect(() => {
     fetch("/api/cafes")
@@ -108,54 +108,8 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       .then((res) => res.json())
       .then((data) => data && typeof data === "object" && setRatings(data))
       .catch(() => {});
-    // The enquiry inbox is admin-only server-side, so it needs the signed-in
-    // admin's token. Skipped entirely while signed out — without a token the
-    // request can only come back 401, and firing it anyway would just log a
-    // failure on every public admin page load.
-    if (isAdmin && accessToken) {
-      fetch("/api/ad-enquiries", { headers: { Authorization: `Bearer ${accessToken}` } })
-        .then((res) => (res.ok ? res.json() : []))
-        .then((data) => Array.isArray(data) && setAdEnquiries(data))
-        .catch(() => {});
-    }
-  }, [isAdmin, accessToken]);
+  }, []);
 
-  // Users analytics is heavier (aggregates every table across every
-  // account server-side) and only useful while that specific admin tab
-  // is actually open, so it's fetched on demand rather than on every
-  // admin page load like the enquiry inbox above. The loading/error
-  // reset happens during render (React's recommended pattern for state
-  // driven by a prop/value) rather than synchronously at the top of the
-  // effect below, which can't set state in its body.
-  const [lastUsersFeedTab, setLastUsersFeedTab] = useState<FeedTab>(null);
-  if (feedTab === "users" && lastUsersFeedTab !== "users") {
-    setLastUsersFeedTab("users");
-    setUsersLoading(true);
-    setUsersError(null);
-  } else if (feedTab !== "users" && lastUsersFeedTab === "users") {
-    setLastUsersFeedTab(feedTab);
-  }
-
-  useEffect(() => {
-    if (feedTab !== "users" || !isAdmin || !accessToken) return;
-    let cancelled = false;
-    fetch("/api/admin/users", { headers: { Authorization: `Bearer ${accessToken}` } })
-      .then(async (res) => {
-        const data = await res.json();
-        if (cancelled) return;
-        if (!res.ok) throw new Error(data.error || "Couldn't load users.");
-        setUsers(data);
-      })
-      .catch((err) => {
-        if (!cancelled) setUsersError(err instanceof Error ? err.message : "Couldn't load users.");
-      })
-      .finally(() => {
-        if (!cancelled) setUsersLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [feedTab, isAdmin, accessToken]);
 
   // Tags and rating narrow meaningfully alongside a search (a manually
   // picked "Quiet" tag chip plus a typed area both make sense together),
@@ -531,16 +485,6 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     setFeedTab(null);
   }
 
-  async function deleteBillboard(id: string) {
-    setBillboards((prev) => prev.filter((billboard) => billboard.id !== id));
-    if (selected?.kind === "billboard" && selected.item.id === id) setSelected(null);
-    try {
-      await fetch(`/api/billboards/${id}`, { method: "DELETE" });
-    } catch {
-      // Keep the placement removed from the current view if the request fails.
-    }
-  }
-
   function handleExplore() {
     setFeedTab(null);
     setSelected(null);
@@ -552,17 +496,6 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   function handleSelectTab(tab: FeedTab) {
     setFeedTab(tab);
     setSelected(null);
-  }
-
-  async function updateAdEnquiry(id: string, status: "approved" | "rejected") {
-    if (!accessToken) return;
-    const response = await fetch(`/api/ad-enquiries/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
-      body: JSON.stringify({ status }),
-    });
-    if (!response.ok) return;
-    setAdEnquiries((current) => current.map((item) => (item.id === id ? { ...item, status } : item)));
   }
 
   const bgKey: Category | "all" = activeCategory ?? "all";
@@ -765,9 +698,19 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
                 through several of them. */}
             {selected &&
               (selected.kind === "cafe" ? (
-                <DetailCard kind="cafe" item={selected.item} onClose={() => setSelected(null)} />
+                <DetailCard
+                  kind="cafe"
+                  item={selected.item}
+                  onClose={() => setSelected(null)}
+                  isAdmin={isAdmin}
+                  adminAccessToken={adminAccessToken}
+                  onCafeUpdated={(cafe) => {
+                    setCafes((prev) => prev.map((c) => (c.id === cafe.id ? cafe : c)));
+                    setSelected({ kind: "cafe", item: cafe });
+                  }}
+                />
               ) : (
-                <DetailCard kind="billboard" item={selected.item} onClose={() => setSelected(null)} />
+                <DetailCard kind="billboard" item={selected.item} onClose={() => setSelected(null)} isAdmin={isAdmin} />
               ))}
 
             {/* Every real panel below is independent — Sidebar tabs
@@ -777,18 +720,6 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
                 two real panels on screen (see showEvents/realPanelCount
                 above) — it's the last one added and the first one
                 dropped. */}
-            {isAdmin && feedTab === "billboards" && (
-              <FeedPanel
-                kind="billboard"
-                title="Billboards"
-                icon="📢"
-                emptyLabel="No billboards yet."
-                items={billboards}
-                onSelect={selectBillboard}
-                onDelete={deleteBillboard}
-                onClose={() => setFeedTab(null)}
-              />
-            )}
             {feedTab === "saved" && (
               <FeedPanel
                 kind="cafe"
@@ -840,12 +771,6 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
                 onDelete={deleteEvent}
                 onClose={!isAdmin ? () => setEventsOpen(false) : undefined}
               />
-            )}
-            {isAdmin && feedTab === "ad-enquiries" && (
-              <AdEnquiriesPanel enquiries={adEnquiries} onStatus={updateAdEnquiry} onClose={() => setFeedTab(null)} />
-            )}
-            {isAdmin && feedTab === "users" && (
-              <UsersPanel users={users} loading={usersLoading} error={usersError} onClose={() => setFeedTab(null)} />
             )}
           </div>
         </div>

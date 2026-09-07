@@ -165,5 +165,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ error: message }, { status });
   }
   await authed.from("review_checkins").update({ used_at: new Date().toISOString() }).eq("id", checkin_id).eq("user_id", userData.user.id);
-  return NextResponse.json(data, { status: 201 });
+
+  // award_review_points() (0029) already ran as part of the insert above
+  // (an AFTER INSERT trigger fires within the same statement) — read back
+  // what it actually awarded (review + photo, if any) so the client can
+  // show the real number instead of a guessed/hardcoded one.
+  const { data: awarded } = await authed.from("points_ledger").select("amount").eq("review_id", data.id);
+  const pointsAwarded = (awarded ?? []).reduce((sum, row) => sum + row.amount, 0);
+
+  return NextResponse.json({ ...data, points_awarded: pointsAwarded }, { status: 201 });
 }
