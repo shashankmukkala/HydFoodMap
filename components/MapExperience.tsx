@@ -238,6 +238,22 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     // resetting panelShapeKey's effect to try 5 again from scratch.
   }, [resultsPageSize, panelShapeKey, resultsMatch]);
 
+  // Any panel that overlays the map and so has to be steered around —
+  // also what tells CSS to move the ad rail out of a sheet's way.
+  const hasOpenPanel = !!selected || !!feedTab || (!!resultsMatch && !resultsCollapsed);
+
+  // Padding passed to flyTo/fitBounds is persistent camera state, not a
+  // one-off argument — MapLibre keeps it on the transform. Without this
+  // the offset applied when a card opened would survive the card being
+  // dismissed, leaving the map permanently shifted and every later
+  // recentre landing off to one side. Cleared as soon as the last panel
+  // closes; the ease matches the sheet's own exit so the two move
+  // together rather than the map lurching afterwards.
+  useEffect(() => {
+    if (!map || hasOpenPanel) return;
+    map.easeTo({ padding: { top: 0, right: 0, bottom: 0, left: 0 }, duration: 220 });
+  }, [map, hasOpenPanel]);
+
   // Escape closes the topmost panel, innermost first, so repeated presses
   // unwind the stack in the order it was built rather than clearing
   // everything at once. Nothing listened for Escape before this.
@@ -307,6 +323,37 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   // (typing a vibe/type/area) — zooms/pans to fit a set of cafes with
   // generous padding, so the fit reads as "zoomed out a bit to see the
   // area," not a tight crop right up against the matched pins.
+  // Panels overlay the map rather than sitting beside it — the public map
+  // canvas is `position: absolute; inset: 0`, so it fills the viewport and
+  // the card floats on top. Centring a pin in the container's geometric
+  // middle therefore drops it *underneath* whatever just opened: behind
+  // the bottom sheet on a phone, behind the right-hand column on desktop.
+  // You would open a card about a place and not be able to see the place.
+  //
+  // Padding moves the camera's idea of "centre" into the region still
+  // visible, which is what every native map app does when it raises a
+  // place sheet. Measured from the live container rather than hardcoded,
+  // so it stays right across rotation and split-screen.
+  function cameraPadding() {
+    const container = map?.getContainer();
+    if (!container) return undefined;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    if (isMobile) {
+      // Top bar and ticker sit over the map's top edge; the sheet takes
+      // the bottom. Clamped so the two never squeeze the visible strip
+      // below ~140px, which MapLibre needs to place a camera at all.
+      const top = Math.min(150, height * 0.22);
+      const bottom = Math.max(0, Math.min(height * 0.55, height - top - 140));
+      return { top, bottom, left: 16, right: 16 };
+    }
+
+    // Desktop: the panel column is pinned to the right at 380px wide plus
+    // its own margins, and the top bar overlays the top.
+    return { top: 96, bottom: 32, left: 32, right: Math.min(420, width * 0.42) };
+  }
+
   function fitMapToCafes(target: Cafe[]) {
     if (!map || target.length === 0) return;
     const lngs = target.map((c) => c.lng);
@@ -316,7 +363,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
         [Math.min(...lngs), Math.min(...lats)],
         [Math.max(...lngs), Math.max(...lats)],
       ],
-      { padding: 120, maxZoom: 15, duration: 700 }
+      { padding: cameraPadding() ?? 120, maxZoom: 15, duration: 700 }
     );
   }
 
@@ -485,7 +532,12 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       setResultsCollapsed(true);
     }
     setSelected({ kind: "cafe", item: cafe });
-    map?.flyTo({ center: [cafe.lng, cafe.lat], zoom: Math.max(map.getZoom(), 16), essential: true });
+    map?.flyTo({
+      center: [cafe.lng, cafe.lat],
+      zoom: Math.max(map.getZoom(), 16),
+      padding: cameraPadding(),
+      essential: true,
+    });
   }
 
   // Clicking a pin straight on the map isn't "browsing" whatever sidebar
@@ -518,6 +570,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       map?.flyTo({
         center: [billboard.lng, billboard.lat],
         zoom: Math.max(map.getZoom(), 16),
+        padding: cameraPadding(),
         essential: true,
       });
     }
@@ -562,7 +615,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     // offset as the panel column and was being covered by the detail card
     // rather than sitting beside it. Same pattern as a native map app,
     // where bottom chrome yields to an open place sheet.
-    <div className={`map-experience-shell relative isolate flex h-dvh w-dvw gap-1 overflow-hidden p-1 pb-[calc(0.25rem+env(safe-area-inset-bottom))] sm:gap-1.5 sm:p-2 ${isAdmin ? "is-admin" : "is-public"} ${selected || feedTab || (resultsMatch && !resultsCollapsed) ? "has-open-panel" : ""}`}>
+    <div className={`map-experience-shell relative isolate flex h-dvh w-dvw gap-1 overflow-hidden p-1 pb-[calc(0.25rem+env(safe-area-inset-bottom))] sm:gap-1.5 sm:p-2 ${isAdmin ? "is-admin" : "is-public"} ${hasOpenPanel ? "has-open-panel" : ""}`}>
       {/* The aurora backdrop lives on this fixed base layer's own
           background (not a separately z-indexed overlay child) — a
           negative-z-index element only stays contained "behind its own

@@ -40,6 +40,9 @@ type SearchBoxProps = {
 
 export default function SearchBox({ map, cafes, onSelectCafe, onGroupMatch, clearSignal, dismissDropdownSignal }: SearchBoxProps) {
   const [query, setQuery] = useState("");
+  // True while the text in the box was put there by choosing a specific
+  // cafe rather than typed — see selectCafe and the group-match effect.
+  const [queryFromPick, setQueryFromPick] = useState(false);
   const [places, setPlaces] = useState<PlaceResult[]>([]);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -54,6 +57,7 @@ export default function SearchBox({ map, cafes, onSelectCafe, onGroupMatch, clea
   if (clearSignal !== undefined && clearSignal !== lastClearSignal) {
     setLastClearSignal(clearSignal);
     setQuery("");
+    setQueryFromPick(false);
     setPlaces([]);
     setStatus("idle");
   }
@@ -94,6 +98,11 @@ export default function SearchBox({ map, cafes, onSelectCafe, onGroupMatch, clea
     if (groupDebounceRef.current) clearTimeout(groupDebounceRef.current);
     const q = query.trim();
 
+    // Written by picking a cafe, not typed — treat it as "go to that one
+    // place" and leave the filters and the camera alone. Typing clears the
+    // flag (see search()), so editing after a pick resumes group matching.
+    if (queryFromPick) return;
+
     if (q.length < 2) {
       onGroupMatch(null);
       return;
@@ -106,7 +115,7 @@ export default function SearchBox({ map, cafes, onSelectCafe, onGroupMatch, clea
     // every render (not memoized in the parent), so including it would
     // defeat the debounce by re-running this on every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, cafes]);
+  }, [query, queryFromPick, cafes]);
 
   // Logged separately from the group-match effect above (longer debounce
   // — 900ms vs 350ms) so a search only gets recorded once someone
@@ -133,6 +142,9 @@ export default function SearchBox({ map, cafes, onSelectCafe, onGroupMatch, clea
   }, [query, cafes]);
 
   function search(value: string) {
+    // Typing always resumes normal group searching, whatever put the
+    // previous text there.
+    setQueryFromPick(false);
     setQuery(value);
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
@@ -166,10 +178,23 @@ export default function SearchBox({ map, cafes, onSelectCafe, onGroupMatch, clea
       essential: true,
     });
     setPlaces([]);
+    // Left as a normal query on purpose: an address is an area, so letting
+    // it group-match ("Jubilee Hills") and narrow the list is useful, which
+    // a specific cafe pick is not. Reset explicitly so the flag can't carry
+    // over from a cafe picked just before this.
+    setQueryFromPick(false);
     setQuery(result.display_name);
   }
 
   function selectCafe(cafe: Cafe) {
+    // Marks the text below as written by a pick rather than typed. Picking
+    // one cafe writes its name into the box, which then looks exactly like
+    // a fresh group query to the debounced effect above — and most cafe
+    // names contain a word the group matcher knows. "RITHM Cafe" matched
+    // the Cafe *category*, so tapping it flew the map to that cafe and
+    // then, 350ms later, refitted across all 40 cafes and silently
+    // flipped the Type chip. 58 of 85 names collided this way.
+    setQueryFromPick(true);
     onSelectCafe(cafe);
     setPlaces([]);
     setQuery(cafe.name);
