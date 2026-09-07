@@ -241,7 +241,7 @@ Admin-only tools include:
 
 The admin sidebar intentionally does not show personal user features such as favourites, visited places, collections, cafes visited, or points.
 
-Important: `/admin` is not currently protected by an admin authentication/role check. It must not be deployed publicly until access control and server-side authorization are added. The current database policies also contain MVP-open write behavior for some legacy tables.
+`/admin` requires signing in with an ID and password (no phone/OTP/SMS involved — see "Admin setup" below) and membership in the `admins` table, checked via the `is_admin()` Postgres function. A signed-in account that isn't in `admins` sees a plain "not an admin" message with no access to any admin tool. The current database policies still contain MVP-open write behavior for some legacy tables outside the admin surface, though — see the known gaps list.
 
 ## Project Structure
 
@@ -359,31 +359,47 @@ sequence against an existing database is safe.
 
 ### Admin setup
 
-Database policies check membership of the `admins` table, so an admin must
-be granted once per project:
+`/admin` signs in with an ID and password (`lib/useAuth`'s
+`signInWithPassword` — the ID is stored as `email` in `auth.users`, but is
+just a unique identifier, never a real, deliverable inbox) — deliberately
+not phone/OTP, so it works even before an SMS provider is configured, and
+an admin's own login isn't at the mercy of SMS delivery. The account is
+created out-of-band with a script, not by signing up through the app:
 
-1. Run `0022_admin_role_and_enquiry_access.sql`.
-2. Sign in through the app's phone OTP so an `auth.users` row exists.
-3. Grant the role:
+1. Run `0022_admin_role_and_enquiry_access.sql` (creates the `admins`
+   table and `is_admin()`).
+2. Add `SUPABASE_SERVICE_ROLE_KEY` to `.env.local` (Dashboard > Settings >
+   API > service_role) — more sensitive than the anon key, so it isn't in
+   `.env.local.example`; never put it in `NEXT_PUBLIC_*` or commit it.
+3. Create the admin account and grant it access in one step:
+
+```sh
+node --env-file=.env.local scripts/create-admin.mjs owner@hydcafemap.admin "some-strong-password" "owner"
+```
+
+This creates the Supabase Auth user with that ID+password (or updates the
+password if the ID is already registered) and inserts it into
+`public.admins`. Sign in at `/admin` with the same ID and password
+afterward.
+
+There is deliberately no insert policy on `admins`, so membership can only
+be changed with the service role — the script above, or the SQL editor /
+dashboard directly:
 
 ```sql
 insert into public.admins (user_id, note)
 select id, 'owner' from auth.users
-where phone = '+91XXXXXXXXXX'
+where email = 'owner@hydcafemap.admin'
 on conflict (user_id) do nothing;
 ```
 
-4. Confirm with:
+Confirm membership with:
 
 ```sql
-select u.phone, a.note
+select u.email, a.note
 from public.admins a
 join auth.users u on u.id = a.user_id;
 ```
-
-There is deliberately no insert policy on `admins`, so membership can only
-be changed with the service role through the SQL editor or dashboard. A
-signed-in user cannot add themselves.
 
 ## Local Setup
 

@@ -1,122 +1,81 @@
-// Full vibe/amenity vocabulary — sourced from new_data.json's per-cafe
-// `tags` field (which already folds price bracket, cuisine, and operating
-// features into one array). new_data.json also carries dozens of one-off
-// promotional phrases per cafe (e.g. "Famous Banana Pudding", "Royal
-// Hyderabadi Buffet") that only ever apply to a single venue — those are
-// deliberately NOT included here and get dropped at seed time (see
-// scripts/geocode-new-data.mjs) rather than exploding this into a wall of
-// one-cafe filter chips. Only tags that recur across multiple cafes made
-// the cut. Grouped here so the filter UI can drill down step by step
-// (pick a vibe, then a price, then a cuisine...) instead of one flat wall
-// of chips.
+// Vibe/amenity vocabulary — must match the actual `tags` values stored on
+// cafes in the database exactly (Cafe.tags is a plain string[], not
+// validated against this list at write time), or a filter chip silently
+// matches zero cafes forever. This list was regenerated from a direct
+// query of every distinct tag actually present across all cafes — see
+// the tag-audit that replaced this file; previously it carried an older
+// dataset's tag names (e.g. "Outdoor" vs the real "Outdoor Seating",
+// "Desserts & Bakes"/"Desserts & Gelato" vs the real "Desserts") that no
+// longer matched anything after the cafe data was replaced.
 export const TAG_OPTIONS = [
-  "Indoor",
-  "Outdoor",
+  "Outdoor Seating",
   "Rooftop",
-  "Quiet",
-  "Lively",
+  "Lakeside",
+  "Instagrammable",
+  "Family Friendly",
   "Pet Friendly",
   "Work Friendly",
-  "Budget",
-  "Mid-range",
-  "Premium",
-  "Cafe Food & Coffee",
   "Specialty Coffee",
-  "Desserts & Bakes",
-  "Desserts & Gelato",
-  "Organic & Natural",
-  "Fresh Fruit Ice Creams",
-  "Artisanal Creamery",
-  "Gourmet Desserts",
-  "Multi-cuisine",
-  "Fast Food & Pizza",
-  "Barbecue & Grills",
-  "Bistro Bites & Drinks",
-  "Chai & High Tea",
-  "Unlimited Buffet",
-  "Live Grill",
-  "5-Star Luxury Buffet",
-  "24/7 Open",
-  "Late Night",
+  "Desserts",
+  "Bakery",
+  "Brunch",
+  "Vegetarian Options",
+  "Vegan Options",
+  "WiFi",
+  "Parking",
+  "Reservations",
   "Serves Alcohol",
+  "Live Music",
+  "Late Night",
 ] as const;
 
 export type Tag = (typeof TAG_OPTIONS)[number];
 
 export const TAG_ICONS: Record<Tag, string> = {
-  Indoor: "🏠",
-  Outdoor: "🌿",
+  "Outdoor Seating": "🌿",
   Rooftop: "🏙️",
-  Quiet: "🔇",
-  Lively: "🎉",
+  Lakeside: "🌊",
+  Instagrammable: "📸",
+  "Family Friendly": "👨‍👩‍👧",
   "Pet Friendly": "🐾",
   "Work Friendly": "💻",
-  Budget: "💵",
-  "Mid-range": "💰",
-  Premium: "💎",
-  "Cafe Food & Coffee": "☕",
   "Specialty Coffee": "🌟",
-  "Desserts & Bakes": "🍰",
-  "Desserts & Gelato": "🍨",
-  "Organic & Natural": "🌱",
-  "Fresh Fruit Ice Creams": "🍓",
-  "Artisanal Creamery": "🍦",
-  "Gourmet Desserts": "🍮",
-  "Multi-cuisine": "🍽️",
-  "Fast Food & Pizza": "🍕",
-  "Barbecue & Grills": "🍖",
-  "Bistro Bites & Drinks": "🍹",
-  "Chai & High Tea": "🫖",
-  "Unlimited Buffet": "🍛",
-  "Live Grill": "🔥",
-  "5-Star Luxury Buffet": "⭐",
-  "24/7 Open": "🕐",
-  "Late Night": "🌙",
+  Desserts: "🍰",
+  Bakery: "🥐",
+  Brunch: "🥞",
+  "Vegetarian Options": "🥗",
+  "Vegan Options": "🌱",
+  WiFi: "📶",
+  Parking: "🅿️",
+  Reservations: "📅",
   "Serves Alcohol": "🍸",
+  "Live Music": "🎵",
+  "Late Night": "🌙",
 };
 
-export type TagGroupKey = "vibe" | "price" | "cuisine" | "buffet" | "features";
+export type TagGroupKey = "vibe" | "food" | "amenities" | "features";
 
-// Order here drives the step-by-step drill-down: Vibe first, then Price,
-// then Cuisine, then Buffet & Grill, then Features.
+// Order here drives the step-by-step drill-down: Vibe first, then Food &
+// Drink, then Amenities, then Features.
 export const TAG_GROUPS: { key: TagGroupKey; label: string; tags: Tag[] }[] = [
   {
     key: "vibe",
     label: "Vibe",
-    tags: ["Indoor", "Outdoor", "Rooftop", "Quiet", "Lively", "Pet Friendly", "Work Friendly"],
+    tags: ["Outdoor Seating", "Rooftop", "Lakeside", "Instagrammable", "Family Friendly", "Pet Friendly", "Work Friendly"],
   },
   {
-    key: "price",
-    label: "Price",
-    tags: ["Budget", "Mid-range", "Premium"],
+    key: "food",
+    label: "Food & Drink",
+    tags: ["Specialty Coffee", "Desserts", "Bakery", "Brunch", "Vegetarian Options", "Vegan Options"],
   },
   {
-    key: "cuisine",
-    label: "Cuisine",
-    tags: [
-      "Cafe Food & Coffee",
-      "Specialty Coffee",
-      "Desserts & Bakes",
-      "Desserts & Gelato",
-      "Organic & Natural",
-      "Fresh Fruit Ice Creams",
-      "Artisanal Creamery",
-      "Gourmet Desserts",
-      "Multi-cuisine",
-      "Fast Food & Pizza",
-      "Barbecue & Grills",
-      "Bistro Bites & Drinks",
-      "Chai & High Tea",
-    ],
-  },
-  {
-    key: "buffet",
-    label: "Buffet & Grill",
-    tags: ["Unlimited Buffet", "Live Grill", "5-Star Luxury Buffet"],
+    key: "amenities",
+    label: "Amenities",
+    tags: ["WiFi", "Parking", "Reservations"],
   },
   {
     key: "features",
     label: "Features",
-    tags: ["24/7 Open", "Late Night", "Serves Alcohol"],
+    tags: ["Serves Alcohol", "Live Music", "Late Night"],
   },
 ];

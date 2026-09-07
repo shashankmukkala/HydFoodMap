@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import SearchBox, { type SearchGroupMatch } from "@/components/SearchBox";
 import { DEFAULT_BEARING, DEFAULT_PITCH } from "@/lib/mapStyle";
@@ -28,8 +29,16 @@ type TopBarProps = {
   onToggleTag: (tag: Tag) => void;
   minRating: number;
   onSelectMinRating: (rating: number) => void;
+  /** 0 = "Any" (no distance filter). */
+  maxDistanceKm: number;
+  onSelectMaxDistance: (km: number) => void;
+  /** Drives the Distance chips' own inline state while a geolocation
+   *  request is in flight or was denied — "idle" the rest of the time. */
+  locationStatus: "idle" | "locating" | "denied";
   events?: CafeEvent[];
 };
+
+const DISTANCE_OPTIONS = [1, 3, 5, 8, 10, 15];
 
 export default function TopBar({
   map,
@@ -46,12 +55,15 @@ export default function TopBar({
   onToggleTag,
   minRating,
   onSelectMinRating,
+  maxDistanceKm,
+  onSelectMaxDistance,
+  locationStatus,
   events = [],
 }: TopBarProps) {
   const [is3D, setIs3D] = useState(true);
   const [vibeOpen, setVibeOpen] = useState(false);
   const vibeRef = useRef<HTMLDivElement>(null);
-  const { isSignedIn, phone } = useAuth();
+  const { isSignedIn, email, displayName, avatarUrl } = useAuth();
   const requireAuth = useRequireAuth();
 
   useEffect(() => {
@@ -103,7 +115,7 @@ export default function TopBar({
         <button
           onClick={() => setVibeOpen((v) => !v)}
           className={`flex min-h-10 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors sm:min-h-0 ${
-            activeTags.size > 0 || minRating > 0
+            activeTags.size > 0 || minRating > 0 || maxDistanceKm > 0
               ? "bg-amber-500 text-white"
               : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
           }`}
@@ -113,8 +125,10 @@ export default function TopBar({
           </svg>
           Filters
           {activeCategory && <span className="hidden max-w-20 truncate sm:inline">· {CATEGORY_SHORT_LABELS[activeCategory]}</span>}
-          {(activeTags.size > 0 || minRating > 0) && (
-            <span className="rounded-full bg-white/25 px-1.5">{activeTags.size + (minRating > 0 ? 1 : 0)}</span>
+          {(activeTags.size > 0 || minRating > 0 || maxDistanceKm > 0) && (
+            <span className="rounded-full bg-white/25 px-1.5">
+              {activeTags.size + (minRating > 0 ? 1 : 0) + (maxDistanceKm > 0 ? 1 : 0)}
+            </span>
           )}
         </button>
 
@@ -124,12 +138,13 @@ export default function TopBar({
               <div className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                 Drill down by vibe, price, cuisine or hours
               </div>
-              {(activeCategory || activeTags.size > 0 || minRating > 0) && (
+              {(activeCategory || activeTags.size > 0 || minRating > 0 || maxDistanceKm > 0) && (
                 <button
                   onClick={() => {
                     onSelectCategory(null);
                     [...activeTags].forEach((tag) => onToggleTag(tag));
                     onSelectMinRating(0);
+                    onSelectMaxDistance(0);
                   }}
                   className="shrink-0 text-[11px] font-medium text-amber-600 hover:underline dark:text-amber-400"
                 >
@@ -166,6 +181,37 @@ export default function TopBar({
                   </Chip>
                 ))}
               </div>
+            </div>
+            <div>
+              <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-semibold tracking-wide text-neutral-400 uppercase">
+                Distance
+                {locationStatus === "locating" && (
+                  <span className="normal-case text-amber-500">· locating…</span>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                <Chip active={maxDistanceKm === 0} onClick={() => onSelectMaxDistance(0)}>
+                  Any
+                </Chip>
+                {DISTANCE_OPTIONS.map((km) => (
+                  <Chip
+                    key={km}
+                    active={maxDistanceKm === km}
+                    onClick={() => onSelectMaxDistance(maxDistanceKm === km ? 0 : km)}
+                  >
+                    &lt;{km}km
+                  </Chip>
+                ))}
+              </div>
+              {/* Only shown right after a denial — the chips themselves
+                  already communicate "pick one to filter", so a
+                  permanent hint here would be redundant noise the rest
+                  of the time. */}
+              {locationStatus === "denied" && (
+                <p className="mt-1.5 text-[11px] text-red-500">
+                  Couldn&apos;t get your location — check location permissions and try again.
+                </p>
+              )}
             </div>
             {TAG_GROUPS.map((group) => (
               <div key={group.key}>
@@ -205,21 +251,32 @@ export default function TopBar({
           </svg>
           <span className="hidden sm:inline">{is3D ? "3D View" : "2D View"}</span>
         </button>
-        {isSignedIn ? (
-          <div
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-sm font-semibold text-white"
-            title={`Signed in · +${phone}`}
-          >
-            {phone?.slice(-2)}
-          </div>
-        ) : (
-          <button
-            onClick={() => requireAuth(() => {})}
-            className="flex min-h-10 items-center gap-1.5 rounded-full bg-neutral-900 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white hover:bg-neutral-800 sm:min-h-0 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
-          >
-            Sign in
-          </button>
-        )}
+        {/* Google sign-in is for public visitors leaving reviews/
+            bookmarks under their own identity — admin is a single
+            trusted operator, not someone who needs (or should be
+            prompted) to sign in with a Google account. */}
+        {publicMode &&
+          (isSignedIn ? (
+            <Link
+              href="/profile"
+              title={displayName ?? email ?? "Your profile"}
+              className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-amber-500 text-sm font-semibold text-white"
+            >
+              {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
+              ) : (
+                (displayName ?? email ?? "?").slice(0, 1).toUpperCase()
+              )}
+            </Link>
+          ) : (
+            <button
+              onClick={() => requireAuth(() => {})}
+              className="flex min-h-10 items-center gap-1.5 rounded-full bg-neutral-900 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white hover:bg-neutral-800 sm:min-h-0 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+            >
+              Sign in
+            </button>
+          ))}
       </div>
     </div>
   );

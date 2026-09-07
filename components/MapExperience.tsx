@@ -25,6 +25,8 @@ import MapAttribution from "@/components/MapAttribution";
 import CollectionsPanel from "@/components/CollectionsPanel";
 import AdRail from "@/components/AdRail";
 import AdEnquiriesPanel, { type AdEnquiry } from "@/components/AdEnquiriesPanel";
+import UsersPanel from "@/components/UsersPanel";
+import type { AdminUserSummary } from "@/app/api/admin/users/route";
 import { useBookmarks } from "@/lib/useBookmarks";
 import { useVisitTracking } from "@/lib/useVisitTracking";
 import { useCollections } from "@/lib/useCollections";
@@ -32,6 +34,7 @@ import { useRequireAuth } from "@/lib/AuthGate";
 import { useAuth } from "@/lib/useAuth";
 import { TAG_ICONS, type Tag } from "@/lib/tags";
 import { BACKGROUND_GRADIENTS, CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
+import { distanceMeters } from "@/lib/geo";
 import type { Billboard, Cafe, CafeEvent } from "@/lib/supabase";
 import type { CafeRating } from "@/app/api/cafes/ratings/route";
 
@@ -58,10 +61,21 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   const [eventFormOpen, setEventFormOpen] = useState(false);
   const [eventsOpen, setEventsOpen] = useState(false);
   const [adEnquiries, setAdEnquiries] = useState<AdEnquiry[]>([]);
+  const [users, setUsers] = useState<AdminUserSummary[]>([]);
+  const [usersLoading, setUsersLoading] = useState(false);
+  const [usersError, setUsersError] = useState<string | null>(null);
   const [feedTab, setFeedTab] = useState<FeedTab>(null);
   const [activeTags, setActiveTags] = useState<Set<Tag>>(new Set());
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [minRating, setMinRating] = useState(0);
+  // 0 = "Any" (no distance filter). Picking a real radius the first time
+  // triggers a one-off geolocation request (see selectMaxDistance) — the
+  // browser's own permission prompt is enough context here (unlike
+  // reviews' GPS check, this isn't verifying anything, just "where am
+  // I"), so there's no separate explainer step first.
+  const [maxDistanceKm, setMaxDistanceKm] = useState(0);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [locationStatus, setLocationStatus] = useState<"idle" | "locating" | "denied">("idle");
   const [ratings, setRatings] = useState<Record<string, CafeRating>>({});
   const [selected, setSelected] = useState<Selected>(null);
   const [searchMatch, setSearchMatch] = useState<SearchGroupMatch>(null);
@@ -106,6 +120,43 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     }
   }, [isAdmin, accessToken]);
 
+  // Users analytics is heavier (aggregates every table across every
+  // account server-side) and only useful while that specific admin tab
+  // is actually open, so it's fetched on demand rather than on every
+  // admin page load like the enquiry inbox above. The loading/error
+  // reset happens during render (React's recommended pattern for state
+  // driven by a prop/value) rather than synchronously at the top of the
+  // effect below, which can't set state in its body.
+  const [lastUsersFeedTab, setLastUsersFeedTab] = useState<FeedTab>(null);
+  if (feedTab === "users" && lastUsersFeedTab !== "users") {
+    setLastUsersFeedTab("users");
+    setUsersLoading(true);
+    setUsersError(null);
+  } else if (feedTab !== "users" && lastUsersFeedTab === "users") {
+    setLastUsersFeedTab(feedTab);
+  }
+
+  useEffect(() => {
+    if (feedTab !== "users" || !isAdmin || !accessToken) return;
+    let cancelled = false;
+    fetch("/api/admin/users", { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then(async (res) => {
+        const data = await res.json();
+        if (cancelled) return;
+        if (!res.ok) throw new Error(data.error || "Couldn't load users.");
+        setUsers(data);
+      })
+      .catch((err) => {
+        if (!cancelled) setUsersError(err instanceof Error ? err.message : "Couldn't load users.");
+      })
+      .finally(() => {
+        if (!cancelled) setUsersLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [feedTab, isAdmin, accessToken]);
+
   // Tags and rating narrow meaningfully alongside a search (a manually
   // picked "Quiet" tag chip plus a typed area both make sense together),
   // but Category deliberately doesn't pre-filter this — a cafe has
@@ -123,8 +174,12 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     if (minRating > 0) {
       result = result.filter((c) => (ratings[c.id]?.avg ?? 0) >= minRating);
     }
+    if (maxDistanceKm > 0 && userLocation) {
+      const maxMeters = maxDistanceKm * 1000;
+      result = result.filter((c) => distanceMeters(userLocation, { lat: c.lat, lng: c.lng }) <= maxMeters);
+    }
     return result;
-  }, [cafes, activeTags, minRating, ratings]);
+  }, [cafes, activeTags, minRating, ratings, maxDistanceKm, userLocation]);
 
   // Category always reads from activeCategory, the single source of
   // truth — handleGroupMatch below sets it (in the same batched update
@@ -166,6 +221,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     if (activeCategory) parts.push(`${CATEGORY_ICONS[activeCategory]} ${CATEGORY_SHORT_LABELS[activeCategory]}`);
     for (const tag of activeTags) parts.push(`${TAG_ICONS[tag]} ${tag}`);
     if (minRating > 0) parts.push(`★ ${minRating}+`);
+    if (maxDistanceKm > 0) parts.push(`📏 <${maxDistanceKm}km`);
     if (searchMatch?.label) parts.push(searchMatch.label);
     if (parts.length === 0) return null;
     return { label: parts.join(" · "), cafes: displayedCafes };
@@ -245,6 +301,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     setActiveCategory(null);
     setActiveTags(new Set());
     setMinRating(0);
+    setMaxDistanceKm(0);
     setSearchClearSignal((n) => n + 1);
   }
 
@@ -299,7 +356,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     // controls changing, not to every recompute of the filtered list (e.g.
     // cafes/ratings loading in).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, activeCategory, activeTags, minRating]);
+  }, [map, activeCategory, activeTags, minRating, maxDistanceKm]);
 
   // A vibe/type/area search match (see SearchBox's onGroupMatch, and the
   // combining note on displayedCafes above) opens a results card and fits
@@ -375,6 +432,39 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   function selectMinRatingManually(rating: number) {
     clearSearchIfActive();
     setMinRating(rating);
+  }
+
+  // Distance is unlike the other filter chips — it needs the visitor's
+  // own location before it can filter anything, so picking a radius the
+  // first time (or after a denial) triggers a one-off geolocation
+  // request rather than immediately updating state. `userLocation` is
+  // cached and reused for every later radius pick in the same session,
+  // so this prompt only happens once. Choosing "Any" (km === 0) just
+  // clears the filter and never needs a location at all.
+  function selectMaxDistance(km: number) {
+    clearSearchIfActive();
+    if (km === 0) {
+      setMaxDistanceKm(0);
+      return;
+    }
+    if (userLocation) {
+      setMaxDistanceKm(km);
+      return;
+    }
+    if (!navigator.geolocation) {
+      setLocationStatus("denied");
+      return;
+    }
+    setLocationStatus("locating");
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setMaxDistanceKm(km);
+        setLocationStatus("idle");
+      },
+      () => setLocationStatus("denied"),
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
   }
 
   function selectCafe(cafe: Cafe) {
@@ -491,16 +581,31 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
           to work. One base layer + one crossfading overlay (opacity only,
           so the base is never see-through) keeps the "type" filter's
           smooth transition. */}
-      <div className={`absolute inset-0 -z-10 ${BACKGROUND_GRADIENTS.all}`}>
-        {CATEGORY_OPTIONS.map((key) => (
-          <div
-            key={key}
-            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${BACKGROUND_GRADIENTS[key]} ${
-              bgKey === key ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        ))}
-      </div>
+      {/* Admin is a working tool, not the browsing experience the colorful
+          per-category aurora is meant for — it gets one flat, uniform
+          background matching the rest of the admin chrome (the panels,
+          "Admin mode" pill, etc.) instead of the mixed pink/red/purple/
+          amber blobs, which read as distracting noise here.
+          The same flat background also covers the public map until
+          MapView's onMapReady fires (map state goes non-null only once
+          MapLibre's "load" event has actually painted tiles) — before
+          that, the map canvas is empty/transparent, so the full-screen
+          aurora sat fully exposed for a beat on every reload before the
+          map covered it, reading as an unwanted colorful flash. */}
+      {isAdmin || !map ? (
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(160deg,#0b0b0d_0%,#111113_55%,#0a0a0c_100%)]" />
+      ) : (
+        <div className={`absolute inset-0 -z-10 ${BACKGROUND_GRADIENTS.all}`}>
+          {CATEGORY_OPTIONS.map((key) => (
+            <div
+              key={key}
+              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${BACKGROUND_GRADIENTS[key]} ${
+                bgKey === key ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="map-sidebar-rail">
       <Sidebar
@@ -550,11 +655,14 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
             onToggleTag={toggleTag}
             minRating={minRating}
             onSelectMinRating={selectMinRatingManually}
+            maxDistanceKm={maxDistanceKm}
+            onSelectMaxDistance={selectMaxDistance}
+            locationStatus={locationStatus}
             events={events}
           />
         </div>
 
-        <OnboardingBanner />
+        {!isAdmin && <OnboardingBanner />}
 
         {!isAdmin && (
           <button
@@ -597,7 +705,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
             <ModelLayer map={map} />
             {isAdmin && placingMode !== "aircraft" && <PendingMarker map={map} coords={pendingCoords} onDragEnd={setPendingCoords} />}
 
-            <div className="panel-elevated pointer-events-none absolute top-4 left-4 z-10 rounded-full px-3.5 py-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-200">
+            <div className="map-spots-badge panel-elevated pointer-events-none absolute top-4 left-4 z-10 rounded-full px-3.5 py-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-200">
               Showing {displayedCafes.length} spot{displayedCafes.length === 1 ? "" : "s"}
             </div>
 
@@ -735,6 +843,9 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
             )}
             {isAdmin && feedTab === "ad-enquiries" && (
               <AdEnquiriesPanel enquiries={adEnquiries} onStatus={updateAdEnquiry} onClose={() => setFeedTab(null)} />
+            )}
+            {isAdmin && feedTab === "users" && (
+              <UsersPanel users={users} loading={usersLoading} error={usersError} onClose={() => setFeedTab(null)} />
             )}
           </div>
         </div>

@@ -5,7 +5,7 @@ import ExplorerWidget from "@/components/ExplorerWidget";
 import PointsWidget from "@/components/PointsWidget";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
-export type FeedTab = "billboards" | "ad-enquiries" | "saved" | "visited" | "collections" | null;
+export type FeedTab = "billboards" | "ad-enquiries" | "users" | "saved" | "visited" | "collections" | null;
 
 type SidebarProps = {
   activeTab: FeedTab;
@@ -93,6 +93,18 @@ const AD_ENQUIRIES_NAV_ITEM = {
   ),
 };
 
+const USERS_NAV_ITEM = {
+  tab: "users" as FeedTab,
+  label: "Users",
+  icon: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+      <path d="M16 8a3 3 0 1 1 0 6M20 20c0-2.5-1.8-4.6-4.2-5.4" />
+    </svg>
+  ),
+};
+
 export default function Sidebar({
   activeTab,
   onSelectTab,
@@ -112,6 +124,7 @@ export default function Sidebar({
     ...BASE_NAV_ITEMS,
     ...(showBillboards ? [BILLBOARDS_NAV_ITEM] : []),
     ...(showBillboards ? [AD_ENQUIRIES_NAV_ITEM] : []),
+    ...(showBillboards ? [USERS_NAV_ITEM] : []),
     ...(!showBillboards ? TAIL_NAV_ITEMS : []),
   ];
 

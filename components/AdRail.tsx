@@ -32,7 +32,9 @@ export default function AdRail({ billboards, onSelect }: AdRailProps) {
               <strong>Discover local brands</strong>
             </div>
             <button type="button" onClick={() => setCollapsed(true)} className="ad-rail-collapse" aria-label="Collapse sponsored placements">
-              <span aria-hidden="true">⌄</span>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M5 8l5 5 5-5" />
+              </svg>
             </button>
           </div>
           <div className="ad-rail-slots">

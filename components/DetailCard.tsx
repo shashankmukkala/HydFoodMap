@@ -87,7 +87,7 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
 
   return (
     <div className={`detail-card panel-elevated w-full shrink-0 overflow-hidden rounded-3xl ${isCafe ? "detail-card-cafe" : "detail-card-ad"}`}>
-      <div className="flex gap-2.5 p-3.5 pb-0">
+      <div className="flex items-start gap-2.5 p-3.5 pb-0">
         {cafe?.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -134,79 +134,86 @@ export default function DetailCard({ kind, item, onClose }: DetailCardProps) {
               </svg>
             </button>
           </div>
-
-          {isCafe && (cafe?.category || cafe?.tags.length) && (
-            <div className="mt-1.5 flex flex-wrap gap-1">
-              {cafe?.category && (
-                <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-neutral-200">
-                  {cafe.category in CATEGORY_SHORT_LABELS
-                    ? CATEGORY_SHORT_LABELS[cafe.category as Category]
-                    : cafe.category}
-                </span>
-              )}
-              {cafe?.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full bg-amber-950 px-2 py-0.5 text-[10px] font-medium text-amber-300"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {isCafe && cafe?.hours_text && (
-            <div className="mt-2 text-xs text-neutral-500 dark:text-neutral-400">🕒 {cafe.hours_text}</div>
-          )}
-
-          {isCafe && cafe?.website_or_instagram && (
-            <a
-              href={cafe.website_or_instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 block truncate text-xs font-medium text-amber-600 hover:underline dark:text-amber-400"
-            >
-              Website or Instagram
-            </a>
-          )}
-
-          {isCafe && cafe?.note && (
-            <div className="mt-3 rounded-2xl border border-amber-900/40 bg-amber-950/35 px-3 py-2.5">
-              <div className="text-[10px] font-semibold tracking-[0.16em] text-amber-400 uppercase">Famous for</div>
-              <p
-                className={`mt-1 text-sm leading-5 text-amber-50/90 ${expanded ? "" : "line-clamp-2"}`}
-              >
-                {cafe.note}
-              </p>
-            </div>
-          )}
-          {isCafe && hasLongNote && (
-            <button
-              onClick={() => setExpanded((v) => !v)}
-              className="mt-1 text-xs font-medium text-amber-600 hover:underline dark:text-amber-400"
-            >
-              {expanded ? "Show less" : "View details"}
-            </button>
-          )}
-
-          {billboard && (
-            <div className="mt-3 rounded-2xl border border-amber-900/40 bg-amber-950/35 px-3 py-2.5">
-              <div className="text-[10px] font-semibold tracking-[0.16em] text-amber-400 uppercase">Sponsored placement</div>
-              <div className="mt-1 text-sm font-medium text-amber-50">{billboard.name}</div>
-              {billboard.target_url && (
-                <a
-                  href={billboard.target_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 inline-block text-xs font-medium text-amber-300 hover:underline"
-                >
-                  Visit brand
-                </a>
-              )}
-            </div>
-          )}
-
         </div>
+      </div>
+
+      {/* Full-width, not nested in the text column above — the image is a
+          fixed, comparatively short square, so tags/hours/note/etc. used
+          to be squeezed into the narrower column beside it (indented
+          past the image) while the space directly under the image sat
+          empty. This starts flush with the image's own left edge instead,
+          using the width the image freed up once its own row ended. */}
+      <div className="px-3.5 pt-2 pb-1">
+        {isCafe && (cafe?.category || cafe?.tags.length) && (
+          <div className="flex flex-wrap gap-1">
+            {cafe?.category && (
+              <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-neutral-200">
+                {cafe.category in CATEGORY_SHORT_LABELS
+                  ? CATEGORY_SHORT_LABELS[cafe.category as Category]
+                  : cafe.category}
+              </span>
+            )}
+            {cafe?.tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full bg-amber-950 px-2 py-0.5 text-[10px] font-medium text-amber-300"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {isCafe && cafe?.hours_text && (
+          <div className="mt-2 text-xs text-neutral-500 dark:text-neutral-400">🕒 {cafe.hours_text}</div>
+        )}
+
+        {isCafe && cafe?.website_or_instagram && (
+          <a
+            href={cafe.website_or_instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 block truncate text-xs font-medium text-amber-600 hover:underline dark:text-amber-400"
+          >
+            Website or Instagram
+          </a>
+        )}
+
+        {isCafe && cafe?.note && (
+          <div className="mt-3 rounded-2xl border border-amber-900/40 bg-amber-950/35 px-3 py-2.5">
+            <div className="text-[10px] font-semibold tracking-[0.16em] text-amber-400 uppercase">Famous for</div>
+            <p
+              className={`mt-1 text-sm leading-5 text-amber-50/90 ${expanded ? "" : "line-clamp-2"}`}
+            >
+              {cafe.note}
+            </p>
+          </div>
+        )}
+        {isCafe && hasLongNote && (
+          <button
+            onClick={() => setExpanded((v) => !v)}
+            className="mt-1 text-xs font-medium text-amber-600 hover:underline dark:text-amber-400"
+          >
+            {expanded ? "Show less" : "View details"}
+          </button>
+        )}
+
+        {billboard && (
+          <div className="mt-3 rounded-2xl border border-amber-900/40 bg-amber-950/35 px-3 py-2.5">
+            <div className="text-[10px] font-semibold tracking-[0.16em] text-amber-400 uppercase">Sponsored placement</div>
+            <div className="mt-1 text-sm font-medium text-amber-50">{billboard.name}</div>
+            {billboard.target_url && (
+              <a
+                href={billboard.target_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-block text-xs font-medium text-amber-300 hover:underline"
+              >
+                Visit brand
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="mt-2 flex items-center gap-1 border-t border-neutral-100 px-3 py-2 dark:border-neutral-800">
