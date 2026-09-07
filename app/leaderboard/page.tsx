@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/useAuth";
+import Avatar from "@/components/Avatar";
 import type { LeaderboardEntry } from "@/app/api/leaderboard/route";
 
 const MEDALS = ["🥇", "🥈", "🥉"];
@@ -83,14 +84,7 @@ function LeaderboardRow({ entry, highlight = false }: { entry: LeaderboardEntry;
   return (
     <div className={`leaderboard-row ${highlight ? "leaderboard-row-me" : ""}`}>
       <span className="leaderboard-rank">{entry.rank <= 3 ? MEDALS[entry.rank - 1] : `#${entry.rank}`}</span>
-      <span className="admin-user-avatar leaderboard-avatar">
-        {entry.avatarUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={entry.avatarUrl} alt="" />
-        ) : (
-          (entry.displayName ?? "?").slice(0, 1).toUpperCase()
-        )}
-      </span>
+      <Avatar avatarUrl={entry.avatarUrl} label={entry.displayName ?? "?"} className="admin-user-avatar leaderboard-avatar" />
       <span className="leaderboard-name">{entry.displayName ?? "Unnamed"}</span>
       <span className="leaderboard-visited">{entry.visitedCount} visited</span>
       <span className="leaderboard-points">★ {entry.points}</span>

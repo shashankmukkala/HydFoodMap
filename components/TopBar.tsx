@@ -10,6 +10,7 @@ import { useRequireAuth } from "@/lib/AuthGate";
 import WeatherWidget from "@/components/WeatherWidget";
 import AirQualityWidget from "@/components/AirQualityWidget";
 import NotificationsBell from "@/components/NotificationsBell";
+import Avatar from "@/components/Avatar";
 import WelcomeBonusCard from "@/components/WelcomeBonusCard";
 import LiveTicker from "@/components/LiveTicker";
 import { CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
@@ -263,17 +264,12 @@ export default function TopBar({
         {publicMode && isSignedIn && <NotificationsBell />}
         {publicMode &&
           (isSignedIn ? (
-            <Link
-              href="/profile"
-              title={displayName ?? email ?? "Your profile"}
-              className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-amber-500 text-sm font-semibold text-white"
-            >
-              {avatarUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
-              ) : (
-                (displayName ?? email ?? "?").slice(0, 1).toUpperCase()
-              )}
+            <Link href="/profile" title={displayName ?? email ?? "Your profile"} className="shrink-0">
+              <Avatar
+                avatarUrl={avatarUrl}
+                label={displayName ?? email ?? "?"}
+                className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-amber-500 text-sm font-semibold text-white"
+              />
             </Link>
           ) : (
             <button
