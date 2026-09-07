@@ -67,7 +67,7 @@ export default function TopBar({
   const [is3D, setIs3D] = useState(true);
   const [vibeOpen, setVibeOpen] = useState(false);
   const vibeRef = useRef<HTMLDivElement>(null);
-  const { isSignedIn, email } = useAuth();
+  const { isSignedIn, loading: authLoading, email } = useAuth();
   const profile = useProfile();
   const requireAuth = useRequireAuth();
 
@@ -262,10 +262,19 @@ export default function TopBar({
             bookmarks under their own identity — admin is a single
             trusted operator, not someone who needs (or should be
             prompted) to sign in with a Google account. */}
-        {publicMode && isSignedIn && <WelcomeBonusCard />}
-        {publicMode && isSignedIn && <NotificationsBell />}
+        {publicMode && !authLoading && isSignedIn && <WelcomeBonusCard />}
+        {publicMode && !authLoading && isSignedIn && <NotificationsBell />}
         {publicMode &&
-          (isSignedIn ? (
+          (authLoading ? (
+            // Checking for an existing session takes a moment even for a
+            // returning signed-in visitor — isSignedIn reads false until
+            // that resolves, so rendering off it directly flashed "Sign
+            // up" on every single load/reload before flipping to the
+            // avatar a beat later. This skeleton (same footprint as the
+            // avatar, so nothing jumps once the real state lands) covers
+            // that gap instead of showing either wrong state.
+            <div className="h-8 w-8 shrink-0 animate-pulse rounded-full bg-white/10" aria-hidden="true" />
+          ) : isSignedIn ? (
             <Link href="/profile" title={profile?.display_name ?? email ?? "Your profile"} className="shrink-0">
               <Avatar
                 avatarUrl={profile?.avatar_url ?? null}
