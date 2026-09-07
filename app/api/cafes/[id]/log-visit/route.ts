@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createAuthedClient, createServiceRoleClient, isSupabaseConfigured, supabase } from "@/lib/supabase";
+import { createAuthedClient, isSupabaseConfigured, supabase } from "@/lib/supabase";
+import { recordVerifiedVisit } from "@/lib/recordVisit";
 
 // Records a GPS-verified visit — the client must already hold a verified,
 // unused check-in from /api/cafes/[id]/check-in{,/verify} (the exact same
@@ -45,27 +46,21 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ error: "Your check-in is not valid for a visit." }, { status: 403 });
   }
 
+  // The check-in is consumed only after the visit is safely recorded.
+  // Marking it used first meant a failure on either write below burned the
+  // proof anyway, leaving the visitor to stand through another 30-second
+  // dwell for a visit they had already genuinely earned.
+  let visit;
+  try {
+    visit = await recordVerifiedVisit(userData.user.id, id, checkinId);
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Couldn't record that visit." },
+      { status: 500 }
+    );
+  }
+
   await authed.from("review_checkins").update({ used_at: new Date().toISOString() }).eq("id", checkinId).eq("user_id", userData.user.id);
 
-  const service = createServiceRoleClient();
-  const requestStart = new Date().toISOString();
-
-  const { data: firstVisitRow } = await service
-    .from("visited_cafes")
-    .upsert({ user_id: userData.user.id, cafe_id: id }, { onConflict: "user_id,cafe_id", ignoreDuplicates: true })
-    .select("user_id")
-    .maybeSingle();
-
-  const { error: logError } = await service.from("visit_log").insert({ user_id: userData.user.id, cafe_id: id, checkin_id: checkinId });
-  if (logError) return NextResponse.json({ error: logError.message }, { status: 500 });
-
-  const { data: awardedRows } = await service
-    .from("points_ledger")
-    .select("amount")
-    .eq("user_id", userData.user.id)
-    .eq("cafe_id", id)
-    .gte("created_at", requestStart);
-  const pointsAwarded = (awardedRows ?? []).reduce((sum, row) => sum + row.amount, 0);
-
-  return NextResponse.json({ ok: true, firstVisit: !!firstVisitRow, points_awarded: pointsAwarded });
+  return NextResponse.json({ ok: true, firstVisit: visit.firstVisit, points_awarded: visit.pointsAwarded });
 }

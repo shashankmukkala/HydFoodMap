@@ -6,6 +6,7 @@ import { TAG_GROUPS, TAG_ICONS } from "@/lib/tags";
 import { CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
 import PanelShell from "@/components/PanelShell";
 import { useReverseGeocode } from "@/lib/useReverseGeocode";
+import { adminFetch } from "@/lib/adminFetch";
 
 type PlaceCafeFormProps = {
   coords: { lng: number; lat: number };
@@ -37,7 +38,7 @@ export default function PlaceCafeForm({ coords, onCancel, onCreated }: PlaceCafe
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch("/api/cafes", {
+      const res = await adminFetch("/api/cafes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

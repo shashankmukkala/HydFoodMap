@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isSupabaseConfigured, supabase } from "@/lib/supabase";
+import { isSupabaseConfigured } from "@/lib/supabase";
 import { localDeleteEvent } from "@/lib/localEventStore";
+import { requireAdmin } from "@/lib/adminAuth";
 
-export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+// Admin-only, same reasoning as the create route: this was open, and so
+// was the table's RLS (0003), so anyone could delete any event on the
+// public ticker with one request.
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   if (!isSupabaseConfigured()) {
@@ -11,7 +15,10 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
     return NextResponse.json({ success: true });
   }
 
-  const { error } = await supabase.from("events").delete().eq("id", id);
+  const auth = await requireAdmin(request);
+  if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
+
+  const { error } = await auth.client.from("events").delete().eq("id", id);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true });

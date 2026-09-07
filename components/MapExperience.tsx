@@ -29,6 +29,7 @@ import { useVisitTracking } from "@/lib/useVisitTracking";
 import { useCollections } from "@/lib/useCollections";
 import { useRequireAuth } from "@/lib/AuthGate";
 import { useAdminAuth } from "@/lib/useAdminAuth";
+import { adminFetch } from "@/lib/adminFetch";
 import { TAG_ICONS, type Tag } from "@/lib/tags";
 import { BACKGROUND_GRADIENTS, CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
 import { distanceMeters } from "@/lib/geo";
@@ -470,7 +471,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   async function deleteEvent(id: string) {
     setEvents((prev) => prev.filter((e) => e.id !== id));
     try {
-      await fetch(`/api/events/${id}`, { method: "DELETE" });
+      await adminFetch(`/api/events/${id}`, { method: "DELETE" });
     } catch {
       // best-effort — event stays removed from view even if the request fails
     }

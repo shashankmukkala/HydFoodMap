@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Billboard } from "@/lib/supabase";
 import PanelShell from "@/components/PanelShell";
 import { useReverseGeocode } from "@/lib/useReverseGeocode";
+import { adminFetch } from "@/lib/adminFetch";
 
 type PlaceBillboardFormProps = {
   coords: { lng: number; lat: number };
@@ -33,7 +34,7 @@ export default function PlaceBillboardForm({ coords, initialAdType = "billboard"
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch("/api/billboards", {
+      const res = await adminFetch("/api/billboards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

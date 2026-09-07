@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Billboard } from "@/lib/supabase";
 import PanelShell from "@/components/PanelShell";
+import { adminFetch } from "@/lib/adminFetch";
 
 type Props = { existing: Billboard[]; onCancel: () => void; onCreated: (billboard: Billboard) => void };
 
@@ -22,7 +23,7 @@ export default function PlaceRailAdForm({ existing, onCancel, onCreated }: Props
     setSubmitting(true);
     setError("");
     try {
-      const response = await fetch("/api/billboards", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.trim(), ad_type: "rail", slot_number: slot, image_url: imageUrl || null, target_url: targetUrl || null, campaign_end: campaignEnd || null, lng: 0, lat: 0 }) });
+      const response = await adminFetch("/api/billboards", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.trim(), ad_type: "rail", slot_number: slot, image_url: imageUrl || null, target_url: targetUrl || null, campaign_end: campaignEnd || null, lng: 0, lat: 0 }) });
       if (!response.ok) {
         const body = await response.json().catch(() => null);
         throw new Error(body?.error || "The server could not save this rail ad.");

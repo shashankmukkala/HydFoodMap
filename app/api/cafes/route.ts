@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { localGetAll, localInsert } from "@/lib/localCafeStore";
+import { requireAdmin } from "@/lib/adminAuth";
 
 export async function GET() {
   if (!isSupabaseConfigured()) {
@@ -52,7 +53,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(cafe, { status: 201 });
   }
 
-  const { data, error } = await supabase
+  // Pinning a cafe is an admin action. This route was open, and the
+  // table's RLS was too (0001), so anyone holding the public anon key
+  // could add pins to the map — 0037 closes the table, this closes the route.
+  const auth = await requireAdmin(request);
+  if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
+
+  const { data, error } = await auth.client
     .from("cafes")
     .insert({
       name,

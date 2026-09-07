@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { CafeEvent } from "@/lib/supabase";
+import { adminFetch } from "@/lib/adminFetch";
 
 type PlaceEventFormProps = {
   onCancel: () => void;
@@ -22,7 +23,7 @@ export default function PlaceEventForm({ onCancel, onCreated }: PlaceEventFormPr
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch("/api/events", {
+      const res = await adminFetch("/api/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

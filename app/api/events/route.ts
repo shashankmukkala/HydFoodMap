@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { localGetAllEvents, localInsertEvent } from "@/lib/localEventStore";
+import { requireAdmin } from "@/lib/adminAuth";
 
 export async function GET() {
   if (!isSupabaseConfigured()) {
@@ -31,7 +32,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(event, { status: 201 });
   }
 
-  const { data, error } = await supabase
+  // Events feed the public news ticker, so an open create route meant
+  // anyone could broadcast arbitrary text on the map.
+  const auth = await requireAdmin(request);
+  if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
+
+  const { data, error } = await auth.client
     .from("events")
     .insert({ name, event_date, location: location || null, description: description || null })
     .select()

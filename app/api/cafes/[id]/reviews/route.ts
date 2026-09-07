@@ -3,6 +3,7 @@ import { createAuthedClient, isSupabaseConfigured, supabase } from "@/lib/supaba
 import { localGetReviewsForCafe, localInsertReview } from "@/lib/localReviewStore";
 import { localGetAll } from "@/lib/localCafeStore";
 import { distanceMeters, VISIT_RADIUS_METERS } from "@/lib/geo";
+import { recordVerifiedVisit } from "@/lib/recordVisit";
 
 const MAX_LOCATION_ACCURACY_METERS = 150;
 const MAX_COMMENT_LENGTH = 1200;
@@ -164,14 +165,30 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     const message = error.code === "23505" ? "You've already reviewed this cafe." : error.message;
     return NextResponse.json({ error: message }, { status });
   }
-  await authed.from("review_checkins").update({ used_at: new Date().toISOString() }).eq("id", checkin_id).eq("user_id", userData.user.id);
+  // A verified review is stronger proof of presence than the visit
+  // check-in is, so it records the visit too — the cafe now shows up in
+  // Visited, and the same one check-in covers both. Deliberately not
+  // fatal: the review is the primary action and is already saved, so a
+  // failure here should not fail the request or lose the visitor's
+  // writing. The check-in is left unconsumed in that case, which is the
+  // useful outcome — they can still spend it on a plain visit.
+  let visitPoints = 0;
+  try {
+    const visit = await recordVerifiedVisit(userData.user.id, id, checkin_id);
+    visitPoints = visit.pointsAwarded;
+    await authed.from("review_checkins").update({ used_at: new Date().toISOString() }).eq("id", checkin_id).eq("user_id", userData.user.id);
+  } catch (err) {
+    console.error("reviews: review saved but visit could not be recorded", err);
+  }
 
   // award_review_points() (0029) already ran as part of the insert above
   // (an AFTER INSERT trigger fires within the same statement) — read back
   // what it actually awarded (review + photo, if any) so the client can
-  // show the real number instead of a guessed/hardcoded one.
+  // show the real number instead of a guessed/hardcoded one. The visit
+  // and repeat-visit awards from recordVerifiedVisit are counted
+  // separately, since those rows carry no review_id.
   const { data: awarded } = await authed.from("points_ledger").select("amount").eq("review_id", data.id);
-  const pointsAwarded = (awarded ?? []).reduce((sum, row) => sum + row.amount, 0);
+  const pointsAwarded = (awarded ?? []).reduce((sum, row) => sum + row.amount, 0) + visitPoints;
 
   return NextResponse.json({ ...data, points_awarded: pointsAwarded }, { status: 201 });
 }

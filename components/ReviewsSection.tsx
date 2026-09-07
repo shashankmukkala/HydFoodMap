@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Review } from "@/lib/supabase";
 import { usePoints } from "@/lib/usePoints";
+import { useVisitTracking } from "@/lib/useVisitTracking";
 import { useRequireAuth } from "@/lib/AuthGate";
 import { useAuth } from "@/lib/useAuth";
 import { useLocationCheckin } from "@/lib/useLocationCheckin";
@@ -41,6 +42,7 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
   const fileInputRef = useRef<HTMLInputElement>(null);
   const loading = loadedForId !== cafeId;
   const { addPoints } = usePoints();
+  const { markVisitedLocally } = useVisitTracking();
   const requireAuth = useRequireAuth();
   const { session } = useAuth();
 
@@ -129,6 +131,11 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
       const review: Review & { points_awarded?: number } = await res.json();
       setReviews((prev) => [review, ...prev]);
       addPoints(review.points_awarded ?? 0);
+      // Posting a verified review now records the visit too (see
+      // lib/recordVisit.ts), so the Visited badge and count have to move
+      // with it — otherwise the cafe is visited server-side but still
+      // reads as unvisited until the next page load.
+      markVisitedLocally(cafeId);
 
       setRating(0);
       setComment("");

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { requireAdmin } from "@/lib/adminAuth";
 
 export async function GET() {
   const { data, error } = await supabase
@@ -22,7 +23,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Rail ads require a slot number from 1 to 5." }, { status: 400 });
   }
 
-  const { data, error } = await supabase
+  // Every sponsored format — billboard, aircraft banner, rail slot — is
+  // created here. This route being open meant a paid placement could be
+  // published for free with a single request, bypassing both the admin
+  // console and the enquiry/payment flow entirely.
+  const auth = await requireAdmin(request);
+  if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
+
+  const { data, error } = await auth.client
     .from("billboards")
     .insert({
       name,
