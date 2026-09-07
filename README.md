@@ -42,24 +42,53 @@ Implemented:
 - Responsive map controls for zoom, rotation, tilt, and reset north.
 - Mobile-friendly forms, drawers, safe-area spacing, and horizontal ad slots.
 
-- Admin role table (`admins`) with an `is_admin()` check used by database policies.
-- Admin-only read and status updates on advertising enquiries.
+Accounts and engagement:
+
+- Google sign-in, with a `profiles` row created automatically at signup.
+- Preset avatars, chosen at signup and editable on `/profile`.
+- Server-side points ledger with admin-configurable rewards.
+- Welcome bonus for new accounts, with its own admin settings.
+- Public leaderboard, ranked on points, excluding admins and banned users.
+- In-app notifications, first used for point awards.
+- GPS-verified visits, including a rewarded repeat visit after a cooldown.
+- Search logging, aggregated in the admin analytics view.
+
+Admin console:
+
+- Password sign-in gated by the `admins` table and an `is_admin()` check,
+  both evaluated in Postgres rather than in client state.
+- Self-service password recovery using two pre-set recovery numbers.
+- User management: list, ban, award bonus points, bulk award.
+- Analytics across cafes, reviews, visits, bookmarks, and searches.
+- Points and welcome-bonus configuration.
+- Cafe photo, category, and tag correction.
+
+Mobile experience:
+
+- Panels are bottom sheets below 1024px, with one open at a time.
+- Cards close by swipe, by tapping the map, by Escape, or by the close
+  button; the close controls are 44px on touch devices.
+- The ad rail steps aside while a sheet is open instead of being covered.
+- The map camera offsets so a selected pin stays visible beside the card
+  rather than behind it.
 
 Still MVP or pending:
 
-- Admin route authentication and role protection. The `admins` table and
-  `is_admin()` now exist and gate the enquiry API, but the `/admin` page
-  itself is still reachable by anyone.
-- Cafe photos. Only 5 of 85 places have an `image_url`, so most markers and
-  detail cards fall back to initials.
-- Cafe `hours_text`, `cost_for_two`, and most `image_url` values are empty
-  in the live data, so those detail rows and any "open now" filter cannot
-  render yet.
+- Cafe photos. Only 5 of 85 places have an `image_url`, so most markers
+  fall back to initials and most cards open without a banner.
+- Cafe `hours_text` and `cost_for_two` are empty for all 85 records, so
+  those rows never render and an "open now" filter cannot be built yet.
+- Photo storage. Review photos and admin-uploaded cafe photos are embedded
+  in the row as data URLs. This is fine at five photos and will not be at
+  eighty-five: `/api/cafes` returns every cafe with its photo on every page
+  load. Move to Supabase Storage before bulk-adding logos.
 - Automatic conversion of approved enquiries into live ads.
 - Real UPI QR code and UPI ID configuration.
 - Payment gateway or automated payment reconciliation.
 - File upload storage for banners and payment proof.
-- Supabase syncing for user favourites, visited places, collections, and points.
+- Repeat welcome bonuses are possible by creating additional Google
+  accounts. There is no honest code-level fix; keep the bonus small until
+  points are redeemable.
 - Exact polygon-level Telangana boundary enforcement. The current map camera uses a close rectangular state extent.
 - Public advertiser analytics such as impressions and clicks.
 
@@ -157,16 +186,33 @@ The public UI includes:
 - Cafes visited count.
 - Points display.
 
-At the current MVP stage, these are stored in browser `localStorage`:
+These are stored per account in Supabase, not in browser storage, so they
+follow a user across devices: `bookmarks`, `collections`, `visited_cafes`,
+and `points_ledger`.
 
-- `hydcafemap:bookmarked-cafe-ids`
-- `hydcafemap:visited-cafe-ids`
-- `hydcafemap:collections`
-- `hydcafemap:points`
+Points are a ledger of earn events rather than a running total, so a
+balance is always the sum of what was actually awarded and cannot drift.
+Every award is written either by a security-definer trigger tied to a
+verified action or by an admin route using the service role. There is no
+insert policy on `points_ledger` for regular users, which is deliberate:
+an earlier policy checked only row ownership and not the value, so a
+signed-in user could award themselves any amount directly through the
+Supabase client.
 
-They are browser-specific and do not yet sync across devices. Migration `0008_users_bookmarks_collections_points.sql` prepares Supabase tables for a future authenticated sync, but the current hooks have not been migrated to use them.
+Visits are equally not self-reported. Marking a cafe visited requires the
+same GPS check-in, dwell, and re-verify sequence a review does, and the
+row is written server-side by `/api/cafes/[id]/log-visit`. A repeat visit
+to the same cafe earns a smaller reward, gated by a 20-hour cooldown so
+the same visit cannot be re-logged from the same seat.
 
-Points should move to a server-side ledger before real rewards or redemptions are launched because browser storage can be manipulated.
+Posting a review records the visit too. A verified review is stronger
+proof of presence than the visit check-in, so one check-in covers both and
+the cafe appears in Visited without a second 30-second wait.
+
+Reviews cannot be deleted. Deleting one used to free the one-review-per-
+cafe slot while leaving its points in place, which made a check-in,
+review, delete, repeat loop worth the full reward every 40 seconds.
+Correcting a review is a future edit flow with its own rules.
 
 ## Advertising Platform
 
@@ -272,16 +318,29 @@ components/
   AircraftAdOverlay.tsx            Moving aircraft ads
   BillboardLayer.tsx               3D billboard renderer
   AdEnquiriesPanel.tsx             Admin advertising inbox
+  AdminGate.tsx                    Admin sign-in and is_admin check
+  VisitCheckin.tsx                 GPS-verified visit flow
+  NotificationsBell.tsx            In-app notifications
+  Avatar.tsx                       Preset avatar rendering
+  EditCafeTaxonomy.tsx             Admin photo/category/tag correction
 
 lib/
   supabase.ts                       Supabase client and shared types
   mapStyle.ts                       Map style, camera, and Telangana bounds
-  useBookmarks.ts                   Current local favourites store
-  useVisitTracking.ts               Current local visited store
-  useCollections.ts                 Current local collections store
-  usePoints.ts                      Current local points store
+  useBookmarks.ts                   Per-account favourites
+  useVisitTracking.ts               Per-account visited places, read-only
+  useCollections.ts                 Per-account collections
+  usePoints.ts                      Points balance
+  useProfile.ts                     The signed-in user's profile row
+  useNotifications.ts               Notification list and read state
+  useLocationCheckin.ts             GPS check-in, dwell, and re-verify
+  useMediaQuery.ts                  Viewport-driven behaviour, not styling
+  useSwipeToDismiss.ts              Bottom-sheet drag gesture
   AuthGate.tsx                      Sign-in/auth gate behavior
+  useAdminAuth.ts                   Admin console session, separate from the public one
   adminAuth.ts                      Server-side admin check for API routes
+  adminFetch.ts                     Attaches the admin token to a request
+  recordVisit.ts                    Shared verified-visit write
   geo.ts                            Distance and geographic helpers
 
 supabase/migrations/
@@ -308,10 +367,26 @@ supabase/migrations/
 | `POST /api/cafes/[id]/check-in` | Start review check-in |
 | `POST /api/cafes/[id]/check-in/verify` | Verify review check-in |
 | `GET/POST /api/cafes/[id]/reviews` | Read/create reviews |
-| `GET/POST /api/events` | List/create events |
-| `DELETE /api/events/[id]` | Delete an event |
-| `GET/POST /api/billboards` | List/create billboard formats |
-| `DELETE /api/billboards/[id]` | Delete an ad |
+| `POST /api/cafes/[id]/log-visit` | Record a GPS-verified visit |
+| `POST /api/cafes` | Create a cafe. Requires an admin bearer token |
+| `PATCH/DELETE /api/cafes/[id]` | Edit or remove a cafe. Requires an admin bearer token |
+| `GET /api/events` | List events |
+| `POST /api/events` | Create an event. Requires an admin bearer token |
+| `DELETE /api/events/[id]` | Delete an event. Requires an admin bearer token |
+| `GET /api/billboards` | List all sponsored placements |
+| `POST /api/billboards` | Create a placement. Requires an admin bearer token |
+| `PATCH/DELETE /api/billboards/[id]` | Edit or remove an ad. Requires an admin bearer token |
+| `GET /api/leaderboard` | Public ranking, plus the caller's own rank |
+| `GET /api/points-config` | Current point values |
+| `POST /api/search-logs` | Record a search for admin analytics |
+| `GET /api/admin/analytics` | Admin dashboard aggregate |
+| `GET /api/admin/users` | Admin user list |
+| `PATCH /api/admin/users/[userId]/ban` | Ban or unban a user |
+| `POST /api/admin/users/[userId]/bonus-points` | Award bonus points |
+| `POST /api/admin/users/bulk-bonus-points` | Award bonus points in bulk |
+| `GET/PATCH /api/admin/points-config` | Read or edit point values |
+| `GET/PATCH /api/admin/welcome-bonus` | Read or edit the signup bonus |
+| `POST /api/admin/reset-password` | Admin password recovery |
 | `POST /api/ad-enquiries` | Submit advertiser enquiry (public) |
 | `GET /api/ad-enquiries` | Admin enquiry listing. Requires an admin bearer token |
 | `PATCH /api/ad-enquiries/[id]` | Approve or reject enquiry. Requires an admin bearer token |
@@ -343,8 +418,38 @@ Important recent migrations:
 - `0022_admin_role_and_enquiry_access.sql`: `admins` table, `is_admin()`, and admin-only enquiry read/update.
 - `0023` through `0035`: admin recovery, profiles, server-side visited places and points, notifications, welcome/bulk bonuses, points config and leaderboard, search logs, verified repeat visits, campaign end dates, and preset avatars.
 - `0036_normalize_cafe_categories.sql`: maps every cafe onto the four values in `lib/categories.ts` and adds a CHECK constraint so the column and that list cannot drift apart again.
+- `0037_lock_legacy_write_policies.sql`: moves `cafes`, `events`, and `billboards` writes behind `is_admin()`, and removes review deletion. See below.
+- `0038_leaderboard_stats_function.sql`: single aggregate for the leaderboard.
+- `0039_leaderboard_public_names.sql`: shortens names on the public ranking.
 
-For a fresh project, run all migrations from `0001` through `0036`. For the current rail publisher, `0021_rail_ads.sql` is required.
+For a fresh project, run all migrations from `0001` through `0039`. For the current rail publisher, `0021_rail_ads.sql` is required.
+
+### Row level security
+
+Reads are public where the product is public: the map, the ad rail, the
+events ticker, and reviews. Writes are not.
+
+`cafes`, `events`, and `billboards` carried `with check (true)` insert,
+update, and delete policies from `0001` and `0003`, written before the
+project had any authentication. The anon key ships in every browser that
+loads the site, so anyone could add a cafe, delete an event, or publish a
+billboard, aircraft banner, or rail slot directly against PostgREST —
+bypassing both the admin console and payment. `0037` moves all three
+behind `is_admin()`.
+
+The matching API routes were open too, and are now gated with
+`requireAdmin`. Both halves are needed: the route check stops the app-level
+path, the policy stops the direct-to-database one.
+
+Personal tables (`bookmarks`, `collections`, `visited_cafes`,
+`points_ledger`, `notifications`, `profiles`, `review_checkins`) are scoped
+to `auth.uid()`. `visit_log`, `points_config`, `welcome_bonus_config`, and
+`admin_recovery` have no client policies at all and are reached only
+through service-role routes.
+
+To check the current state from outside, attempt an anonymous insert. A
+`42501` means the policy refused it. A `23502` or `23514` means the write
+reached a column constraint, which means RLS had already let it through.
 
 ### Cafe categories
 
@@ -502,6 +607,39 @@ Design rules:
 - Keep interactive controls at least 44px on touch devices.
 - Avoid showing imported ratings as if they were verified reviews.
 
+Applying the palette:
+
+Mint marks trust and carries the primary action. Amber and saffron mean
+sponsored, and nothing else. The cafe card previously spent amber on tags,
+the "known for" note, links, and the saved state, which left the
+advertising colour doing product work while mint went unused on the one
+surface whose whole selling point is trust. Amber now appears there only
+on the sponsored placement block.
+
+Panels and sheets:
+
+Below 1024px, panels are bottom sheets and only one is open at a time —
+each wants most of a phone screen. At or above it, the right-hand column is
+wide enough for a list and a card to stack, which is useful when picking
+through several results. A card must be dismissible by swipe, by tapping
+the map, and by Escape, not only by its close button.
+
+`lib/useMediaQuery.ts` exists for behaviour that CSS cannot express, such
+as "opening a card should close the list, but only on a phone". Anything
+that only changes appearance belongs in a media query.
+
+Performance on mid-range phones:
+
+- Do not leave a MapLibre custom layer calling `triggerRepaint()`
+  unconditionally. That pins the map into a permanent render loop; the
+  billboard layer did this even with no billboards placed.
+- Backdrop blur is reduced under `pointer: coarse`. Each blurred surface
+  re-samples everything behind it every frame, and this app stacks panels
+  over an animated backdrop over a live WebGL map.
+- Gestures write `transform` directly to the node rather than through
+  React state, so a drag never re-renders the card it is moving.
+- `prefers-reduced-motion` disables the sheet animations.
+
 ## Telangana Map Restriction
 
 The map camera is configured in `lib/mapStyle.ts` with:
@@ -527,27 +665,34 @@ The MapLibre rectangle prevents normal panning and zooming outside the close Tel
 
 Before production:
 
-1. Protect `/admin` with Supabase Auth and an explicit admin role. The
-   `admins` table and `is_admin()` from `0022` are the intended basis; the
-   page and its remaining write routes still need to use them.
-2. Replace open MVP write policies with least-privilege RLS policies.
-   `cafes`, `events`, and `billboards` still carry the `using (true)` insert,
-   update, and delete policies from `0001` and `0003`, so the public anon key
-   can write to them directly. `reviews`, `review_checkins`, `bookmarks`,
-   `collections`, `points_ledger`, and `ad_enquiries` are already scoped.
-3. Replace the placeholder QR and UPI ID on `/advertise`.
-4. Add Supabase Storage for banner images and payment proof.
+1. Move photos to Supabase Storage before bulk-adding cafe logos. Review
+   photos and admin-uploaded cafe photos are embedded in the row as data
+   URLs, and `/api/cafes` returns every cafe with its photo on every page
+   load. Cheap to change at five photos, a data migration at eighty-five.
+2. Fill in `hours_text` and `cost_for_two`. Both are empty for all 85
+   records, so those rows never render and "open now" — the most-used
+   filter in this category — cannot be built.
+3. Add cafe photography. Five of 85 is the largest single gap between how
+   the product looks now and how it should look.
+4. Replace the placeholder QR and UPI ID on `/advertise`.
 5. Add an admin preview and activation window for approved ads.
 6. Add impression and click tracking for every advertising format.
 7. Add automated expiry for campaigns.
-8. Connect personal user features to Supabase after account usage grows.
-9. Test on real iOS and Android browsers at multiple viewport sizes.
-10. Add an exact Telangana polygon boundary if the rectangular extent is not sufficient.
+8. Test on real iOS and Android browsers at multiple viewport sizes. The
+   mobile sheet work has been verified by build and type check only.
+9. Add an exact Telangana polygon boundary if the rectangular extent is not sufficient.
+10. Consider a review edit flow. Reviews are currently permanent, since
+    deletion was the mechanism behind a points-farming loop.
 
 ## Important Safety Notes
 
-- Never deploy the current `/admin` route as a public production admin surface without authentication.
-- Never trust a browser-provided points total for rewards.
+- `/admin` is gated by password sign-in plus `admins` membership, checked
+  in Postgres. Keep every admin API route behind `requireAdmin` as well —
+  a page-level gate only hides the buttons, it does not stop a direct
+  request.
+- Never trust a browser-provided points total for rewards. Award points
+  only from a trigger tied to a verified action or from a service-role
+  route, never from a client insert.
 - Never treat an advertiser enquiry as approved payment without manual verification.
 - Validate destination URLs and creative content before publishing.
 - Keep Supabase service-role credentials server-only.
