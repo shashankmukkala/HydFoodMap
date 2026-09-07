@@ -212,6 +212,16 @@ export default function ProfilePage() {
               disabled={profileLoading}
               className="w-full rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm text-neutral-100 focus:outline-none disabled:opacity-50"
             />
+            {/* This name is seeded from the Google account at signup, and
+                the leaderboard is public — so people should be told what
+                others actually see before deciding whether to change it.
+                The shortening happens server-side in
+                public_display_name() (0039); this only describes it. */}
+            <p className="text-[11px] text-neutral-400">
+              On the public leaderboard this shows as{" "}
+              <span className="text-neutral-200">{publicNamePreview(name)}</span>. Use a nickname if you
+              would rather not show your real name.
+            </p>
             {error && <p className="text-[11px] text-red-400">{error}</p>}
             <button
               type="submit"
@@ -246,4 +256,16 @@ function CenteredMessage({ children }: { children: React.ReactNode }) {
       {children}
     </div>
   );
+}
+
+// Mirrors public_display_name() in 0039 so the preview above matches what
+// the leaderboard will actually publish. Kept deliberately simple and in
+// sync with that SQL: first word, then the last word's initial; a
+// single-word name is already a handle and is left alone.
+function publicNamePreview(raw: string): string {
+  const collapsed = raw.replace(/\s+/g, " ").trim();
+  if (!collapsed) return "nothing yet";
+  const parts = collapsed.split(" ");
+  if (parts.length === 1) return collapsed;
+  return `${parts[0]} ${parts[parts.length - 1][0].toUpperCase()}.`;
 }
