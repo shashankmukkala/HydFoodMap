@@ -4,6 +4,19 @@ import { localGetReviewsForCafe, localInsertReview } from "@/lib/localReviewStor
 import { localGetAll } from "@/lib/localCafeStore";
 import { distanceMeters, VISIT_RADIUS_METERS } from "@/lib/geo";
 
+const MAX_LOCATION_ACCURACY_METERS = 150;
+const MAX_COMMENT_LENGTH = 1200;
+const MAX_FAVORITE_FOOD_LENGTH = 120;
+const MAX_PHOTO_DATA_LENGTH = 1_500_000;
+
+function optionalText(value: unknown, maxLength: number) {
+  if (value === undefined || value === null || value === "") return null;
+  if (typeof value !== "string") return { error: "Review text must be a string." } as const;
+  const trimmed = value.trim();
+  if (trimmed.length > maxLength) return { error: `Review text must be ${maxLength} characters or less.` } as const;
+  return trimmed || null;
+}
+
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
@@ -24,17 +37,54 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const body = await request.json();
-  const { rating, comment, favorite_food, photo_url, lat, lng } = body;
+  const { rating, comment, favorite_food, photo_url, lat, lng, accuracy, checkin_id } = body;
 
-  if (typeof rating !== "number" || rating < 1 || rating > 5) {
-    return NextResponse.json({ error: "rating must be a number 1-5" }, { status: 400 });
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+    return NextResponse.json({ error: "Rating must be a whole number from 1 to 5." }, { status: 400 });
   }
-  if (typeof lat !== "number" || typeof lng !== "number") {
+  if (
+    typeof lat !== "number" ||
+    typeof lng !== "number" ||
+    !Number.isFinite(lat) ||
+    !Number.isFinite(lng) ||
+    lat < -90 ||
+    lat > 90 ||
+    lng < -180 ||
+    lng > 180
+  ) {
     return NextResponse.json(
       { error: "lat/lng are required — reviews must be submitted from the cafe's location" },
       { status: 400 }
     );
   }
+  if (typeof accuracy !== "number" || !Number.isFinite(accuracy) || accuracy < 0) {
+    return NextResponse.json({ error: "A valid GPS accuracy reading is required." }, { status: 400 });
+  }
+  if (accuracy > MAX_LOCATION_ACCURACY_METERS) {
+    return NextResponse.json(
+      { error: "Your GPS signal is too approximate. Move outside or enable precise location and try again." },
+      { status: 403 }
+    );
+  }
+
+  const safeComment = optionalText(comment, MAX_COMMENT_LENGTH);
+  const safeFavoriteFood = optionalText(favorite_food, MAX_FAVORITE_FOOD_LENGTH);
+  if (typeof safeComment !== "string" && safeComment !== null) {
+    return NextResponse.json({ error: safeComment.error }, { status: 400 });
+  }
+  if (typeof safeFavoriteFood !== "string" && safeFavoriteFood !== null) {
+    return NextResponse.json({ error: safeFavoriteFood.error }, { status: 400 });
+  }
+  if (photo_url !== undefined && photo_url !== null && photo_url !== "") {
+    if (
+      typeof photo_url !== "string" ||
+      !photo_url.startsWith("data:image/") ||
+      photo_url.length > MAX_PHOTO_DATA_LENGTH
+    ) {
+      return NextResponse.json({ error: "Photo must be a supported image under 1 MB." }, { status: 400 });
+    }
+  }
+  const safePhotoUrl = photo_url || null;
 
   if (!isSupabaseConfigured()) {
     const cafe = localGetAll().find((c) => c.id === id);
@@ -46,9 +96,9 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       cafe_id: id,
       user_id: "local-dev",
       rating,
-      comment: comment || null,
-      favorite_food: favorite_food || null,
-      photo_url: photo_url || null,
+      comment: safeComment,
+      favorite_food: safeFavoriteFood,
+      photo_url: safePhotoUrl,
       reviewer_name: null,
     });
     return NextResponse.json(review, { status: 201 });
@@ -78,15 +128,32 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   }
 
   const authed = createAuthedClient(token);
+  if (typeof checkin_id !== "string") {
+    return NextResponse.json({ error: "Complete the cafe check-in before posting a review." }, { status: 400 });
+  }
+
+  const { data: checkin, error: checkinError } = await authed
+    .from("review_checkins")
+    .select("id, expires_at, verified_at, used_at")
+    .eq("id", checkin_id)
+    .eq("cafe_id", id)
+    .eq("user_id", userData.user.id)
+    .single();
+  if (checkinError || !checkin) return NextResponse.json({ error: "Verified check-in not found." }, { status: 403 });
+  if (!checkin.verified_at || checkin.used_at || new Date(checkin.expires_at).getTime() <= Date.now()) {
+    return NextResponse.json({ error: "Your cafe check-in is not valid for a review." }, { status: 403 });
+  }
+
   const { data, error } = await authed
     .from("reviews")
     .insert({
       cafe_id: id,
       user_id: userData.user.id,
       rating,
-      comment: comment || null,
-      favorite_food: favorite_food || null,
-      photo_url: photo_url || null,
+      comment: safeComment,
+      favorite_food: safeFavoriteFood,
+      photo_url: safePhotoUrl,
+      checkin_id,
     })
     .select()
     .single();
@@ -97,5 +164,6 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     const message = error.code === "23505" ? "You've already reviewed this cafe." : error.message;
     return NextResponse.json({ error: message }, { status });
   }
+  await authed.from("review_checkins").update({ used_at: new Date().toISOString() }).eq("id", checkin_id).eq("user_id", userData.user.id);
   return NextResponse.json(data, { status: 201 });
 }

@@ -13,7 +13,7 @@ export default function FloatingActions({ placingMode, onToggleMode }: FloatingA
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex flex-col items-end gap-2">
+    <div className="flex flex-col items-end gap-2.5">
       {open && (
         <div className="flex flex-col items-end gap-2">
           <ActionButton
@@ -47,7 +47,8 @@ export default function FloatingActions({ placingMode, onToggleMode }: FloatingA
           }
         }}
         aria-label={placingMode ? "Cancel placing" : "Add to map"}
-        className={`flex h-12 w-12 items-center justify-center rounded-full text-2xl leading-none font-light text-white shadow-xl transition-transform ${
+        title={placingMode ? "Cancel placement" : "Add to map"}
+        className={`map-add-button flex h-14 w-14 items-center justify-center rounded-full text-3xl leading-none font-light text-white shadow-xl transition-transform ${
           placingMode ? "bg-red-500" : "bg-amber-500 hover:bg-amber-600"
         } ${open ? "rotate-45" : ""}`}
       >
@@ -71,7 +72,8 @@ function ActionButton({
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2 rounded-full py-2 pr-4 pl-2.5 text-sm font-medium whitespace-nowrap shadow-lg transition-colors ${
+      title={label}
+      className={`map-action-button flex items-center gap-2 rounded-full py-2 pr-4 pl-2.5 text-sm font-medium whitespace-nowrap shadow-lg transition-colors ${
         active
           ? "bg-amber-500 text-white"
           : "bg-white text-neutral-700 hover:bg-amber-50 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"

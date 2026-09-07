@@ -6,9 +6,12 @@ import MapView from "@/components/Map";
 import CafeMarkers from "@/components/CafeMarkers";
 import PendingMarker from "@/components/PendingMarker";
 import BillboardLayer from "@/components/BillboardLayer";
+import BillboardMarkers from "@/components/BillboardMarkers";
+import AircraftAdOverlay from "@/components/AircraftAdOverlay";
 import ModelLayer from "@/components/ModelLayer";
 import PlaceCafeForm from "@/components/PlaceCafeForm";
 import PlaceBillboardForm from "@/components/PlaceBillboardForm";
+import PlaceRailAdForm from "@/components/PlaceRailAdForm";
 import PlaceEventForm from "@/components/PlaceEventForm";
 import TopBar from "@/components/TopBar";
 import SearchResultsPanel from "@/components/SearchResultsPanel";
@@ -18,19 +21,24 @@ import Sidebar, { type FeedTab } from "@/components/Sidebar";
 import FeedPanel from "@/components/FeedPanel";
 import EventsPanel from "@/components/EventsPanel";
 import DetailCard from "@/components/DetailCard";
-import FloatingActions from "@/components/FloatingActions";
 import MapAttribution from "@/components/MapAttribution";
 import CollectionsPanel from "@/components/CollectionsPanel";
+import AdRail from "@/components/AdRail";
+import AdEnquiriesPanel, { type AdEnquiry } from "@/components/AdEnquiriesPanel";
+import UsersPanel from "@/components/UsersPanel";
+import type { AdminUserSummary } from "@/app/api/admin/users/route";
 import { useBookmarks } from "@/lib/useBookmarks";
 import { useVisitTracking } from "@/lib/useVisitTracking";
 import { useCollections } from "@/lib/useCollections";
 import { useRequireAuth } from "@/lib/AuthGate";
+import { useAuth } from "@/lib/useAuth";
 import { TAG_ICONS, type Tag } from "@/lib/tags";
 import { BACKGROUND_GRADIENTS, CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
+import { distanceMeters } from "@/lib/geo";
 import type { Billboard, Cafe, CafeEvent } from "@/lib/supabase";
 import type { CafeRating } from "@/app/api/cafes/ratings/route";
 
-type PlacingMode = "cafe" | "billboard" | null;
+type PlacingMode = "cafe" | "billboard" | "aircraft" | "rail" | null;
 type Selected = { kind: "cafe"; item: Cafe } | { kind: "billboard"; item: Billboard } | null;
 
 type MapExperienceProps = {
@@ -51,10 +59,23 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   const [placingMode, setPlacingMode] = useState<PlacingMode>(null);
   const [pendingCoords, setPendingCoords] = useState<{ lng: number; lat: number } | null>(null);
   const [eventFormOpen, setEventFormOpen] = useState(false);
+  const [eventsOpen, setEventsOpen] = useState(false);
+  const [adEnquiries, setAdEnquiries] = useState<AdEnquiry[]>([]);
+  const [users, setUsers] = useState<AdminUserSummary[]>([]);
+  const [usersLoading, setUsersLoading] = useState(false);
+  const [usersError, setUsersError] = useState<string | null>(null);
   const [feedTab, setFeedTab] = useState<FeedTab>(null);
   const [activeTags, setActiveTags] = useState<Set<Tag>>(new Set());
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [minRating, setMinRating] = useState(0);
+  // 0 = "Any" (no distance filter). Picking a real radius the first time
+  // triggers a one-off geolocation request (see selectMaxDistance) — the
+  // browser's own permission prompt is enough context here (unlike
+  // reviews' GPS check, this isn't verifying anything, just "where am
+  // I"), so there's no separate explainer step first.
+  const [maxDistanceKm, setMaxDistanceKm] = useState(0);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [locationStatus, setLocationStatus] = useState<"idle" | "locating" | "denied">("idle");
   const [ratings, setRatings] = useState<Record<string, CafeRating>>({});
   const [selected, setSelected] = useState<Selected>(null);
   const [searchMatch, setSearchMatch] = useState<SearchGroupMatch>(null);
@@ -67,6 +88,8 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   const { visitedCount, visitedIds } = useVisitTracking();
   const { collections, createCollection, deleteCollection } = useCollections();
   const requireAuth = useRequireAuth();
+  const { session } = useAuth();
+  const accessToken = session?.access_token ?? null;
 
   useEffect(() => {
     fetch("/api/cafes")
@@ -85,7 +108,54 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       .then((res) => res.json())
       .then((data) => data && typeof data === "object" && setRatings(data))
       .catch(() => {});
-  }, []);
+    // The enquiry inbox is admin-only server-side, so it needs the signed-in
+    // admin's token. Skipped entirely while signed out — without a token the
+    // request can only come back 401, and firing it anyway would just log a
+    // failure on every public admin page load.
+    if (isAdmin && accessToken) {
+      fetch("/api/ad-enquiries", { headers: { Authorization: `Bearer ${accessToken}` } })
+        .then((res) => (res.ok ? res.json() : []))
+        .then((data) => Array.isArray(data) && setAdEnquiries(data))
+        .catch(() => {});
+    }
+  }, [isAdmin, accessToken]);
+
+  // Users analytics is heavier (aggregates every table across every
+  // account server-side) and only useful while that specific admin tab
+  // is actually open, so it's fetched on demand rather than on every
+  // admin page load like the enquiry inbox above. The loading/error
+  // reset happens during render (React's recommended pattern for state
+  // driven by a prop/value) rather than synchronously at the top of the
+  // effect below, which can't set state in its body.
+  const [lastUsersFeedTab, setLastUsersFeedTab] = useState<FeedTab>(null);
+  if (feedTab === "users" && lastUsersFeedTab !== "users") {
+    setLastUsersFeedTab("users");
+    setUsersLoading(true);
+    setUsersError(null);
+  } else if (feedTab !== "users" && lastUsersFeedTab === "users") {
+    setLastUsersFeedTab(feedTab);
+  }
+
+  useEffect(() => {
+    if (feedTab !== "users" || !isAdmin || !accessToken) return;
+    let cancelled = false;
+    fetch("/api/admin/users", { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then(async (res) => {
+        const data = await res.json();
+        if (cancelled) return;
+        if (!res.ok) throw new Error(data.error || "Couldn't load users.");
+        setUsers(data);
+      })
+      .catch((err) => {
+        if (!cancelled) setUsersError(err instanceof Error ? err.message : "Couldn't load users.");
+      })
+      .finally(() => {
+        if (!cancelled) setUsersLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [feedTab, isAdmin, accessToken]);
 
   // Tags and rating narrow meaningfully alongside a search (a manually
   // picked "Quiet" tag chip plus a typed area both make sense together),
@@ -104,8 +174,12 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     if (minRating > 0) {
       result = result.filter((c) => (ratings[c.id]?.avg ?? 0) >= minRating);
     }
+    if (maxDistanceKm > 0 && userLocation) {
+      const maxMeters = maxDistanceKm * 1000;
+      result = result.filter((c) => distanceMeters(userLocation, { lat: c.lat, lng: c.lng }) <= maxMeters);
+    }
     return result;
-  }, [cafes, activeTags, minRating, ratings]);
+  }, [cafes, activeTags, minRating, ratings, maxDistanceKm, userLocation]);
 
   // Category always reads from activeCategory, the single source of
   // truth — handleGroupMatch below sets it (in the same batched update
@@ -147,6 +221,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     if (activeCategory) parts.push(`${CATEGORY_ICONS[activeCategory]} ${CATEGORY_SHORT_LABELS[activeCategory]}`);
     for (const tag of activeTags) parts.push(`${TAG_ICONS[tag]} ${tag}`);
     if (minRating > 0) parts.push(`★ ${minRating}+`);
+    if (maxDistanceKm > 0) parts.push(`📏 <${maxDistanceKm}km`);
     if (searchMatch?.label) parts.push(searchMatch.label);
     if (parts.length === 0) return null;
     return { label: parts.join(" · "), cafes: displayedCafes };
@@ -161,6 +236,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   // never left alone with nothing beside it either.
   const realPanelCount = (selected ? 1 : 0) + (resultsMatch ? 1 : 0) + (feedTab ? 1 : 0);
   const showEvents = realPanelCount < 2;
+  const upcomingEventCount = events.filter((event) => event.event_date >= new Date().toISOString().slice(0, 10)).length;
 
   // The results list's carousel page normally shows 5 rows, but that's
   // only guaranteed to fit when it's the only panel in the column. Once
@@ -225,6 +301,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     setActiveCategory(null);
     setActiveTags(new Set());
     setMinRating(0);
+    setMaxDistanceKm(0);
     setSearchClearSignal((n) => n + 1);
   }
 
@@ -279,7 +356,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     // controls changing, not to every recompute of the filtered list (e.g.
     // cafes/ratings loading in).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, activeCategory, activeTags, minRating]);
+  }, [map, activeCategory, activeTags, minRating, maxDistanceKm]);
 
   // A vibe/type/area search match (see SearchBox's onGroupMatch, and the
   // combining note on displayedCafes above) opens a results card and fits
@@ -321,7 +398,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   );
 
   function handleMapClick(lngLat: { lng: number; lat: number }) {
-    if (!isAdmin || !placingMode) return;
+    if (!isAdmin || !placingMode || placingMode === "aircraft") return;
     setPendingCoords(lngLat);
   }
 
@@ -355,6 +432,39 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   function selectMinRatingManually(rating: number) {
     clearSearchIfActive();
     setMinRating(rating);
+  }
+
+  // Distance is unlike the other filter chips — it needs the visitor's
+  // own location before it can filter anything, so picking a radius the
+  // first time (or after a denial) triggers a one-off geolocation
+  // request rather than immediately updating state. `userLocation` is
+  // cached and reused for every later radius pick in the same session,
+  // so this prompt only happens once. Choosing "Any" (km === 0) just
+  // clears the filter and never needs a location at all.
+  function selectMaxDistance(km: number) {
+    clearSearchIfActive();
+    if (km === 0) {
+      setMaxDistanceKm(0);
+      return;
+    }
+    if (userLocation) {
+      setMaxDistanceKm(km);
+      return;
+    }
+    if (!navigator.geolocation) {
+      setLocationStatus("denied");
+      return;
+    }
+    setLocationStatus("locating");
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setMaxDistanceKm(km);
+        setLocationStatus("idle");
+      },
+      () => setLocationStatus("denied"),
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
   }
 
   function selectCafe(cafe: Cafe) {
@@ -394,11 +504,13 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       return;
     }
     setSelected({ kind: "billboard", item: billboard });
-    map?.flyTo({
-      center: [billboard.lng, billboard.lat],
-      zoom: Math.max(map.getZoom(), 16),
-      essential: true,
-    });
+    if (billboard.ad_type !== "rail") {
+      map?.flyTo({
+        center: [billboard.lng, billboard.lat],
+        zoom: Math.max(map.getZoom(), 16),
+        essential: true,
+      });
+    }
   }
 
   async function deleteEvent(id: string) {
@@ -407,6 +519,25 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       await fetch(`/api/events/${id}`, { method: "DELETE" });
     } catch {
       // best-effort — event stays removed from view even if the request fails
+    }
+  }
+
+  function startAircraftPlacement() {
+    if (!isAdmin || !map) return;
+    const center = map.getCenter();
+    setPlacingMode("aircraft");
+    setPendingCoords({ lng: center.lng, lat: center.lat });
+    setSelected(null);
+    setFeedTab(null);
+  }
+
+  async function deleteBillboard(id: string) {
+    setBillboards((prev) => prev.filter((billboard) => billboard.id !== id));
+    if (selected?.kind === "billboard" && selected.item.id === id) setSelected(null);
+    try {
+      await fetch(`/api/billboards/${id}`, { method: "DELETE" });
+    } catch {
+      // Keep the placement removed from the current view if the request fails.
     }
   }
 
@@ -423,10 +554,21 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     setSelected(null);
   }
 
+  async function updateAdEnquiry(id: string, status: "approved" | "rejected") {
+    if (!accessToken) return;
+    const response = await fetch(`/api/ad-enquiries/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify({ status }),
+    });
+    if (!response.ok) return;
+    setAdEnquiries((current) => current.map((item) => (item.id === id ? { ...item, status } : item)));
+  }
+
   const bgKey: Category | "all" = activeCategory ?? "all";
 
   return (
-    <div className="relative isolate flex h-dvh w-dvw gap-1 overflow-hidden p-1 sm:gap-1.5 sm:p-2">
+    <div className={`map-experience-shell relative isolate flex h-dvh w-dvw gap-1 overflow-hidden p-1 pb-[calc(0.25rem+env(safe-area-inset-bottom))] sm:gap-1.5 sm:p-2 ${isAdmin ? "is-admin" : "is-public"}`}>
       {/* The aurora backdrop lives on this fixed base layer's own
           background (not a separately z-indexed overlay child) — a
           negative-z-index element only stays contained "behind its own
@@ -439,28 +581,50 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
           to work. One base layer + one crossfading overlay (opacity only,
           so the base is never see-through) keeps the "type" filter's
           smooth transition. */}
-      <div className={`absolute inset-0 -z-10 ${BACKGROUND_GRADIENTS.all}`}>
-        {CATEGORY_OPTIONS.map((key) => (
-          <div
-            key={key}
-            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${BACKGROUND_GRADIENTS[key]} ${
-              bgKey === key ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        ))}
-      </div>
+      {/* Admin is a working tool, not the browsing experience the colorful
+          per-category aurora is meant for — it gets one flat, uniform
+          background matching the rest of the admin chrome (the panels,
+          "Admin mode" pill, etc.) instead of the mixed pink/red/purple/
+          amber blobs, which read as distracting noise here.
+          The same flat background also covers the public map until
+          MapView's onMapReady fires (map state goes non-null only once
+          MapLibre's "load" event has actually painted tiles) — before
+          that, the map canvas is empty/transparent, so the full-screen
+          aurora sat fully exposed for a beat on every reload before the
+          map covered it, reading as an unwanted colorful flash. */}
+      {isAdmin || !map ? (
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(160deg,#0b0b0d_0%,#111113_55%,#0a0a0c_100%)]" />
+      ) : (
+        <div className={`absolute inset-0 -z-10 ${BACKGROUND_GRADIENTS.all}`}>
+          {CATEGORY_OPTIONS.map((key) => (
+            <div
+              key={key}
+              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${BACKGROUND_GRADIENTS[key]} ${
+                bgKey === key ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          ))}
+        </div>
+      )}
 
+      <div className="map-sidebar-rail">
       <Sidebar
         activeTab={feedTab}
         onSelectTab={handleSelectTab}
         onExplore={handleExplore}
         showBillboards={isAdmin}
+        publicMode={!isAdmin}
+        onPlaceCafe={() => toggleMode("cafe")}
+        onPlaceBillboard={() => toggleMode("billboard")}
+        onPlaceAircraft={startAircraftPlacement}
+        onPlaceRail={() => toggleMode("rail")}
         visitedCount={visitedCount}
         mobileOpen={mobileNavOpen}
         onMobileClose={() => setMobileNavOpen(false)}
       />
+      </div>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-2 overflow-y-auto sm:gap-3 lg:overflow-hidden">
+      <div className="map-main-shell min-h-0 flex min-w-0 flex-1 flex-col gap-2 overflow-y-auto sm:gap-3 lg:overflow-hidden">
         {isAdmin && (
           <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex justify-center pt-2">
             <div className="rounded-full bg-neutral-900 px-4 py-1 text-xs font-medium tracking-wide text-white uppercase">
@@ -484,41 +648,71 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
             searchClearSignal={searchClearSignal}
             searchDismissDropdownSignal={searchDismissDropdownSignal}
             onMenuClick={() => setMobileNavOpen(true)}
+            publicMode={!isAdmin}
             activeCategory={activeCategory}
             onSelectCategory={selectCategoryManually}
             activeTags={activeTags}
             onToggleTag={toggleTag}
             minRating={minRating}
             onSelectMinRating={selectMinRatingManually}
+            maxDistanceKm={maxDistanceKm}
+            onSelectMaxDistance={selectMaxDistance}
+            locationStatus={locationStatus}
+            events={events}
           />
         </div>
 
-        <OnboardingBanner />
+        {!isAdmin && <OnboardingBanner />}
 
-        <div className="relative z-10 flex min-h-0 flex-1 flex-col gap-1.5 sm:gap-2 lg:flex-row">
-          <div className="relative h-[50vh] min-w-0 shrink-0 overflow-hidden rounded-3xl shadow-xl lg:h-auto lg:flex-1">
-            <MapView placingMode={placingMode} onMapClick={handleMapClick} onMapReady={setMap} />
+        {!isAdmin && (
+          <button
+            type="button"
+            className="news-launcher"
+            aria-expanded={eventsOpen}
+            onClick={() => setEventsOpen((open) => !open)}
+          >
+            <span className="news-launcher-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 17h16M6 17V9l6-4 6 4v8M9 17v-5h6v5" />
+              </svg>
+            </span>
+            <span>News</span>
+            <span className="news-launcher-count">{upcomingEventCount.toString().padStart(2, "0")}</span>
+          </button>
+        )}
+
+        <div className="map-content-layer relative z-10 flex min-h-0 flex-1 flex-col gap-1.5 sm:gap-2 lg:flex-row">
+          <div className="map-canvas-shell relative h-[min(56dvh,34rem)] min-h-[18rem] min-w-0 shrink-0 overflow-hidden rounded-3xl shadow-xl sm:h-[50vh] lg:h-auto lg:flex-1">
+            <MapView placingMode={placingMode} onMapClick={handleMapClick} onMapReady={setMap} showRotationControls />
             <CafeMarkers
               map={map}
               cafes={displayedCafes}
               selectedId={selected?.kind === "cafe" ? selected.item.id : null}
               onSelect={selectCafeFromMap}
             />
+            <BillboardMarkers
+              map={map}
+              billboards={billboards}
+              selectedId={selected?.kind === "billboard" ? selected.item.id : null}
+              onSelect={selectBillboard}
+            />
+            <AircraftAdOverlay
+              billboards={billboards}
+              selectedId={selected?.kind === "billboard" ? selected.item.id : null}
+              onSelect={selectBillboard}
+            />
             <BillboardLayer map={map} billboards={billboards} />
             <ModelLayer map={map} />
-            {isAdmin && <PendingMarker map={map} coords={pendingCoords} onDragEnd={setPendingCoords} />}
+            {isAdmin && placingMode !== "aircraft" && <PendingMarker map={map} coords={pendingCoords} onDragEnd={setPendingCoords} />}
 
-            <div className="panel-elevated pointer-events-none absolute top-4 left-4 z-10 rounded-full px-3.5 py-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-200">
+            <div className="map-spots-badge panel-elevated pointer-events-none absolute top-4 left-4 z-10 rounded-full px-3.5 py-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-200">
               Showing {displayedCafes.length} spot{displayedCafes.length === 1 ? "" : "s"}
             </div>
 
             <MapAttribution />
 
-            {isAdmin && (
-              <div className="pointer-events-auto absolute right-4 bottom-36 z-10">
-                <FloatingActions placingMode={placingMode} onToggleMode={toggleMode} />
-              </div>
-            )}
+            {!isAdmin && <AdRail billboards={billboards} onSelect={selectBillboard} />}
+
 
             {placingMode && !pendingCoords && (
               <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center">
@@ -530,7 +724,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
             )}
           </div>
 
-          <div ref={rightColumnRef} className="flex w-full flex-col gap-1.5 sm:gap-2 lg:w-96 lg:shrink-0 lg:overflow-y-auto">
+          <div ref={rightColumnRef} className="map-panels-column flex w-full min-w-0 flex-col gap-1.5 sm:gap-2 lg:w-96 lg:shrink-0 lg:overflow-y-auto">
             {isAdmin && pendingCoords && placingMode === "cafe" && (
               <PlaceCafeForm
                 coords={pendingCoords}
@@ -542,9 +736,21 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
               />
             )}
 
-            {isAdmin && pendingCoords && placingMode === "billboard" && (
+            {isAdmin && placingMode === "rail" && (
+              <PlaceRailAdForm
+                existing={billboards}
+                onCancel={cancelPlacement}
+                onCreated={(billboard) => {
+                  setBillboards((prev) => [billboard, ...prev]);
+                  cancelPlacement();
+                }}
+              />
+            )}
+
+            {isAdmin && pendingCoords && (placingMode === "billboard" || placingMode === "aircraft") && (
               <PlaceBillboardForm
                 coords={pendingCoords}
+                initialAdType={placingMode === "aircraft" ? "aircraft" : "billboard"}
                 onCancel={cancelPlacement}
                 onCreated={(billboard) => {
                   setBillboards((prev) => [billboard, ...prev]);
@@ -579,6 +785,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
                 emptyLabel="No billboards yet."
                 items={billboards}
                 onSelect={selectBillboard}
+                onDelete={deleteBillboard}
                 onClose={() => setFeedTab(null)}
               />
             )}
@@ -625,13 +832,20 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
               />
             )}
 
-            {showEvents && (
+            {showEvents && (isAdmin || eventsOpen) && (
               <EventsPanel
                 events={events}
                 isAdmin={isAdmin}
                 onAddClick={() => setEventFormOpen(true)}
                 onDelete={deleteEvent}
+                onClose={!isAdmin ? () => setEventsOpen(false) : undefined}
               />
+            )}
+            {isAdmin && feedTab === "ad-enquiries" && (
+              <AdEnquiriesPanel enquiries={adEnquiries} onStatus={updateAdEnquiry} onClose={() => setFeedTab(null)} />
+            )}
+            {isAdmin && feedTab === "users" && (
+              <UsersPanel users={users} loading={usersLoading} error={usersError} onClose={() => setFeedTab(null)} />
             )}
           </div>
         </div>

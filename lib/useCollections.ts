@@ -1,9 +1,8 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
-
-const STORAGE_KEY = "hydcafemap:collections";
-const listeners = new Set<() => void>();
+import { useCallback, useEffect, useState } from "react";
+import { useAuth } from "@/lib/useAuth";
+import { supabase } from "@/lib/supabase";
 
 export type Collection = {
   id: string;
@@ -12,92 +11,125 @@ export type Collection = {
   createdAt: string;
 };
 
-function readCollections(): Collection[] {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as Collection[]) : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeCollections(collections: Collection[]) {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(collections));
-  } catch {
-    // localStorage unavailable — collections just won't persist.
-  }
-  for (const listener of listeners) listener();
-}
-
-function subscribe(onStoreChange: () => void) {
-  listeners.add(onStoreChange);
-  return () => listeners.delete(onStoreChange);
-}
-
-const EMPTY: Collection[] = [];
-let cached: Collection[] = EMPTY;
-let cachedRaw: string | null = null;
-
-function getSnapshot(): Collection[] {
-  const raw = window.localStorage.getItem(STORAGE_KEY);
-  if (raw === cachedRaw) return cached;
-  cachedRaw = raw;
-  cached = raw ? readCollections() : EMPTY;
-  return cached;
-}
-
-function getServerSnapshot(): Collection[] {
-  return EMPTY;
-}
+type CollectionRow = {
+  id: string;
+  name: string;
+  created_at: string;
+  collection_cafes: { cafe_id: string }[] | null;
+};
 
 /**
  * Named, user-created lists of cafes — distinct from the single "Saved"
- * bookmark list (lib/useBookmarks.ts). Per-browser via localStorage, same
- * as bookmarks — there's no account system to sync these across devices.
+ * bookmark list (lib/useBookmarks.ts). Per-account via the `collections`
+ * and `collection_cafes` tables (0008_users_bookmarks_collections_points.sql),
+ * not per-browser localStorage — see useBookmarks.ts for the same
+ * reasoning.
+ *
+ * createCollection stays synchronous (returns the new id immediately,
+ * not a Promise) to match every caller's existing "create it, then
+ * immediately add a cafe to it" pattern (e.g. DetailCard's
+ * submitNewCollection) — the id is generated client-side with
+ * crypto.randomUUID() and sent as-is in the insert, so it's known before
+ * the network round trip finishes rather than after.
  */
 export function useCollections() {
-  const collections = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const { session } = useAuth();
+  const [collections, setCollections] = useState<Collection[]>([]);
 
-  const createCollection = useCallback((name: string) => {
-    const trimmed = name.trim();
-    if (!trimmed) return null;
-    const collection: Collection = {
-      id: crypto.randomUUID(),
-      name: trimmed,
-      cafeIds: [],
-      createdAt: new Date().toISOString(),
+  // Clears the moment the signed-in identity changes (most notably
+  // sign-out) — adjusted during render (React's recommended pattern for
+  // state driven by a prop/value), not in the effect below, which can't
+  // set state synchronously in its body.
+  const currentUserId = session?.user.id ?? null;
+  const [lastUserId, setLastUserId] = useState(currentUserId);
+  if (currentUserId !== lastUserId) {
+    setLastUserId(currentUserId);
+    setCollections([]);
+  }
+
+  // Inlined directly in the effect (not a separately defined async
+  // callback invoked from here) — the lint rule that forbids setting
+  // state synchronously in an effect body flags any function reference
+  // that transitively calls setState, even genuinely async ones behind
+  // an await, if it's invoked directly rather than via .then()/.catch().
+  useEffect(() => {
+    if (!session) return;
+    let cancelled = false;
+    supabase
+      .from("collections")
+      .select("id, name, created_at, collection_cafes(cafe_id)")
+      .eq("user_id", session.user.id)
+      .order("created_at", { ascending: true })
+      .then(({ data }) => {
+        if (cancelled || !data) return;
+        setCollections(
+          (data as unknown as CollectionRow[]).map((row) => ({
+            id: row.id,
+            name: row.name,
+            createdAt: row.created_at,
+            cafeIds: (row.collection_cafes ?? []).map((cc) => cc.cafe_id),
+          }))
+        );
+      });
+    return () => {
+      cancelled = true;
     };
-    writeCollections([...getSnapshot(), collection]);
-    return collection.id;
-  }, []);
+  }, [session]);
+
+  const createCollection = useCallback(
+    (name: string) => {
+      const trimmed = name.trim();
+      if (!trimmed || !session) return null;
+      const id = crypto.randomUUID();
+      const optimistic: Collection = { id, name: trimmed, cafeIds: [], createdAt: new Date().toISOString() };
+      setCollections((prev) => [...prev, optimistic]);
+      supabase
+        .from("collections")
+        .insert({ id, user_id: session.user.id, name: trimmed })
+        .then(({ error }) => {
+          if (error) setCollections((prev) => prev.filter((c) => c.id !== id));
+        });
+      return id;
+    },
+    [session]
+  );
 
   const deleteCollection = useCallback((id: string) => {
-    writeCollections(getSnapshot().filter((c) => c.id !== id));
+    setCollections((prev) => prev.filter((c) => c.id !== id));
+    // collection_cafes rows cascade-delete with the parent (0008's FK),
+    // no separate cleanup needed here.
+    supabase.from("collections").delete().eq("id", id).then(() => {});
   }, []);
 
   const renameCollection = useCallback((id: string, name: string) => {
     const trimmed = name.trim();
     if (!trimmed) return;
-    writeCollections(getSnapshot().map((c) => (c.id === id ? { ...c, name: trimmed } : c)));
+    setCollections((prev) => prev.map((c) => (c.id === id ? { ...c, name: trimmed } : c)));
+    supabase.from("collections").update({ name: trimmed }).eq("id", id).then(() => {});
   }, []);
 
   const addCafeToCollection = useCallback((collectionId: string, cafeId: string) => {
-    writeCollections(
-      getSnapshot().map((c) =>
-        c.id === collectionId && !c.cafeIds.includes(cafeId)
-          ? { ...c, cafeIds: [...c.cafeIds, cafeId] }
-          : c
+    setCollections((prev) =>
+      prev.map((c) =>
+        c.id === collectionId && !c.cafeIds.includes(cafeId) ? { ...c, cafeIds: [...c.cafeIds, cafeId] } : c
       )
     );
+    supabase
+      .from("collection_cafes")
+      .insert({ collection_id: collectionId, cafe_id: cafeId })
+      .then(() => {});
   }, []);
 
   const removeCafeFromCollection = useCallback((collectionId: string, cafeId: string) => {
-    writeCollections(
-      getSnapshot().map((c) =>
-        c.id === collectionId ? { ...c, cafeIds: c.cafeIds.filter((id) => id !== cafeId) } : c
-      )
+    setCollections((prev) =>
+      prev.map((c) => (c.id === collectionId ? { ...c, cafeIds: c.cafeIds.filter((id) => id !== cafeId) } : c))
     );
+    supabase
+      .from("collection_cafes")
+      .delete()
+      .eq("collection_id", collectionId)
+      .eq("cafe_id", cafeId)
+      .then(() => {});
   }, []);
 
   return {

@@ -1,0 +1,1698 @@
+[
+  {
+    "name": "Katha",
+    "category": "Cafe / Specialty Coffee",
+    "location": "Banjara Hills",
+    "address": "8-2-351, Road Number 3, Green Valley, Banjara Hills, Hyderabad, Telangana 500082",
+    "website_or_instagram": "https://linktr.ee/katha.india",
+    "cost_for_two": null,
+    "note": "Specialty coffee, bakehouse items, cube croissants, brunch & community vibe",
+    "lng": 78.44559545767183,
+    "lat": 17.426665446188785,
+    "image_url": "https://trjfileexoiwzmqmnkee.supabase.co/storage/v1/object/public/smartlinks-logos/00000000-0000-0000-0000-000000000001/ea3b6f21-ff46-4fad-b9c6-1759ff9f3ff2.png",
+    "tags": [
+      "Specialty Coffee",
+      "Bakery",
+      "Brunch",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Katha%2C%208-2-351%2C%20Road%20Number%203%2C%20Green%20Valley%2C%20Banjara%20Hills%2C%20Hyderabad%2C%20Telangana%20500082",
+    "rating": null
+  },
+  {
+    "name": "RITHM Cafe",
+    "category": "Cafe / Latte Art Studio",
+    "location": "Film Nagar",
+    "address": "87A, Road Number 9, Durga Bhawani Nagar, Film Nagar, Jubilee Hills, Hyderabad, Telangana 500096",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, latte art, aesthetic ambience",
+    "lng": 78.40757017116408,
+    "lat": 17.41217747675757,
+    "image_url": "https://scontent.cdninstagram.com/v/t51.82787-19/626742045_17854407357618139_68687207991261843_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_cat=105&ccb=7-5&_nc_sid=f7ccc5&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=AS5XQOd44GEQ7kNvwE8qvzG&_nc_oc=AdoT0gLWfEwhxo4xL0_tDxo2OFfPc1r8lofgzVQwCr1SjpS9Ow-skliZi3wCBiLbUB8&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_gid=ARm8gEi2s3EKdO40z-CYnw&_nc_ss=7ba8c&oh=00_AQK_sHjraDUIWcyK-VMN3IFkyGmtCe2jwZjJ5uXsY07e9w&oe=6AA05ED7",
+    "tags": [
+      "Specialty Coffee",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=RITHM%20Cafe%2C%2087A%2C%20Road%20Number%209%2C%20Durga%20Bhawani%20Nagar%2C%20Film%20Nagar%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500096",
+    "rating": null
+  },
+  {
+    "name": "Sobremesa- Bakehouse Cafe Kitchen",
+    "category": "Cafe / Bakery / Desserts",
+    "location": "Jubilee Hills",
+    "address": "8-2-293/82/A/593, Road 31, Jubilee Hills, Hyderabad, Telangana 500033",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Weekend brunch, outdoor seating, food presentation, bakery & desserts",
+    "lng": 78.40521905475278,
+    "lat": 17.43612836050165,
+    "image_url": null,
+    "tags": [
+      "Bakery",
+      "Brunch",
+      "Outdoor Seating",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Sobremesa-%20Bakehouse%20Cafe%20Kitchen%2C%208-2-293/82/A/593%2C%20Road%2031%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500033",
+    "rating": null
+  },
+  {
+    "name": "Lunar Cafe",
+    "category": "Cafe",
+    "location": "Jubilee Hills",
+    "address": "Madhu Vihar, Road Number 7, Durga Bhavani Nagar, Jubilee Hills, Hyderabad, Telangana 500034",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Burgers, pasta & pizza",
+    "lng": 78.42176851018857,
+    "lat": 17.429182767135597,
+    "image_url": null,
+    "tags": [
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Lunar%20Cafe%2C%20Madhu%20Vihar%2C%20Road%20Number%207%2C%20Durga%20Bhavani%20Nagar%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500034",
+    "rating": null
+  },
+  {
+    "name": "Daak Coffee House",
+    "category": "Cafe / Coffee / Bakes",
+    "location": "Jubilee Hills",
+    "address": "Plot No. 1293, Road No. 63A, Jubilee Hills, Hyderabad, Telangana 500033",
+    "website_or_instagram": "https://linktr.ee/daakcoffee",
+    "cost_for_two": null,
+    "note": "Coffee, all-day breakfast, sandwiches & French/Middle Eastern-inspired bites",
+    "lng": 78.41298503387476,
+    "lat": 17.428006088705366,
+    "image_url": null,
+    "tags": [
+      "Specialty Coffee",
+      "Bakery",
+      "Brunch",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Daak%20Coffee%20House%2C%20Plot%20No.%201293%2C%20Road%20No.%2063A%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500033",
+    "rating": null
+  },
+  {
+    "name": "The Chocolate Room Cafe & Lounge",
+    "category": "Cafe / Desserts / Italian",
+    "location": "Kondapur",
+    "address": "Shop No. 8, Ground Floor, Bizness Square, Opp. HITEX Entrance, HITEC City, Hyderabad, Telangana 500081",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Chocolate desserts, waffles, sundaes, coffee & pizza",
+    "lng": 78.35483831449952,
+    "lat": 17.416164151457156,
+    "image_url": null,
+    "tags": [
+      "Desserts",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=The%20Chocolate%20Room%20Cafe%20%26%20Lounge%2C%20Shop%20No.%208%2C%20Ground%20Floor%2C%20Bizness%20Square%2C%20Opp.%20HITEX%20Entrance%2C%20HITEC%20City%2C%20Hyderabad%2C%20Telangana%20500081",
+    "rating": null
+  },
+  {
+    "name": "Makobrew Cafe & Restaurant",
+    "category": "Vegetarian Cafe / Restaurant",
+    "location": "Jubilee Hills",
+    "address": "Road 44, Sri Peddamma Thalli Temple, CBI Colony, Jubilee Hills, Hyderabad, Telangana 500033",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Vegetarian food, coffee, botanical ambience & outdoor seating",
+    "lng": 78.40566879755914,
+    "lat": 17.429087781282494,
+    "image_url": "https://b.zmtcdn.com/data/pictures/2/21355302/068fd987253948a9186b6fe49cd29286.jpg",
+    "tags": [
+      "Vegetarian Options",
+      "Outdoor Seating"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Makobrew%20Cafe%20%26%20Restaurant%2C%20Road%2044%2C%20Sri%20Peddamma%20Thalli%20Temple%2C%20CBI%20Colony%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500033",
+    "rating": null
+  },
+  {
+    "name": "Ghrelin Cafe & Patisserie",
+    "category": "Cafe / Patisserie",
+    "location": "Basheer Bagh",
+    "address": "3-6-288/3, Sri Siva Rama Towers, King Koti, Near MLA Quarters, Avanti Nagar, Basheer Bagh, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Patisserie, desserts, coffee & baked goods",
+    "lng": 78.44338192637896,
+    "lat": 17.417689621844463,
+    "image_url": null,
+    "tags": [
+      "Bakery",
+      "Desserts"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Ghrelin%20Cafe%20%26%20Patisserie%2C%203-6-288/3%2C%20Sri%20Siva%20Rama%20Towers%2C%20King%20Koti%2C%20Near%20MLA%20Quarters%2C%20Avanti%20Nagar%2C%20Basheer%20Bagh%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Roast The Caffeine Capital",
+    "category": "Cafe / Coffee / Continental",
+    "location": "Hitech City",
+    "address": "82 & 84, Hitech City Main Road, HUDA Techno Enclave, HITEC City, Near Deccan Serai, Hyderabad, Telangana 500081",
+    "website_or_instagram": "https://www.roastcafe.in/",
+    "cost_for_two": null,
+    "note": "Coffee, hot chocolate, desserts, breads & outdoor ambience",
+    "lng": 78.38255956687202,
+    "lat": 17.44322987024708,
+    "image_url": null,
+    "tags": [
+      "Specialty Coffee",
+      "Outdoor Seating",
+      "Bakery"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Roast%20The%20Caffeine%20Capital%2C%2082%20%26%2084%2C%20Hitech%20City%20Main%20Road%2C%20HUDA%20Techno%20Enclave%2C%20HITEC%20City%2C%20Near%20Deccan%20Serai%2C%20Hyderabad%2C%20Telangana%20500081",
+    "rating": null
+  },
+  {
+    "name": "Coffee Sangam",
+    "category": "Cafe",
+    "location": "Jubilee Hills",
+    "address": "Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, casual cafe food & hangouts",
+    "lng": 78.4157506334167,
+    "lat": 17.435333594370128,
+    "image_url": null,
+    "tags": [
+      "Outdoor Seating",
+      "Work Friendly"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Coffee%20Sangam%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "True Black Speciality Coffee",
+    "category": "Specialty Coffee / Cafe",
+    "location": "Jubilee Hills",
+    "address": "House 8-2-293/82/JIII/411, Plot 41, Circle 18, Road 82, Film Nagar, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Specialty coffee, espresso-based drinks & calm cafe setting",
+    "lng": 78.4051859017283,
+    "lat": 17.42770323144736,
+    "image_url": null,
+    "tags": [
+      "Specialty Coffee"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=True%20Black%20Speciality%20Coffee%2C%20House%208-2-293/82/JIII/411%2C%20Plot%2041%2C%20Circle%2018%2C%20Road%2082%2C%20Film%20Nagar%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Camelot Cafe & Patisserie",
+    "category": "Cafe",
+    "location": "Habsiguda",
+    "address": "Habsiguda, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Cakes, pastries, coffee & patisserie",
+    "lng": 78.5444862004271,
+    "lat": 17.41669262666013,
+    "image_url": null,
+    "tags": [
+      "Bakery",
+      "Desserts"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Camelot%20Cafe%20%26%20Patisserie%2C%20Habsiguda%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Lé Vantage Cafe Bar",
+    "category": "Cafe Bar / Continental",
+    "location": "Jubilee Hills",
+    "address": "Plot 197/A & 197, Road 13, Jubilee Hills, Hyderabad, Telangana 500033",
+    "website_or_instagram": "https://levantagecafebar.com/",
+    "cost_for_two": null,
+    "note": "Peri peri potato wedges, kiwi punch, iced peach tea, ambience & outdoor seating",
+    "lng": 78.41780604978348,
+    "lat": 17.430100224539014,
+    "image_url": null,
+    "tags": [
+      "Outdoor Seating",
+      "Serves Alcohol",
+      "Reservations"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=L%C3%A9%20Vantage%20Cafe%20Bar%2C%20Plot%20197/A%20%26%20197%2C%20Road%2013%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500033",
+    "rating": null
+  },
+  {
+    "name": "Echoes",
+    "category": "Cafe",
+    "location": "Narsingi",
+    "address": "Narsingi, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Cafe ambience, coffee & hangout experience",
+    "lng": 78.39636735812563,
+    "lat": 17.442428716219023,
+    "image_url": null,
+    "tags": [
+      "Serves Alcohol",
+      "Work Friendly",
+      "Family Friendly",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Echoes%2C%20Narsingi%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "La Vie En Rose Cafe & Bistro",
+    "category": "Cafe / Bistro",
+    "location": "Gachibowli",
+    "address": "Unit 301, Survey 92/1, 92/3 to 92/18, Plot 9, 10, 11, 16, 17 & 18, 3rd Floor, Circle 20, Gachibowli, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Cafe food, bistro dishes, desserts & aesthetic ambience",
+    "lng": 78.35486384843145,
+    "lat": 17.442932026436107,
+    "image_url": null,
+    "tags": [
+      "Instagrammable",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=La%20Vie%20En%20Rose%20Cafe%20%26%20Bistro%2C%20Unit%20301%2C%20Survey%2092/1%2C%2092/3%20to%2092/18%2C%20Plot%209%2C%2010%2C%2011%2C%2016%2C%2017%20%26%2018%2C%203rd%20Floor%2C%20Circle%2020%2C%20Gachibowli%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Old Trees Cafe",
+    "category": "Cafe / Italian / Continental",
+    "location": "Kompally",
+    "address": "Old Trees Cafe, Kandlakoya, Opposite KSR Convention, Kompally, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Cafe food, coffee, Italian/Continental dishes & greenery",
+    "lng": 78.49153936931266,
+    "lat": 17.586902488535454,
+    "image_url": null,
+    "tags": [
+      "Outdoor Seating",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Old%20Trees%20Cafe%2C%20Old%20Trees%20Cafe%2C%20Kandlakoya%2C%20Opposite%20KSR%20Convention%2C%20Kompally%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Kissa Coffee house",
+    "category": "Specialty Coffee / Cafe",
+    "location": "Jubilee Hills",
+    "address": "House No. 347, Road No. 22, Jubilee Hills, Hyderabad, Telangana 500033",
+    "website_or_instagram": "https://www.kissacoffeehouse.in/",
+    "cost_for_two": null,
+    "note": "Chikmagalur single-origin coffee, Strawberry Spanish Latte, croissants & Neapolitan pizza",
+    "lng": 78.40762812454368,
+    "lat": 17.433869947382462,
+    "image_url": null,
+    "tags": [
+      "Specialty Coffee",
+      "Bakery"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Kissa%20Coffee%20house%2C%20House%20No.%20347%2C%20Road%20No.%2022%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500033",
+    "rating": null
+  },
+  {
+    "name": "Sky Salt",
+    "category": "Cafe",
+    "location": "Jubilee Hills",
+    "address": "Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Cafe food, coffee, rooftop/ambience & desserts",
+    "lng": 78.40505878563283,
+    "lat": 17.433565530770505,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Outdoor Seating",
+      "Serves Alcohol"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Sky%20Salt%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Lifafa Cafe & Bistro",
+    "category": "Cafe / Bistro",
+    "location": "Uppal",
+    "address": "Lifafa Cafe & Bistro, Hyderabad",
+    "website_or_instagram": "https://lifafacafe.in/",
+    "cost_for_two": null,
+    "note": "Bubble tea, all-day breakfast, desserts & cozy ambience",
+    "lng": 78.55860473988659,
+    "lat": 17.392512826397287,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options",
+      "Desserts"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Lifafa%20Cafe%20%26%20Bistro%2C%20Lifafa%20Cafe%20%26%20Bistro%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Yummy Bee",
+    "category": "Cafe / Bakery / Coffee",
+    "location": "Kukatpally",
+    "address": "Shop 2, Ground Floor, MN Corner, Phoenix Greens School Road, Kokapet, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Bakery items, coffee, desserts & casual cafe food",
+    "lng": 78.55233819570871,
+    "lat": 17.483272981050927,
+    "image_url": null,
+    "tags": [
+      "Reservations",
+      "Parking",
+      "WiFi",
+      "Work Friendly",
+      "Family Friendly",
+      "Outdoor Seating"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Yummy%20Bee%2C%20Shop%202%2C%20Ground%20Floor%2C%20MN%20Corner%2C%20Phoenix%20Greens%20School%20Road%2C%20Kokapet%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "E'woke - The Vegan Cafe",
+    "category": "Cafe",
+    "location": "Sainikpuri",
+    "address": "Sainikpuri, Secunderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Vegan food, healthy dishes & plant-based cafe fare",
+    "lng": 78.54598345338063,
+    "lat": 17.486349642685777,
+    "image_url": null,
+    "tags": [
+      "Vegan Options",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=E%27woke%20-%20The%20Vegan%20Cafe%2C%20Sainikpuri%2C%20Secunderabad",
+    "rating": null
+  },
+  {
+    "name": "Imli Sarai",
+    "category": "Cafe",
+    "location": "Banjara Hills",
+    "address": "Banjara Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "North Indian/Indian cafe food, ambience & desserts",
+    "lng": 78.44777199570751,
+    "lat": 17.4165268337615,
+    "image_url": null,
+    "tags": [
+      "Serves Alcohol",
+      "Parking",
+      "WiFi",
+      "Work Friendly",
+      "Family Friendly",
+      "Outdoor Seating",
+      "Pet Friendly"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Imli%20Sarai%2C%20Banjara%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Cafe Twenty One",
+    "category": "Cafe / Coffee / Bakery",
+    "location": "Gandipet",
+    "address": "Shop 5 & 105, Raichandani Business Bay, Gandipet Main Road, Opposite Rajapushpa Regalia, Gandipet, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Eggs Benedict, ghee roast mutton tarts, garden ambience, games & brunch",
+    "lng": 78.34081941861345,
+    "lat": 17.387486376749624,
+    "image_url": null,
+    "tags": [
+      "Brunch",
+      "Outdoor Seating",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Cafe%20Twenty%20One%2C%20Shop%205%20%26%20105%2C%20Raichandani%20Business%20Bay%2C%20Gandipet%20Main%20Road%2C%20Opposite%20Rajapushpa%20Regalia%2C%20Gandipet%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Hoshi",
+    "category": "Specialty Coffee Shop",
+    "location": "Madhapur",
+    "address": "Road No. 11, Kakatiya Hills, Madhapur, Hyderabad, Telangana 500081",
+    "website_or_instagram": "https://hoshi.co.in/",
+    "cost_for_two": null,
+    "note": "Specialty coffee, single-origin beans, Japanese-inspired aesthetics & calm ambience",
+    "lng": 78.39568589609098,
+    "lat": 17.44364482845099,
+    "image_url": "https://b.zmtcdn.com/data/reviews_photos/c11/3152e7d03492e300d387c5005a381c11_1774808046.jpg",
+    "tags": [
+      "Specialty Coffee",
+      "Work Friendly",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Hoshi%2C%20Road%20No.%2011%2C%20Kakatiya%20Hills%2C%20Madhapur%2C%20Hyderabad%2C%20Telangana%20500081",
+    "rating": null
+  },
+  {
+    "name": "Arch Cafe",
+    "category": "Cafe / Coffee / Multi-cuisine",
+    "location": "Kothapet",
+    "address": "11-13-90-6, Circle 4, Kothapet, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Weekend brunch, good music, customizable food & fresh food",
+    "lng": 78.5447314892227,
+    "lat": 17.361393642880124,
+    "image_url": null,
+    "tags": [
+      "Brunch",
+      "Work Friendly",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Arch%20Cafe%2C%2011-13-90-6%2C%20Circle%204%2C%20Kothapet%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Mairu Bistro",
+    "category": "Cafe",
+    "location": "Jubilee Hills",
+    "address": "Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Hospitality, service, ambience & cafe food",
+    "lng": 78.40380297875585,
+    "lat": 17.433371451624303,
+    "image_url": null,
+    "tags": [
+      "Reservations",
+      "Parking",
+      "Outdoor Seating",
+      "Work Friendly",
+      "Family Friendly",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Mairu%20Bistro%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Lune Cafe",
+    "category": "Cafe",
+    "location": "Malakpet",
+    "address": "Malakpet, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Burgers, pasta, pizza & cafe ambience",
+    "lng": 78.51652829959842,
+    "lat": 17.36925044206434,
+    "image_url": null,
+    "tags": [
+      "Parking",
+      "Outdoor Seating",
+      "WiFi",
+      "Work Friendly",
+      "Family Friendly",
+      "Live Music"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Lune%20Cafe%2C%20Malakpet%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Bench Cafe & Restaurant",
+    "category": "Cafe / Restaurant",
+    "location": "Abids",
+    "address": "4-1-969/7, Ahuja Estate, Main Road, Abids, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Chilli garlic noodles, Maggi, mojitos, pasta, fried rice & pocket-friendly combos",
+    "lng": 78.47655329870743,
+    "lat": 17.391117760862585,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options",
+      "Late Night"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Bench%20Cafe%20%26%20Restaurant%2C%204-1-969/7%2C%20Ahuja%20Estate%2C%20Main%20Road%2C%20Abids%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Roastery Coffee House",
+    "category": "Specialty Coffee / Cafe",
+    "location": "Banjara Hills",
+    "address": "House 418, 8/2/287/12, Road 14, BNR Colony, Venkat Nagar, Banjara Hills, Hyderabad, Telangana 500034",
+    "website_or_instagram": "https://roasterycoffee.co.in/",
+    "cost_for_two": null,
+    "note": "Specialty coffee, coffee roasting, breakfast & signature beverages",
+    "lng": 78.43159499201276,
+    "lat": 17.4234357404004,
+    "image_url": "https://b.zmtcdn.com/data/reviews_photos/d65/dcee818da5460a5b3f750fc002825d65_1740745089.jpg",
+    "tags": [
+      "Specialty Coffee",
+      "Bakery",
+      "Brunch",
+      "Work Friendly",
+      "Outdoor Seating"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Roastery%20Coffee%20House%2C%20House%20418%2C%208/2/287/12%2C%20Road%2014%2C%20BNR%20Colony%2C%20Venkat%20Nagar%2C%20Banjara%20Hills%2C%20Hyderabad%2C%20Telangana%20500034",
+    "rating": null
+  },
+  {
+    "name": "Cravery Cafe",
+    "category": "Cafe / Coffee / Multi-cuisine",
+    "location": "Financial District",
+    "address": "Unit L1-04, First Floor, Plot 43, Survey 322, Puppalaguda, Gandipet, Financial District, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, desserts, Continental food & cafe ambience",
+    "lng": 78.40848863611012,
+    "lat": 17.415074672537102,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options",
+      "Desserts"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Cravery%20Cafe%2C%20Unit%20L1-04%2C%20First%20Floor%2C%20Plot%2043%2C%20Survey%20322%2C%20Puppalaguda%2C%20Gandipet%2C%20Financial%20District%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Tan Coffee",
+    "category": "Cafe / Coffee",
+    "location": "Madhapur",
+    "address": "1-90/2/4/8A, Khanamet Village, Near Hitech City Flyover, Service Road, Madhapur, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, pizza, wraps, pasta & garden-like ambience",
+    "lng": 78.38385140143828,
+    "lat": 17.455159145954116,
+    "image_url": null,
+    "tags": [
+      "Outdoor Seating",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Tan%20Coffee%2C%201-90/2/4/8A%2C%20Khanamet%20Village%2C%20Near%20Hitech%20City%20Flyover%2C%20Service%20Road%2C%20Madhapur%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Caffe Jubilee",
+    "category": "Cafe",
+    "location": "Jubilee Hills",
+    "address": "Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, cafe food & casual hangouts",
+    "lng": 78.40057317430468,
+    "lat": 17.427017854833185,
+    "image_url": null,
+    "tags": [
+      "Outdoor Seating",
+      "Family Friendly",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Caffe%20Jubilee%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Tenner By 10 Downing Street",
+    "category": "Cafe",
+    "location": "Film Nagar",
+    "address": "Film Nagar, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Weekend brunch, good music, customizable food & fresh food",
+    "lng": 78.36298043752966,
+    "lat": 17.452417919539563,
+    "image_url": null,
+    "tags": [
+      "Brunch",
+      "Live Music",
+      "Serves Alcohol",
+      "Reservations"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Tenner%20By%2010%20Downing%20Street%2C%20Film%20Nagar%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Ci Gusta!",
+    "category": "Cafe",
+    "location": "Madhapur",
+    "address": "Madhapur, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Chicken chorizo, froyo, mango yogurt, gelato & healthy breakfast",
+    "lng": 78.39588184497339,
+    "lat": 17.43828250170092,
+    "image_url": null,
+    "tags": [
+      "Desserts",
+      "Brunch",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Ci%20Gusta%21%2C%20Madhapur%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Nommè kitchen & Coffee theatre",
+    "category": "Cafe / Coffee / Kitchen",
+    "location": "Banjara Hills",
+    "address": "Banjara Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, cafe food, ambience & relaxed hangouts",
+    "lng": 78.42251938398844,
+    "lat": 17.424609312450496,
+    "image_url": null,
+    "tags": [
+      "Specialty Coffee",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Nomm%C3%A8%20kitchen%20%26%20Coffee%20theatre%2C%20Banjara%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Habitat Cafe",
+    "category": "Cafe / Specialty Coffee / Rooftop",
+    "location": "Banjara Hills",
+    "address": "8-2-412, 5th Floor, Vimbari Boulevard, Survey 389, Road 4 & 6, Banjara Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, rooftop ambience, brunch & cafe food",
+    "lng": 78.44307961148517,
+    "lat": 17.421183021990437,
+    "image_url": null,
+    "tags": [
+      "Rooftop",
+      "Outdoor Seating",
+      "Brunch",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Habitat%20Cafe%2C%208-2-412%2C%205th%20Floor%2C%20Vimbari%20Boulevard%2C%20Survey%20389%2C%20Road%204%20%26%206%2C%20Banjara%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Okati Coffee",
+    "category": "Specialty Coffee / Cafe",
+    "location": "Yapral",
+    "address": "Yapral, Secunderabad, Telangana",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Specialty coffee, brewed coffee & cafe ambience",
+    "lng": 78.5407020957095,
+    "lat": 17.52672659684926,
+    "image_url": null,
+    "tags": [
+      "Specialty Coffee"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Okati%20Coffee%2C%20Yapral%2C%20Secunderabad%2C%20Telangana",
+    "rating": null
+  },
+  {
+    "name": "Cafe Ikigai",
+    "category": "Cafe / Coffee",
+    "location": "Whitefields",
+    "address": "Ground Floor, Prime Building, Laxmi Cyber City, Whitefields, Hyderabad, Telangana 500084",
+    "website_or_instagram": "https://cafeikigai.com/",
+    "cost_for_two": null,
+    "note": "Coffee, cafe food & work-friendly ambience",
+    "lng": 78.36529345564374,
+    "lat": 17.45582542198733,
+    "image_url": null,
+    "tags": [
+      "Specialty Coffee",
+      "Work Friendly",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Cafe%20Ikigai%2C%20Ground%20Floor%2C%20Prime%20Building%2C%20Laxmi%20Cyber%20City%2C%20Whitefields%2C%20Hyderabad%2C%20Telangana%20500084",
+    "rating": null
+  },
+  {
+    "name": "Mirosa Cafe & Kitchen",
+    "category": "Cafe / Continental / Fast Food",
+    "location": "Himayath Nagar",
+    "address": "3-6-236/2 & 3-6-236/2/A, Road 15, AP State Housing Board, Himayath Nagar, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, Continental food, fast food & casual ambience",
+    "lng": 78.48562489015485,
+    "lat": 17.40005028953114,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Mirosa%20Cafe%20%26%20Kitchen%2C%203-6-236/2%20%26%203-6-236/2/A%2C%20Road%2015%2C%20AP%20State%20Housing%20Board%2C%20Himayath%20Nagar%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "The Chocolate Room Cafe & Bistro",
+    "category": "Cafe / Bistro / Desserts",
+    "location": "Narsingi",
+    "address": "1st Floor, MN CRUX, Kokapet, Opposite 7 Hills, Hyderabad, Telangana 500075",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Chocolate desserts, waffles, coffee & casual cafe food",
+    "lng": 78.4225847572069,
+    "lat": 17.414493834027354,
+    "image_url": null,
+    "tags": [
+      "Parking",
+      "Work Friendly",
+      "Family Friendly",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=The%20Chocolate%20Room%20Cafe%20%26%20Bistro%2C%201st%20Floor%2C%20MN%20CRUX%2C%20Kokapet%2C%20Opposite%207%20Hills%2C%20Hyderabad%2C%20Telangana%20500075",
+    "rating": null
+  },
+  {
+    "name": "45th Avenue",
+    "category": "Cafe",
+    "location": "Film Nagar",
+    "address": "Film Nagar, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, cafe food, ambience & desserts",
+    "lng": 78.41085278956223,
+    "lat": 17.422517109811704,
+    "image_url": null,
+    "tags": [
+      "Serves Alcohol",
+      "Outdoor Seating",
+      "Work Friendly",
+      "Family Friendly",
+      "Vegetarian Options",
+      "Desserts",
+      "Bakery"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=45th%20Avenue%2C%20Film%20Nagar%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Stellar Reserve",
+    "category": "Cafe / Italian / Asian / Bakery",
+    "location": "Jubilee Hills",
+    "address": "Unit 4, Sy 102/1, Plot 1355-H & 1355-I, Ground Floor & Mezzanine Floor, Niharika Jubilee One, Shaikpet, Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Cafe food, desserts, coffee & premium ambience",
+    "lng": 78.41094064302828,
+    "lat": 17.42266047471053,
+    "image_url": null,
+    "tags": [
+      "Bakery",
+      "Desserts",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Stellar%20Reserve%2C%20Unit%204%2C%20Sy%20102/1%2C%20Plot%201355-H%20%26%201355-I%2C%20Ground%20Floor%20%26%20Mezzanine%20Floor%2C%20Niharika%20Jubilee%20One%2C%20Shaikpet%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Coffee And More",
+    "category": "Cafe / Coffee / Beverages",
+    "location": "Madhapur",
+    "address": "House 1-98/8/8, Survey 72, Plot 8 & 9, Ground Floor, Meera One, Image Garden Road, Madhapur, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, beverages, sandwiches & cafe snacks",
+    "lng": 78.44972307271081,
+    "lat": 17.411419300853094,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Coffee%20And%20More%2C%20House%201-98/8/8%2C%20Survey%2072%2C%20Plot%208%20%26%209%2C%20Ground%20Floor%2C%20Meera%20One%2C%20Image%20Garden%20Road%2C%20Madhapur%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Bambai Tapri",
+    "category": "Cafe",
+    "location": "Nanakramguda",
+    "address": "Nanakramguda, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Indian chai, snacks & tapri-style ambience",
+    "lng": 78.35421074738427,
+    "lat": 17.41591757781264,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Bambai%20Tapri%2C%20Nanakramguda%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "The Chocolate Room",
+    "category": "Cafe / Coffee / Desserts",
+    "location": "Lingampally",
+    "address": "Ground Floor & 1st Floor, Hytek Arcade, Block-A, Opposite State Bank of India, Lingampally, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Chocolate, coffee, desserts & waffles",
+    "lng": 78.37614058193799,
+    "lat": 17.456814850973416,
+    "image_url": null,
+    "tags": [
+      "Serves Alcohol",
+      "Parking",
+      "Work Friendly",
+      "WiFi",
+      "Family Friendly",
+      "Desserts"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=The%20Chocolate%20Room%2C%20Ground%20Floor%20%26%201st%20Floor%2C%20Hytek%20Arcade%2C%20Block-A%2C%20Opposite%20State%20Bank%20of%20India%2C%20Lingampally%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "GRANO Coffee Affairs",
+    "category": "Specialty Coffee / Cafe",
+    "location": "Jubilee Hills",
+    "address": "Road 63A & 64, Circle 18, Jubilee Hills, Hyderabad",
+    "website_or_instagram": "https://granocoffee.in/",
+    "cost_for_two": null,
+    "note": "Mango specials, mango malai pancakes, Vietnamese coffee & brunch",
+    "lng": 78.413658257807,
+    "lat": 17.427402313157113,
+    "image_url": null,
+    "tags": [
+      "Specialty Coffee",
+      "Brunch",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=GRANO%20Coffee%20Affairs%2C%20Road%2063A%20%26%2064%2C%20Circle%2018%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Manam Chocolate",
+    "category": "Chocolate Cafe / Craft Chocolate",
+    "location": "Banjara Hills",
+    "address": "Road No. 12, Kaushik Society, Ministers Colony, Banjara Hills, Hyderabad, Telangana 500034",
+    "website_or_instagram": "https://manamchocolate.com/",
+    "cost_for_two": null,
+    "note": "Indian craft chocolate, chocolate beverages, bonbons & immersive chocolate experience",
+    "lng": 78.43163138832118,
+    "lat": 17.412387230332218,
+    "image_url": null,
+    "tags": [
+      "Desserts",
+      "Vegetarian Options",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Manam%20Chocolate%2C%20Road%20No.%2012%2C%20Kaushik%20Society%2C%20Ministers%20Colony%2C%20Banjara%20Hills%2C%20Hyderabad%2C%20Telangana%20500034",
+    "rating": null
+  },
+  {
+    "name": "Renao Cafe & Bistro",
+    "category": "Cafe",
+    "location": "Madhapur",
+    "address": "Madhapur, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, bistro food, desserts & ambience",
+    "lng": 78.38515550621929,
+    "lat": 17.45234340655529,
+    "image_url": null,
+    "tags": [
+      "Serves Alcohol",
+      "Reservations",
+      "Parking",
+      "Outdoor Seating",
+      "Work Friendly",
+      "Family Friendly",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Renao%20Cafe%20%26%20Bistro%2C%20Madhapur%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Ca Phe Bistro",
+    "category": "Vietnamese Coffee / Bistro",
+    "location": "Nanakramguda",
+    "address": "4, Serlingampally, Circle 20, Sri Lakshmi Road, Nanakramguda, Hyderabad",
+    "website_or_instagram": "https://caphebistro.in/",
+    "cost_for_two": null,
+    "note": "Vietnamese phin coffee, cold brews & bistro classics",
+    "lng": 78.35317873021845,
+    "lat": 17.415604747950887,
+    "image_url": null,
+    "tags": [
+      "Specialty Coffee",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Ca%20Phe%20Bistro%2C%204%2C%20Serlingampally%2C%20Circle%2020%2C%20Sri%20Lakshmi%20Road%2C%20Nanakramguda%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Chapter Coffee",
+    "category": "Specialty Coffee / Cafe",
+    "location": "Gandipet",
+    "address": "Plot 85, Brundavan Colony, Narsingi, Gandipet, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Specialty coffee, cafe food & relaxed ambience",
+    "lng": 78.33735748912886,
+    "lat": 17.385681044959476,
+    "image_url": null,
+    "tags": [
+      "Specialty Coffee",
+      "Work Friendly"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Chapter%20Coffee%2C%20Plot%2085%2C%20Brundavan%20Colony%2C%20Narsingi%2C%20Gandipet%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Always Sunday",
+    "category": "Cafe / Coffee / Brunch",
+    "location": "Manikonda",
+    "address": "Plot 17, Ground Floor, Acess Towers, Road 2, Khajaguda Road, Raidurg/Manikonda, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, brunch, garden ambience & work-friendly setting",
+    "lng": 78.38080247572488,
+    "lat": 17.421758788082613,
+    "image_url": null,
+    "tags": [
+      "Brunch",
+      "Outdoor Seating",
+      "Work Friendly"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Always%20Sunday%2C%20Plot%2017%2C%20Ground%20Floor%2C%20Acess%20Towers%2C%20Road%202%2C%20Khajaguda%20Road%2C%20Raidurg/Manikonda%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "LastHouse: By The Lake",
+    "category": "Cafe",
+    "location": "Jubilee Hills",
+    "address": "Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Lakeside ambience, cafe food & sunset hangouts",
+    "lng": 78.39185540012028,
+    "lat": 17.434925985297706,
+    "image_url": null,
+    "tags": [
+      "Lakeside",
+      "Outdoor Seating",
+      "Serves Alcohol"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=LastHouse%3A%20By%20The%20Lake%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Etsi Cafe BakeHouse Chocolatier",
+    "category": "Cafe / Bakehouse / Chocolatier",
+    "location": "Jubilee Hills",
+    "address": "Road No. 59, Jubilee Hills, Hyderabad",
+    "website_or_instagram": "https://et-si.in/",
+    "cost_for_two": null,
+    "note": "Bakes, chocolates, pastries & cafe desserts",
+    "lng": 78.40915243658624,
+    "lat": 17.428631115715987,
+    "image_url": null,
+    "tags": [
+      "Bakery",
+      "Desserts"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Etsi%20Cafe%20BakeHouse%20Chocolatier%2C%20Road%20No.%2059%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Le Cafe - Novotel Hyderabad Convention Centre",
+    "category": "Hotel Cafe / Bakery",
+    "location": "Madhapur",
+    "address": "Novotel Hyderabad Convention Centre, HICC Complex, Adjacent to HITEC City, Hyderabad 500081",
+    "website_or_instagram": "https://www.novotelhyderabad.com/restaurants-bars/le-cafe/",
+    "cost_for_two": null,
+    "note": "Coffee, bakery, pastries & hotel cafe experience",
+    "lng": 78.372885433779,
+    "lat": 17.472476987571444,
+    "image_url": null,
+    "tags": [
+      "Bakery",
+      "Desserts"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Le%20Cafe%20-%20Novotel%20Hyderabad%20Convention%20Centre%2C%20Novotel%20Hyderabad%20Convention%20Centre%2C%20HICC%20Complex%2C%20Adjacent%20to%20HITEC%20City%2C%20Hyderabad%20500081",
+    "rating": null
+  },
+  {
+    "name": "Tiger Lily Bistro",
+    "category": "Cafe / Bistro / Thai",
+    "location": "Jubilee Hills",
+    "address": "272, Road Number 10, near SBricks Castle Pvt. Ltd, Venkatagiri, Jubilee Hills, Hyderabad, Telangana 500033",
+    "website_or_instagram": "https://tigerlilybistro.in/",
+    "cost_for_two": null,
+    "note": "Thai/Asian food, cocktails/mocktails, ambience & bistro experience",
+    "lng": 78.41052710425805,
+    "lat": 17.43570190966923,
+    "image_url": null,
+    "tags": [
+      "Serves Alcohol",
+      "Reservations",
+      "Outdoor Seating"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Tiger%20Lily%20Bistro%2C%20272%2C%20Road%20Number%2010%2C%20near%20SBricks%20Castle%20Pvt.%20Ltd%2C%20Venkatagiri%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500033",
+    "rating": null
+  },
+  {
+    "name": "Koki Coffee & Co.",
+    "category": "Cafe",
+    "location": "Kokapet",
+    "address": "Kokapet, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, cafe food & desserts",
+    "lng": 78.33871080612593,
+    "lat": 17.40084537770647,
+    "image_url": null,
+    "tags": [
+      "Vegan Options",
+      "Vegetarian Options",
+      "WiFi",
+      "Work Friendly",
+      "Family Friendly",
+      "Brunch"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Koki%20Coffee%20%26%20Co.%2C%20Kokapet%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Vibeyard",
+    "category": "Bistro / Italian / Continental",
+    "location": "Jubilee Hills",
+    "address": "Plot B-22, Road 8, Film Nagar, Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Italian/Continental food, coffee & ambience",
+    "lng": 78.40889169227349,
+    "lat": 17.413314810168036,
+    "image_url": null,
+    "tags": [
+      "Serves Alcohol",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Vibeyard%2C%20Plot%20B-22%2C%20Road%208%2C%20Film%20Nagar%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Coffee & Crisps Cafe",
+    "category": "Cafe / Coffee",
+    "location": "Saroor Nagar",
+    "address": "Saroor Nagar, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, snacks & casual cafe food",
+    "lng": 78.54208663632126,
+    "lat": 17.357301608302993,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Coffee%20%26%20Crisps%20Cafe%2C%20Saroor%20Nagar%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Theory Patisserie & Cafe",
+    "category": "Patisserie / Cafe",
+    "location": "Jubilee Hills",
+    "address": "Plot No. 178, Road Number 13, Jubilee Hills, Hyderabad, Telangana 500033",
+    "website_or_instagram": "https://theorycafe.in/",
+    "cost_for_two": null,
+    "note": "Jaggery cold coffee, mango matcha, bacon egg & cheese bagel, pastries & brunch",
+    "lng": 78.41469176424636,
+    "lat": 17.431863505550666,
+    "image_url": null,
+    "tags": [
+      "Bakery",
+      "Desserts",
+      "Brunch",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Theory%20Patisserie%20%26%20Cafe%2C%20Plot%20No.%20178%2C%20Road%20Number%2013%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500033",
+    "rating": null
+  },
+  {
+    "name": "Cafe Liora",
+    "category": "Cafe / Coffee / Desserts",
+    "location": "Nagole",
+    "address": "Plot 13, Samathapuri Colony, Samathapur, Road 4, Nagole, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, desserts & cafe food",
+    "lng": 78.55570817291218,
+    "lat": 17.37628343965929,
+    "image_url": null,
+    "tags": [
+      "Desserts",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Cafe%20Liora%2C%20Plot%2013%2C%20Samathapuri%20Colony%2C%20Samathapur%2C%20Road%204%2C%20Nagole%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Mirame Cafe & Kitchen",
+    "category": "Cafe",
+    "location": "RTC X roads",
+    "address": "RTC X roads, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, cafe food, desserts & casual dining",
+    "lng": 78.4953373478379,
+    "lat": 17.403936124605266,
+    "image_url": null,
+    "tags": [
+      "Serves Alcohol",
+      "Family Friendly",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Mirame%20Cafe%20%26%20Kitchen%2C%20RTC%20X%20roads%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "PS Cheese Cafe",
+    "category": "Cafe / Coffee / Italian",
+    "location": "Madhapur",
+    "address": "1-65/536, Kavuri Hills Road, Madhapur, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Cheese-based dishes, coffee, Italian food & cafe ambience",
+    "lng": 78.39653544493085,
+    "lat": 17.442675530307827,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=PS%20Cheese%20Cafe%2C%201-65/536%2C%20Kavuri%20Hills%20Road%2C%20Madhapur%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Brewbite Bistro",
+    "category": "Cafe / Bistro / Continental",
+    "location": "Madhapur",
+    "address": "Plot .209, Guttala Begumpet, Madhapur, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, Continental food & bistro ambience",
+    "lng": 78.39935614929136,
+    "lat": 17.442384950270206,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Brewbite%20Bistro%2C%20Plot%20.209%2C%20Guttala%20Begumpet%2C%20Madhapur%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Ironhill Cafe",
+    "category": "Cafe / Coffee / Beverages",
+    "location": "Madhapur",
+    "address": "Plot 11 2, Sector 1, Near Pride Honda, HUDA Techno Enclave, Madhapur, Hyderabad, Telangana 500081",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, beverages, large-group hangouts & cafe ambience",
+    "lng": 78.38435595885035,
+    "lat": 17.445306472987216,
+    "image_url": null,
+    "tags": [
+      "Serves Alcohol",
+      "Outdoor Seating",
+      "Reservations",
+      "Live Music"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Ironhill%20Cafe%2C%20Plot%2011%202%2C%20Sector%201%2C%20Near%20Pride%20Honda%2C%20HUDA%20Techno%20Enclave%2C%20Madhapur%2C%20Hyderabad%2C%20Telangana%20500081",
+    "rating": null
+  },
+  {
+    "name": "Cream Centre",
+    "category": "Cafe",
+    "location": "Hitech City",
+    "address": "Hitech City, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Cafe food, coffee & ambience",
+    "lng": 78.47798097122408,
+    "lat": 17.44332294265898,
+    "image_url": null,
+    "tags": [
+      "Parking",
+      "WiFi",
+      "Family Friendly",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Cream%20Centre%2C%20Hitech%20City%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Base Coffee",
+    "category": "Cafe / Coffee",
+    "location": "Jubilee Hills",
+    "address": "Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, cafe snacks & casual hangouts",
+    "lng": 78.39668984915382,
+    "lat": 17.429904820598093,
+    "image_url": null,
+    "tags": [
+      "Work Friendly",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Base%20Coffee%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "The Hole In The Wall Cafe",
+    "category": "Cafe / Brunch / Coffee",
+    "location": "Jubilee Hills",
+    "address": "House 8-2-293/82/A/753/1, Survey 403/1 Old & 120 New Survey 102/1, Plot 753, Circle 18, Jubilee Hills, Hyderabad",
+    "website_or_instagram": "https://theholeinthewallcafe.in/",
+    "cost_for_two": null,
+    "note": "All-day breakfast, waffles, burgers, omelettes, coffee & quirky decor",
+    "lng": 78.40055590932886,
+    "lat": 17.436034412425162,
+    "image_url": null,
+    "tags": [
+      "Brunch",
+      "Desserts",
+      "Vegetarian Options",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=The%20Hole%20In%20The%20Wall%20Cafe%2C%20House%208-2-293/82/A/753/1%2C%20Survey%20403/1%20Old%20%26%20120%20New%20Survey%20102/1%2C%20Plot%20753%2C%20Circle%2018%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "The Funnel Hill Creamery",
+    "category": "Cafe / Desserts / Ice Cream",
+    "location": "Kompally",
+    "address": "Plot 1, Brundavan Colony, Ruby Block, Pochamma Gadda, Bolarum, Fairmount Square, Kompally, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Ice cream, desserts, cakes & cafe treats",
+    "lng": 78.41198701603076,
+    "lat": 17.419776123095446,
+    "image_url": null,
+    "tags": [
+      "Desserts",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=The%20Funnel%20Hill%20Creamery%2C%20Plot%201%2C%20Brundavan%20Colony%2C%20Ruby%20Block%2C%20Pochamma%20Gadda%2C%20Bolarum%2C%20Fairmount%20Square%2C%20Kompally%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "PUP - Paws Unleash Play",
+    "category": "Pet Cafe / Vegetarian",
+    "location": "Jubilee Hills",
+    "address": "HUDA Enclave, Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Pet-friendly cafe experience, vegetarian food & play space",
+    "lng": 78.4004498786039,
+    "lat": 17.426037595101477,
+    "image_url": null,
+    "tags": [
+      "Pet Friendly",
+      "Vegetarian Options",
+      "Outdoor Seating"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=PUP%20-%20Paws%20Unleash%20Play%2C%20HUDA%20Enclave%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Conçu",
+    "category": "Cafe / Coffee / Continental",
+    "location": "Jubilee Hills",
+    "address": "Plot 738, Road 37, Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, Continental food, desserts & premium ambience",
+    "lng": 78.50516732933868,
+    "lat": 17.442665534838145,
+    "image_url": null,
+    "tags": [
+      "Desserts",
+      "Brunch",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Con%C3%A7u%2C%20Plot%20738%2C%20Road%2037%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Karafa",
+    "category": "Cafe",
+    "location": "Jubilee Hills",
+    "address": "Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, cafe food, ambience & desserts",
+    "lng": 78.40643487859674,
+    "lat": 17.427316648642254,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Karafa%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "10 Pounder Pizzateria",
+    "category": "Pizzeria / Cafe",
+    "location": "Kothaguda",
+    "address": "SMR Vinay Technopolis, G-101/G-102, near Google Office, Kothaguda, Hyderabad, Telangana 500084",
+    "website_or_instagram": "https://10pounder.com/",
+    "cost_for_two": null,
+    "note": "Pizza, garlic bread & late-night pizza",
+    "lng": 78.37161090261064,
+    "lat": 17.457993533849397,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options",
+      "Late Night"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=10%20Pounder%20Pizzateria%2C%20SMR%20Vinay%20Technopolis%2C%20G-101/G-102%2C%20near%20Google%20Office%2C%20Kothaguda%2C%20Hyderabad%2C%20Telangana%20500084",
+    "rating": null
+  },
+  {
+    "name": "Qaffeine",
+    "category": "Cafe / Specialty Coffee",
+    "location": "Malakpet",
+    "address": "13, NH 65, Andhra Colony, New Malakpet, Hyderabad, Telangana 500036",
+    "website_or_instagram": "https://qaffeine.com/",
+    "cost_for_two": null,
+    "note": "Coffee, affogato, pancakes, avocado toast & Instagrammable ambience",
+    "lng": 78.443027951994,
+    "lat": 17.4157324978514,
+    "image_url": null,
+    "tags": [
+      "Brunch",
+      "Desserts",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Qaffeine%2C%2013%2C%20NH%2065%2C%20Andhra%20Colony%2C%20New%20Malakpet%2C%20Hyderabad%2C%20Telangana%20500036",
+    "rating": null
+  },
+  {
+    "name": "Belloso Cafe",
+    "category": "Cafe / Coffee / Bistro",
+    "location": "Uppal",
+    "address": "Bhagayath, HMDA, Plot 324, Raghavendra Nagar Colony, Gayatri Nagar, Uppal, Hyderabad, Telangana 500039",
+    "website_or_instagram": "https://www.cafebelloso.com/",
+    "cost_for_two": null,
+    "note": "Cold brew, coffee, pastries & bistro food",
+    "lng": 78.56361125679383,
+    "lat": 17.39081575347926,
+    "image_url": null,
+    "tags": [
+      "Bakery",
+      "Desserts"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Belloso%20Cafe%2C%20Bhagayath%2C%20HMDA%2C%20Plot%20324%2C%20Raghavendra%20Nagar%20Colony%2C%20Gayatri%20Nagar%2C%20Uppal%2C%20Hyderabad%2C%20Telangana%20500039",
+    "rating": null
+  },
+  {
+    "name": "Lush Cafe By The Lake",
+    "category": "Cafe / Coffee / Lakeside",
+    "location": "Jubilee Hills",
+    "address": "Plot 138 & 139, Doctors Colony, G. Begumpet, Kavuri Hills, Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Lakeside ambience, coffee & casual cafe food",
+    "lng": 78.39200000853855,
+    "lat": 17.43639473808972,
+    "image_url": null,
+    "tags": [
+      "Lakeside",
+      "Outdoor Seating"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Lush%20Cafe%20By%20The%20Lake%2C%20Plot%20138%20%26%20139%2C%20Doctors%20Colony%2C%20G.%20Begumpet%2C%20Kavuri%20Hills%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Ur Life Cafe",
+    "category": "Cafe",
+    "location": "Madhapur",
+    "address": "Madhapur, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, cafe food & casual hangouts",
+    "lng": 78.4140955356839,
+    "lat": 17.4152385824749,
+    "image_url": null,
+    "tags": [
+      "Outdoor Seating",
+      "WiFi",
+      "Brunch",
+      "Vegetarian Options",
+      "Vegan Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Ur%20Life%20Cafe%2C%20Madhapur%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Aaromale",
+    "category": "Cafe",
+    "location": "Film Nagar",
+    "address": "Film Nagar, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, South Indian-inspired food & ambience",
+    "lng": 78.40651558759276,
+    "lat": 17.412989568063743,
+    "image_url": null,
+    "tags": [
+      "Serves Alcohol",
+      "Parking",
+      "Brunch",
+      "Outdoor Seating",
+      "Work Friendly",
+      "Family Friendly",
+      "Vegetarian Options",
+      "Vegan Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Aaromale%2C%20Film%20Nagar%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Ukusa",
+    "category": "Cafe",
+    "location": "Jubilee Hills",
+    "address": "Jubilee Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, cafe food & ambience",
+    "lng": 78.41691257327963,
+    "lat": 17.43384269639662,
+    "image_url": null,
+    "tags": [
+      "Reservations",
+      "Parking",
+      "WiFi",
+      "Work Friendly",
+      "Family Friendly",
+      "Outdoor Seating",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Ukusa%2C%20Jubilee%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Ta.Ma.Sha Veg Cafe Gunrock",
+    "category": "Vegetarian Cafe",
+    "location": "Karkhana",
+    "address": "Gunrock Enclave, Karkhana, Secunderabad, Telangana",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Vegetarian food, coffee & casual hangouts",
+    "lng": 78.4953806777912,
+    "lat": 17.457055526102806,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Ta.Ma.Sha%20Veg%20Cafe%20Gunrock%2C%20Gunrock%20Enclave%2C%20Karkhana%2C%20Secunderabad%2C%20Telangana",
+    "rating": null
+  },
+  {
+    "name": "The Joint Bar & Cafe",
+    "category": "Cafe",
+    "location": "Banjara Hills",
+    "address": "Banjara Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Cafe food, beverages, ambience & casual hangouts",
+    "lng": 78.44430084174643,
+    "lat": 17.41759842934303,
+    "image_url": null,
+    "tags": [
+      "Serves Alcohol",
+      "Outdoor Seating",
+      "Reservations"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=The%20Joint%20Bar%20%26%20Cafe%2C%20Banjara%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Motown Stories Cafe",
+    "category": "Cafe",
+    "location": "Financial District",
+    "address": "Financial District, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Cafe food, coffee, ambience & hangouts",
+    "lng": 78.33866965839421,
+    "lat": 17.422122135488504,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Motown%20Stories%20Cafe%2C%20Financial%20District%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Roast 24 Seven",
+    "category": "Cafe",
+    "location": "Gachibowli",
+    "address": "Gachibowli, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, all-day cafe food & late-night hangouts",
+    "lng": 78.36732758557446,
+    "lat": 17.437169135292805,
+    "image_url": null,
+    "tags": [
+      "Specialty Coffee",
+      "Late Night"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Roast%2024%20Seven%2C%20Gachibowli%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Mazuri Cafe",
+    "category": "Cafe",
+    "location": "Banjara Hills",
+    "address": "Banjara Hills, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, cafe food & ambience",
+    "lng": 78.44117967240778,
+    "lat": 17.420253564275278,
+    "image_url": null,
+    "tags": [
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Mazuri%20Cafe%2C%20Banjara%20Hills%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Prezmo",
+    "category": "Cafe",
+    "location": "Gandipet",
+    "address": "Gandipet, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, desserts & cafe food",
+    "lng": 78.34102964106654,
+    "lat": 17.393742030422846,
+    "image_url": null,
+    "tags": [
+      "Desserts",
+      "Vegetarian Options"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Prezmo%2C%20Gandipet%2C%20Hyderabad",
+    "rating": null
+  },
+  {
+    "name": "Chika Cafe",
+    "category": "Cafe",
+    "location": "Srinagar Colony",
+    "address": "Srinagar Colony, Hyderabad",
+    "website_or_instagram": "",
+    "cost_for_two": null,
+    "note": "Coffee, desserts, cafe food & aesthetic ambience",
+    "lng": 78.43786318869184,
+    "lat": 17.426851452349226,
+    "image_url": null,
+    "tags": [
+      "Desserts",
+      "Instagrammable"
+    ],
+    "hours_text": null,
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Chika%20Cafe%2C%20Srinagar%20Colony%2C%20Hyderabad",
+    "rating": null
+  }
+]

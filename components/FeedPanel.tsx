@@ -33,6 +33,7 @@ type FeedPanelProps =
       emptyLabel: string;
       items: Billboard[];
       onSelect: (billboard: Billboard) => void;
+      onDelete?: (id: string) => void;
       onClose: () => void;
     };
 
@@ -45,20 +46,35 @@ export default function FeedPanel(props: FeedPanelProps) {
         <div className="px-3 py-6 text-center text-sm text-neutral-400">{emptyLabel}</div>
       )}
       {items.map((item) => (
-        <button
+        <div
           key={item.id}
-          onClick={() => (kind === "cafe" ? props.onSelect(item as Cafe) : props.onSelect(item as Billboard))}
-          className="flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-white/10"
+          className="group flex w-full items-start gap-2 rounded-xl px-2 py-1.5 hover:bg-white/10"
         >
-          <span className="text-lg leading-none">{kind === "cafe" ? cafeIcon(item as Cafe) : icon}</span>
-          <div className="min-w-0 flex-1">
-            <div className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">{item.name}</div>
-            <div className="truncate text-xs text-neutral-400">
-              {kind === "cafe" && (item as Cafe).category ? `${shortCategory((item as Cafe).category!)} · ` : ""}
-              {timeAgo(item.created_at)}
-            </div>
-          </div>
-        </button>
+          <button
+            onClick={() => (kind === "cafe" ? props.onSelect(item as Cafe) : props.onSelect(item as Billboard))}
+            className="flex min-w-0 flex-1 items-start gap-3 rounded-lg px-1 py-1 text-left"
+          >
+            <span className="text-lg leading-none">{kind === "cafe" ? cafeIcon(item as Cafe) : icon}</span>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">{item.name}</span>
+              <span className="block truncate text-xs text-neutral-400">
+                {kind === "cafe" && (item as Cafe).category ? `${shortCategory((item as Cafe).category!)} · ` : ""}
+                {timeAgo(item.created_at)}
+              </span>
+            </span>
+          </button>
+          {kind === "billboard" && props.onDelete && (
+            <button
+              onClick={() => props.onDelete?.(item.id)}
+              aria-label={`Delete ${item.name}`}
+              className="mt-1 shrink-0 rounded-full p-1.5 text-neutral-500 opacity-60 transition hover:bg-rose-500/15 hover:text-rose-300 group-hover:opacity-100"
+            >
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
+                <path d="M5 6h10M8 6V4h4v2M6 6l.5 10h7l.5-10" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          )}
+        </div>
       ))}
     </PanelShell>
   );

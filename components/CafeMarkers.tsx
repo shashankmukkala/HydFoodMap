@@ -12,6 +12,11 @@ function iconFor(cafe: Cafe) {
   return "☕";
 }
 
+function initialsFor(name: string) {
+  const words = name.trim().split(/\s+/).filter(Boolean);
+  return (words.length > 1 ? `${words[0][0]}${words[1][0]}` : name.slice(0, 2)).toUpperCase();
+}
+
 type CafeMarkersProps = {
   map: MapLibreMap | null;
   cafes: Cafe[];
@@ -45,7 +50,30 @@ export default function CafeMarkers({ map, cafes, selectedId, onSelect }: CafeMa
       const el = document.createElement("button");
       el.type = "button";
       el.className = "cafe-pin";
-      el.innerHTML = `<span class="cafe-pin-icon">${iconFor(cafe)}</span><span class="cafe-pin-label">${escapeHtml(cafe.name)}</span>`;
+      el.setAttribute("aria-label", `Open ${cafe.name}`);
+
+      const icon = document.createElement("span");
+      icon.className = "cafe-pin-icon";
+      if (cafe.image_url) {
+        const image = document.createElement("img");
+        image.src = cafe.image_url;
+        image.alt = "";
+        image.addEventListener("error", () => {
+          image.remove();
+          icon.textContent = initialsFor(cafe.name);
+          icon.classList.add("cafe-pin-icon-fallback");
+        });
+        icon.appendChild(image);
+      } else {
+        icon.textContent = initialsFor(cafe.name);
+        icon.classList.add("cafe-pin-icon-fallback");
+        icon.title = iconFor(cafe);
+      }
+
+      const label = document.createElement("span");
+      label.className = "cafe-pin-label";
+      label.textContent = cafe.name;
+      el.append(icon, label);
       el.addEventListener("click", (event) => {
         event.stopPropagation();
         onSelectRef.current(cafe);
@@ -72,10 +100,4 @@ export default function CafeMarkers({ map, cafes, selectedId, onSelect }: CafeMa
   }, []);
 
   return null;
-}
-
-function escapeHtml(value: string) {
-  const div = document.createElement("div");
-  div.textContent = value;
-  return div.innerHTML;
 }

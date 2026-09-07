@@ -16,6 +16,9 @@ const eslintConfig = defineConfig([
     // scripts/copy-maplibre-worker.mjs), not app source.
     "public/maplibre-gl-worker.mjs",
     "public/maplibre-gl-shared.mjs",
+    // Deno Edge Functions — separate runtime (Deno globals, remote URL
+    // imports) from the Next.js/Node app this config targets.
+    "supabase/functions/**",
   ]),
 ]);
 

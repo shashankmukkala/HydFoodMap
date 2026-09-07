@@ -1,64 +1,72 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useAuth } from "@/lib/useAuth";
+import { supabase } from "@/lib/supabase";
 
-const VISITED_KEY = "hydcafemap:visited-cafe-ids";
-const listeners = new Set<() => void>();
-
-function readIds(): string[] {
-  try {
-    const raw = window.localStorage.getItem(VISITED_KEY);
-    return raw ? (JSON.parse(raw) as string[]) : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeIds(ids: string[]) {
-  try {
-    window.localStorage.setItem(VISITED_KEY, JSON.stringify(ids));
-  } catch {
-    // localStorage unavailable — mark just won't persist.
-  }
-  for (const listener of listeners) listener();
-}
-
-function subscribe(onStoreChange: () => void) {
-  listeners.add(onStoreChange);
-  return () => listeners.delete(onStoreChange);
-}
-
-const EMPTY: string[] = [];
-let cached: string[] = EMPTY;
-let cachedRaw: string | null = null;
-
-function getSnapshot(): string[] {
-  const raw = window.localStorage.getItem(VISITED_KEY);
-  if (raw === cachedRaw) return cached;
-  cachedRaw = raw;
-  cached = raw ? readIds() : EMPTY;
-  return cached;
-}
-
-function getServerSnapshot(): string[] {
-  return EMPTY;
-}
-
-/**
- * Explicit, self-reported "I've been here" — not inferred from clicking a
- * pin. Per-browser (no account system exists), via localStorage, same
- * caveat as bookmarks/collections: doesn't sync across devices, resets in
- * a private window or if site data is cleared.
- */
+// Per-account via the `visited_cafes` table (0025_visited_cafes_and_points_reason.sql),
+// not per-browser localStorage — see useBookmarks.ts for the same
+// reasoning. Explicit, self-reported "I've been here", not inferred from
+// clicking a pin.
 export function useVisitTracking() {
-  const visitedIds = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const { session } = useAuth();
+  const [visitedIds, setVisitedIds] = useState<string[]>([]);
 
-  const setVisited = useCallback((cafeId: string, visited: boolean) => {
-    const current = getSnapshot();
-    const isVisited = current.includes(cafeId);
-    if (visited === isVisited) return;
-    writeIds(visited ? [...current, cafeId] : current.filter((id) => id !== cafeId));
-  }, []);
+  // Clears the moment the signed-in identity changes (most notably
+  // sign-out) — adjusted during render (React's recommended pattern for
+  // state driven by a prop/value), not in the effect below, which can't
+  // set state synchronously in its body.
+  const currentUserId = session?.user.id ?? null;
+  const [lastUserId, setLastUserId] = useState(currentUserId);
+  if (currentUserId !== lastUserId) {
+    setLastUserId(currentUserId);
+    setVisitedIds([]);
+  }
+
+  useEffect(() => {
+    if (!session) return;
+    let cancelled = false;
+    supabase
+      .from("visited_cafes")
+      .select("cafe_id")
+      .eq("user_id", session.user.id)
+      .then(({ data }) => {
+        if (!cancelled && data) setVisitedIds(data.map((row) => row.cafe_id as string));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [session]);
+
+  const setVisited = useCallback(
+    (cafeId: string, visited: boolean) => {
+      if (!session) return;
+      const userId = session.user.id;
+      setVisitedIds((prev) => {
+        const isVisited = prev.includes(cafeId);
+        if (visited === isVisited) return prev;
+        if (visited) {
+          supabase
+            .from("visited_cafes")
+            .insert({ user_id: userId, cafe_id: cafeId })
+            .then(({ error }) => {
+              if (error) setVisitedIds((cur) => cur.filter((id) => id !== cafeId));
+            });
+          return [...prev, cafeId];
+        }
+        supabase
+          .from("visited_cafes")
+          .delete()
+          .eq("user_id", userId)
+          .eq("cafe_id", cafeId)
+          .then(({ error }) => {
+            if (error) setVisitedIds((cur) => (cur.includes(cafeId) ? cur : [...cur, cafeId]));
+          });
+        return prev.filter((id) => id !== cafeId);
+      });
+    },
+    [session]
+  );
 
   const isVisited = useCallback((cafeId: string) => visitedIds.includes(cafeId), [visitedIds]);
 

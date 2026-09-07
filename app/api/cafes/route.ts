@@ -25,7 +25,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { name, category, location, cost_for_two, note, lng, lat, image_url, tags, hours_text, maps_url, rating } =
+  const { name, category, location, address, website_or_instagram, cost_for_two, note, lng, lat, image_url, tags, hours_text, maps_url, rating } =
     body;
 
   if (!name || typeof lng !== "number" || typeof lat !== "number") {
@@ -37,6 +37,8 @@ export async function POST(request: NextRequest) {
       name,
       category: category || null,
       location: location || null,
+      address: address || null,
+      website_or_instagram: website_or_instagram || null,
       cost_for_two: cost_for_two || null,
       note: note || null,
       lng,
@@ -56,6 +58,8 @@ export async function POST(request: NextRequest) {
       name,
       category,
       location: location || null,
+      address: address || null,
+      website_or_instagram: website_or_instagram || null,
       cost_for_two: cost_for_two || null,
       note,
       lng,

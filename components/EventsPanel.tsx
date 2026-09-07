@@ -13,16 +13,18 @@ type EventsPanelProps = {
   isAdmin: boolean;
   onAddClick: () => void;
   onDelete: (id: string) => void;
+  onClose?: () => void;
 };
 
-export default function EventsPanel({ events, isAdmin, onAddClick, onDelete }: EventsPanelProps) {
+export default function EventsPanel({ events, isAdmin, onAddClick, onDelete, onClose }: EventsPanelProps) {
   const today = new Date().toISOString().slice(0, 10);
   const upcoming = events.filter((e) => e.event_date >= today);
 
   return (
     <PanelShell
-      title="Happening in Hyderabad 📅"
+      title="Happening in Hyderabad"
       subtitle={`${upcoming.length} upcoming`}
+      onClose={onClose}
       headerAction={
         isAdmin && (
           <button
@@ -42,26 +44,26 @@ export default function EventsPanel({ events, isAdmin, onAddClick, onDelete }: E
       {upcoming.map((event) => (
         <div
           key={event.id}
-          className="group flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-white/10"
+          className="group relative flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.03] px-3 py-3 transition-colors hover:border-amber-400/20 hover:bg-white/[0.07]"
         >
-          <div className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-lg bg-amber-50 leading-none dark:bg-amber-950">
-            <span className="text-[10px] font-medium text-amber-500 uppercase">
-              {new Date(`${event.event_date}T00:00:00`).toLocaleDateString("en-IN", { month: "short" })}
+          <div className={`flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-xl leading-none ${event.event_date === today ? "bg-rose-950/70" : "bg-amber-950/70"}`}>
+            <span className={`text-[9px] font-bold tracking-wide uppercase ${event.event_date === today ? "text-rose-300" : "text-amber-300"}`}>
+              {event.event_date === today ? "LIVE" : new Date(`${event.event_date}T00:00:00`).toLocaleDateString("en-IN", { month: "short" })}
             </span>
-            <span className="text-sm font-bold text-amber-600 dark:text-amber-400">
-              {new Date(`${event.event_date}T00:00:00`).getDate()}
+            <span className={`mt-1 text-sm font-bold ${event.event_date === today ? "text-rose-200" : "text-amber-200"}`}>
+              {event.event_date === today ? "NOW" : new Date(`${event.event_date}T00:00:00`).getDate()}
             </span>
           </div>
           <div className="min-w-0 flex-1">
-            <div className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">
+            <div className="truncate text-sm font-semibold text-neutral-100">
               {event.name}
             </div>
-            <div className="truncate text-xs text-neutral-400">
+            <div className="mt-0.5 truncate text-xs text-neutral-400">
               {formatDate(event.event_date)}
               {event.location ? ` · ${event.location}` : ""}
             </div>
             {event.description && (
-              <div className="mt-1 line-clamp-2 text-xs text-neutral-500 dark:text-neutral-400">
+              <div className="mt-1.5 line-clamp-2 text-xs leading-4 text-neutral-400">
                 {event.description}
               </div>
             )}

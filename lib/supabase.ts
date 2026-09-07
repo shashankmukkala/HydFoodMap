@@ -46,10 +46,32 @@ export function createAuthedClient(accessToken: string): SupabaseClient {
   });
 }
 
+// Bypasses RLS entirely — the service role is a full-trust connection,
+// same as the Postgres superuser as far as PostgREST is concerned. Only
+// ever call this from server-side code that has already independently
+// verified what it's about to do (e.g. app/api/admin/reset-password,
+// which checks a hashed recovery code before touching anything). Safe to
+// export from this shared module despite that: SUPABASE_SERVICE_ROLE_KEY
+// is a server-only env var (no NEXT_PUBLIC_ prefix), so Next.js never
+// bundles it into client-side JS regardless of what imports this file.
+export function createServiceRoleClient(): SupabaseClient {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY.");
+  }
+  return createClient(supabaseUrl, serviceRoleKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+}
+
 export type Billboard = {
   id: string;
   name: string;
+  ad_type: "billboard" | "aircraft" | "rail";
+  slot_number: number | null;
   image_url: string | null;
+  target_url: string | null;
   lng: number;
   lat: number;
   elevation_m: number;
@@ -66,6 +88,10 @@ export type Cafe = {
   category: string | null;
   /** Neighbourhood/area, e.g. "Banjara Hills" — distinct from the full address. */
   location: string | null;
+  /** Full street address for the cafe. */
+  address: string | null;
+  /** Primary public website or social profile supplied for the cafe. */
+  website_or_instagram: string | null;
   /** Display string as entered, e.g. "₹850" — an approximate cost for two. */
   cost_for_two: string | null;
   note: string | null;
@@ -108,6 +134,7 @@ export type CafeEvent = {
 export type Review = {
   id: string;
   cafe_id: string;
+  checkin_id?: string | null;
   user_id: string;
   rating: number;
   comment: string | null;
@@ -116,10 +143,21 @@ export type Review = {
   /** Data URL of an optional photo attached to the review. */
   photo_url: string | null;
   /**
-   * @deprecated No longer collected in the UI — identity will come from
-   * mobile-number sign-in instead once that's wired up. Left nullable so
-   * old rows still read fine.
+   * @deprecated No longer collected in the UI — identity comes from the
+   * signed-in Google account (see lib/useAuth, Profile below) instead.
+   * Left nullable so old rows still read fine.
    */
   reviewer_name: string | null;
   created_at: string;
+};
+
+// One row per signed-in user (0024_profiles.sql), auto-created from
+// Google's own profile data by a database trigger the moment their
+// auth.users row appears — never created client-side.
+export type Profile = {
+  user_id: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  created_at: string;
+  updated_at: string;
 };

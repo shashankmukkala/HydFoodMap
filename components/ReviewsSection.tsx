@@ -17,9 +17,14 @@ type GateState =
   | { status: "idle" }
   | { status: "confirm" }
   | { status: "locating" }
-  | { status: "ready"; lat: number; lng: number }
+  | { status: "checking-in" }
+  | { status: "waiting"; checkinId: string; secondsLeft: number }
+  | { status: "ready"; checkinId: string; lat: number; lng: number; accuracy: number }
   | { status: "too-far" }
+  | { status: "low-accuracy" }
   | { status: "error"; message: string };
+
+const CHECKIN_WAIT_SECONDS = 30;
 
 function timeAgo(iso: string) {
   const diffMs = Date.now() - new Date(iso).getTime();
@@ -96,28 +101,86 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng }: ReviewsSect
     });
   }
 
-  function checkLocation() {
-    setGate({ status: "locating" });
-    if (!navigator.geolocation) {
-      setGate({ status: "error", message: "This browser can't share your location." });
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const dist = distanceMeters(
-          { lat: pos.coords.latitude, lng: pos.coords.longitude },
-          { lat: cafeLat, lng: cafeLng }
-        );
-        if (dist > VISIT_RADIUS_METERS) {
-          setGate({ status: "too-far" });
-        } else {
-          setGate({ status: "ready", lat: pos.coords.latitude, lng: pos.coords.longitude });
-        }
-      },
-      () => setGate({ status: "error", message: "Couldn't get your location — check location permissions." }),
-      { enableHighAccuracy: true, timeout: 10000 }
-    );
+  function getCurrentPosition() {
+    return new Promise<GeolocationPosition>((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject(new Error("This browser can't share your location."));
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 10000 });
+    });
   }
+
+  async function checkLocation() {
+    setGate({ status: "locating" });
+    try {
+      const pos = await getCurrentPosition();
+      const dist = distanceMeters(
+        { lat: pos.coords.latitude, lng: pos.coords.longitude },
+        { lat: cafeLat, lng: cafeLng }
+      );
+      if (pos.coords.accuracy > 150) {
+        setGate({ status: "low-accuracy" });
+        return;
+      }
+      if (dist > VISIT_RADIUS_METERS) {
+        setGate({ status: "too-far" });
+        return;
+      }
+      if (!session) {
+        setGate({ status: "error", message: "Sign in again to verify your visit." });
+        return;
+      }
+
+      setGate({ status: "checking-in" });
+      const response = await fetch(`/api/cafes/${cafeId}/check-in`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy }),
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(body.error || "Couldn't start a verified check-in.");
+      setGate({ status: "waiting", checkinId: body.checkin_id, secondsLeft: body.wait_seconds ?? CHECKIN_WAIT_SECONDS });
+    } catch (error) {
+      setGate({ status: "error", message: error instanceof Error ? error.message : "Couldn't verify your location." });
+    }
+  }
+
+  const waitingCheckinId = gate.status === "waiting" ? gate.checkinId : null;
+
+  useEffect(() => {
+    if (!waitingCheckinId || !session) return;
+    const checkinId = waitingCheckinId;
+    const timer = window.setTimeout(async () => {
+      try {
+        const pos = await getCurrentPosition();
+        const response = await fetch(`/api/cafes/${cafeId}/check-in/verify`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+          body: JSON.stringify({
+            checkin_id: checkinId,
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+            accuracy: pos.coords.accuracy,
+          }),
+        });
+        const body = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(body.error || "Couldn't verify your visit.");
+        setGate({ status: "ready", checkinId, lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy });
+      } catch (error) {
+        setGate({ status: "error", message: error instanceof Error ? error.message : "Couldn't verify your visit." });
+      }
+    }, CHECKIN_WAIT_SECONDS * 1000);
+    const countdown = window.setInterval(() => {
+      setGate((current) =>
+        current.status === "waiting" ? { ...current, secondsLeft: Math.max(0, current.secondsLeft - 1) } : current
+      );
+    }, 1000);
+    return () => {
+      window.clearTimeout(timer);
+      window.clearInterval(countdown);
+    };
+  }, [cafeId, waitingCheckinId, session]);
 
   function cancelReview() {
     setFormOpen(false);
@@ -154,6 +217,8 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng }: ReviewsSect
           photo_url: photoDataUrl,
           lat: gate.lat,
           lng: gate.lng,
+          accuracy: gate.accuracy,
+          checkin_id: gate.checkinId,
         }),
       });
       if (!res.ok) {
@@ -233,9 +298,25 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng }: ReviewsSect
           {gate.status === "locating" && (
             <p className="text-xs text-neutral-400">Checking you&apos;re actually here…</p>
           )}
+          {gate.status === "checking-in" && (
+            <p className="text-xs text-neutral-400">Starting a secure visit check-in…</p>
+          )}
+          {gate.status === "waiting" && (
+            <div className="rounded-md bg-emerald-50 px-2.5 py-2 text-xs text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
+              ✓ Visit started. Stay here for {gate.secondsLeft} more seconds while we confirm this visit.
+            </div>
+          )}
           {gate.status === "too-far" && (
             <div className="rounded-md bg-amber-50 px-2.5 py-2 text-xs text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
               You need to be at the cafe to leave a review — this keeps reviews real.{" "}
+              <button onClick={cancelReview} className="font-medium underline">
+                Close
+              </button>
+            </div>
+          )}
+          {gate.status === "low-accuracy" && (
+            <div className="rounded-md bg-amber-50 px-2.5 py-2 text-xs text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
+              Your location is not precise enough yet. Move outside or enable precise location, then try again.{' '}
               <button onClick={cancelReview} className="font-medium underline">
                 Close
               </button>
@@ -252,6 +333,8 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng }: ReviewsSect
 
           {gate.status === "ready" && (
             <form onSubmit={submitReview} className="space-y-2">
+              <p className="text-[11px] text-emerald-600 dark:text-emerald-400">✓ Verified visit confirmed</p>
+              <p className="text-[11px] text-emerald-600 dark:text-emerald-400">✓ Precise location confirmed</p>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -342,6 +425,11 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng }: ReviewsSect
                   <span className="text-amber-500">{"★".repeat(review.rating)}</span>
                   <span className="text-neutral-400">· {timeAgo(review.created_at)}</span>
                 </div>
+                {review.checkin_id && (
+                  <span className="mt-1 inline-flex items-center rounded-full bg-emerald-50 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
+                    ✓ Verified visit
+                  </span>
+                )}
                 {review.favorite_food && (
                   <p className="mt-0.5 text-amber-600 dark:text-amber-400">🍽️ {review.favorite_food}</p>
                 )}

@@ -7,14 +7,19 @@ import { useReverseGeocode } from "@/lib/useReverseGeocode";
 
 type PlaceBillboardFormProps = {
   coords: { lng: number; lat: number };
+  initialAdType?: Billboard["ad_type"];
   onCancel: () => void;
   onCreated: (billboard: Billboard) => void;
 };
 
-export default function PlaceBillboardForm({ coords, onCancel, onCreated }: PlaceBillboardFormProps) {
+export default function PlaceBillboardForm({ coords, initialAdType = "billboard", onCancel, onCreated }: PlaceBillboardFormProps) {
   const { address, status: addressStatus } = useReverseGeocode(coords);
 
   const [name, setName] = useState("");
+  const [adType, setAdType] = useState<Billboard["ad_type"]>(initialAdType);
+  const [bannerText, setBannerText] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [targetUrl, setTargetUrl] = useState("");
   const [widthM, setWidthM] = useState(10);
   const [heightM, setHeightM] = useState(5);
   const [headingDeg, setHeadingDeg] = useState(0);
@@ -23,7 +28,8 @@ export default function PlaceBillboardForm({ coords, onCancel, onCreated }: Plac
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!name.trim()) return;
+    const displayName = adType === "aircraft" ? bannerText.trim() : name.trim();
+    if (!displayName) return;
     setSubmitting(true);
     setError(null);
     try {
@@ -31,7 +37,10 @@ export default function PlaceBillboardForm({ coords, onCancel, onCreated }: Plac
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name,
+          name: displayName,
+          ad_type: adType,
+          image_url: imageUrl || null,
+          target_url: targetUrl || null,
           lng: coords.lng,
           lat: coords.lat,
           width_m: widthM,
@@ -50,9 +59,9 @@ export default function PlaceBillboardForm({ coords, onCancel, onCreated }: Plac
   }
 
   return (
-    <PanelShell title="Place a billboard" onClose={onCancel}>
+    <PanelShell title={adType === "aircraft" ? "Aircraft banner" : "Place a billboard"} onClose={onCancel}>
       <form onSubmit={handleSubmit} className="px-2 pb-2">
-        <div className="rounded-lg bg-neutral-50 px-3 py-2 text-xs dark:bg-neutral-800/60">
+        {adType !== "aircraft" && <div className="rounded-lg bg-neutral-50 px-3 py-2 text-xs dark:bg-neutral-800/60">
           {addressStatus === "loading" && <span className="text-neutral-400">Locating…</span>}
           {addressStatus === "error" && (
             <span className="text-amber-600 dark:text-amber-400">
@@ -68,18 +77,84 @@ export default function PlaceBillboardForm({ coords, onCancel, onCreated }: Plac
               </div>
             </>
           )}
-        </div>
+        </div>}
 
-        <label className="mt-4 block text-xs font-medium text-neutral-600">Name</label>
+        <label className="mt-4 block text-xs font-medium text-neutral-600">
+          {adType === "aircraft" ? "Ad banner text" : "Name"}
+        </label>
         <input
           autoFocus
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={adType === "aircraft" ? bannerText : name}
+          onChange={(e) => (adType === "aircraft" ? setBannerText(e.target.value) : setName(e.target.value))}
           className="mt-1 w-full rounded-md border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-          placeholder="Weekend Sale"
+          placeholder={adType === "aircraft" ? "Weekend sale · 20% off" : "Weekend Sale"}
         />
 
-        <div className="mt-3 grid grid-cols-3 gap-2">
+        {initialAdType === "billboard" && <label className="mt-3 block text-xs font-medium text-neutral-600">Ad format</label>}
+        {initialAdType === "billboard" && <select
+          value={adType}
+          onChange={(e) => setAdType(e.target.value as Billboard["ad_type"])}
+          className="mt-1 w-full rounded-md border border-neutral-200 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-neutral-700"
+        >
+          <option value="billboard">Standard billboard</option>
+          <option value="aircraft">Aircraft with banner</option>
+        </select>}
+        {initialAdType === "billboard" && <p className="mt-1 text-[11px] text-neutral-400">Aircraft ads fly across the map with a branded banner behind them.</p>}
+
+
+        <label className="mt-3 block text-xs font-medium text-neutral-600">Banner image URL</label>
+        <input
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+          className="mt-1 w-full rounded-md border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+          placeholder="https://.../brand-banner.png"
+        />
+
+        {adType === "aircraft" && (
+          <div className="aircraft-preview mt-3">
+            <div className="mb-1.5 flex items-center justify-between">
+              <span className="text-[10px] font-semibold tracking-[0.14em] text-amber-300 uppercase">Live preview</span>
+              <span className="text-[10px] text-neutral-500">Sky lane</span>
+            </div>
+            <div className="aircraft-preview-stage">
+              <div className="aircraft-ad aircraft-ad-preview">
+                <span className="aircraft-ad-banner">
+                  {imageUrl && (
+                    // Previewing a user-provided remote URL does not need a
+                    // fixed Next image host configuration.
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={imageUrl} alt="" />
+                  )}
+                  <span>{bannerText.trim() || "Your banner text"}</span>
+                </span>
+                <span className="aircraft-ad-tow-line" aria-hidden="true" />
+                <span className="aircraft-ad-plane" aria-hidden="true">
+                  <svg viewBox="0 0 52 30" fill="none">
+                    <path d="M3 16.5h17.5L29 4.5c.7-1 2.2-.6 2.3.6l.8 11.4h12.4c3.1 0 5.7 2.1 6.5 5H31.8l-.7 5.3c-.1 1.1-1.6 1.5-2.2.5l-6.2-5.8H3c-1.7 0-2.3-2.2-1-3.2l1-.8Z" fill="currentColor" />
+                    <path d="M31 16.5h14.5c3.1 0 5.7 2.1 6.5 5H31.8" stroke="rgba(255,255,255,.72)" strokeWidth="1.2" />
+                    <path d="M31.5 8.2h5.3l-2.7 5.1" fill="#38bdf8" />
+                    <circle cx="25.2" cy="16.2" r="1.1" fill="#38bdf8" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {adType !== "aircraft" && (
+          <>
+            <label className="mt-3 block text-xs font-medium text-neutral-600">Click destination URL</label>
+            <input
+              type="url"
+              value={targetUrl}
+              onChange={(e) => setTargetUrl(e.target.value)}
+              className="mt-1 w-full rounded-md border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              placeholder="https://brand.example/offer"
+            />
+          </>
+        )}
+
+        {adType !== "aircraft" && <div className="mt-3 grid grid-cols-3 gap-2">
           <div>
             <label className="block text-xs font-medium text-neutral-600">Width (m)</label>
             <input
@@ -109,7 +184,31 @@ export default function PlaceBillboardForm({ coords, onCancel, onCreated }: Plac
               className="mt-1 w-full rounded-md border border-neutral-200 px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
           </div>
-        </div>
+        </div>}
+
+        {adType !== "aircraft" && <div className="mt-3 flex items-center gap-3 rounded-2xl border border-amber-900/40 bg-amber-950/30 px-3 py-2.5">
+          <div className="billboard-compass" aria-hidden="true">
+            <span className="billboard-compass-north">N</span>
+            <span className="billboard-compass-arrow" style={{ transform: `rotate(${headingDeg}deg)` }} />
+            <span className="billboard-compass-dot" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-semibold tracking-[0.14em] text-amber-300 uppercase">Banner direction</div>
+            <div className="mt-0.5 text-xs leading-4 text-neutral-400">Choose the face direction, then inspect it with the map rotation controls.</div>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+                <button
+                  key={angle}
+                  type="button"
+                  onClick={() => setHeadingDeg(angle)}
+                  className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${headingDeg === angle ? "bg-amber-500 text-white" : "bg-white/10 text-neutral-300 hover:bg-white/15"}`}
+                >
+                  {angle === 0 ? "N" : angle === 45 ? "NE" : angle === 90 ? "E" : angle === 135 ? "SE" : angle === 180 ? "S" : angle === 225 ? "SW" : angle === 270 ? "W" : "NW"}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>}
 
         {error && <p className="mt-2 text-xs text-red-500">{error}</p>}
 
@@ -123,10 +222,10 @@ export default function PlaceBillboardForm({ coords, onCancel, onCreated }: Plac
           </button>
           <button
             type="submit"
-            disabled={submitting || !name.trim()}
+            disabled={submitting || !(adType === "aircraft" ? bannerText.trim() : name.trim())}
             className="rounded-md bg-amber-500 px-3 py-2 text-sm font-medium text-white hover:bg-amber-600 disabled:opacity-50"
           >
-            {submitting ? "Saving…" : "Place billboard"}
+            {submitting ? "Saving…" : adType === "aircraft" ? "Launch aircraft banner" : "Place billboard"}
           </button>
         </div>
       </form>

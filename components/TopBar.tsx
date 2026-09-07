@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import SearchBox, { type SearchGroupMatch } from "@/components/SearchBox";
 import { DEFAULT_BEARING, DEFAULT_PITCH } from "@/lib/mapStyle";
@@ -8,9 +9,10 @@ import { useAuth } from "@/lib/useAuth";
 import { useRequireAuth } from "@/lib/AuthGate";
 import WeatherWidget from "@/components/WeatherWidget";
 import AirQualityWidget from "@/components/AirQualityWidget";
+import LiveTicker from "@/components/LiveTicker";
 import { CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
 import { TAG_GROUPS, TAG_ICONS, type Tag } from "@/lib/tags";
-import type { Cafe } from "@/lib/supabase";
+import type { Cafe, CafeEvent } from "@/lib/supabase";
 
 type TopBarProps = {
   map: MapLibreMap | null;
@@ -20,13 +22,23 @@ type TopBarProps = {
   searchClearSignal?: number;
   searchDismissDropdownSignal?: number;
   onMenuClick: () => void;
+  publicMode?: boolean;
   activeCategory: Category | null;
   onSelectCategory: (category: Category | null) => void;
   activeTags: Set<Tag>;
   onToggleTag: (tag: Tag) => void;
   minRating: number;
   onSelectMinRating: (rating: number) => void;
+  /** 0 = "Any" (no distance filter). */
+  maxDistanceKm: number;
+  onSelectMaxDistance: (km: number) => void;
+  /** Drives the Distance chips' own inline state while a geolocation
+   *  request is in flight or was denied — "idle" the rest of the time. */
+  locationStatus: "idle" | "locating" | "denied";
+  events?: CafeEvent[];
 };
+
+const DISTANCE_OPTIONS = [1, 3, 5, 8, 10, 15];
 
 export default function TopBar({
   map,
@@ -36,30 +48,32 @@ export default function TopBar({
   searchClearSignal,
   searchDismissDropdownSignal,
   onMenuClick,
+  publicMode = false,
   activeCategory,
   onSelectCategory,
   activeTags,
   onToggleTag,
   minRating,
   onSelectMinRating,
+  maxDistanceKm,
+  onSelectMaxDistance,
+  locationStatus,
+  events = [],
 }: TopBarProps) {
-  const [is3D, setIs3D] = useState(false);
-  const [typeOpen, setTypeOpen] = useState(false);
+  const [is3D, setIs3D] = useState(true);
   const [vibeOpen, setVibeOpen] = useState(false);
-  const typeRef = useRef<HTMLDivElement>(null);
   const vibeRef = useRef<HTMLDivElement>(null);
-  const { isSignedIn, phone } = useAuth();
+  const { isSignedIn, email, displayName, avatarUrl } = useAuth();
   const requireAuth = useRequireAuth();
 
   useEffect(() => {
-    if (!typeOpen && !vibeOpen) return;
+    if (!vibeOpen) return;
     function onPointerDown(e: PointerEvent) {
-      if (typeOpen && typeRef.current && !typeRef.current.contains(e.target as Node)) setTypeOpen(false);
       if (vibeOpen && vibeRef.current && !vibeRef.current.contains(e.target as Node)) setVibeOpen(false);
     }
     document.addEventListener("pointerdown", onPointerDown);
     return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, [typeOpen, vibeOpen]);
+  }, [vibeOpen]);
 
   function toggle3D() {
     if (!map) return;
@@ -69,18 +83,18 @@ export default function TopBar({
   }
 
   return (
-    <div className="panel-elevated flex flex-wrap items-center gap-1.5 rounded-3xl px-2.5 py-2 sm:gap-2 sm:px-3 sm:py-2">
+    <div className="topbar-shell panel-elevated flex flex-wrap items-center gap-1.5 rounded-3xl px-2.5 py-2 sm:gap-2 sm:px-3 sm:py-2">
       <button
         onClick={onMenuClick}
         aria-label="Open menu"
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 lg:hidden dark:bg-neutral-800 dark:text-neutral-200"
+        className={`menu-trigger flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 sm:h-8 sm:w-8 ${publicMode ? "" : "lg:hidden"} dark:bg-neutral-800 dark:text-neutral-200`}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
           <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
         </svg>
       </button>
 
-      <div className="w-40 min-w-0 shrink grow sm:w-64 sm:grow-0">
+      <div className="topbar-search w-40 min-w-0 shrink grow sm:w-64 sm:grow-0">
         <SearchBox
           map={map}
           cafes={cafes}
@@ -91,53 +105,17 @@ export default function TopBar({
         />
       </div>
 
-      <div ref={typeRef} className="relative">
-        <button
-          onClick={() => setTypeOpen((v) => !v)}
-          className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors ${
-            activeCategory
-              ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
-              : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
-          }`}
-        >
-          {activeCategory ? `${CATEGORY_ICONS[activeCategory]} ${CATEGORY_SHORT_LABELS[activeCategory]}` : "🗺️ All"}
-        </button>
+      {events.length > 0 && (
+        <div className="topbar-broadcast min-w-0 flex-1">
+          <LiveTicker events={events} />
+        </div>
+      )}
 
-        {typeOpen && (
-          <div className="panel-elevated absolute top-full left-0 z-20 mt-2 w-56 rounded-2xl p-3">
-            <div className="mb-2 text-xs font-semibold text-neutral-500 dark:text-neutral-400">Cafe type</div>
-            <div className="flex flex-wrap gap-1.5">
-              <Chip
-                active={activeCategory === null}
-                onClick={() => {
-                  onSelectCategory(null);
-                  setTypeOpen(false);
-                }}
-              >
-                🗺️ All
-              </Chip>
-              {CATEGORY_OPTIONS.map((option) => (
-                <Chip
-                  key={option}
-                  active={activeCategory === option}
-                  onClick={() => {
-                    onSelectCategory(activeCategory === option ? null : option);
-                    setTypeOpen(false);
-                  }}
-                >
-                  {CATEGORY_ICONS[option]} {CATEGORY_SHORT_LABELS[option]}
-                </Chip>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div ref={vibeRef} className="relative">
+      <div ref={vibeRef} className="topbar-filters relative">
         <button
           onClick={() => setVibeOpen((v) => !v)}
-          className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors ${
-            activeTags.size > 0 || minRating > 0
+          className={`flex min-h-10 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors sm:min-h-0 ${
+            activeTags.size > 0 || minRating > 0 || maxDistanceKm > 0
               ? "bg-amber-500 text-white"
               : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
           }`}
@@ -146,8 +124,11 @@ export default function TopBar({
             <path d="M4 6h12M6 10h8M8 14h4" strokeLinecap="round" />
           </svg>
           Filters
-          {(activeTags.size > 0 || minRating > 0) && (
-            <span className="rounded-full bg-white/25 px-1.5">{activeTags.size + (minRating > 0 ? 1 : 0)}</span>
+          {activeCategory && <span className="hidden max-w-20 truncate sm:inline">· {CATEGORY_SHORT_LABELS[activeCategory]}</span>}
+          {(activeTags.size > 0 || minRating > 0 || maxDistanceKm > 0) && (
+            <span className="rounded-full bg-white/25 px-1.5">
+              {activeTags.size + (minRating > 0 ? 1 : 0) + (maxDistanceKm > 0 ? 1 : 0)}
+            </span>
           )}
         </button>
 
@@ -157,17 +138,30 @@ export default function TopBar({
               <div className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                 Drill down by vibe, price, cuisine or hours
               </div>
-              {(activeTags.size > 0 || minRating > 0) && (
+              {(activeCategory || activeTags.size > 0 || minRating > 0 || maxDistanceKm > 0) && (
                 <button
                   onClick={() => {
+                    onSelectCategory(null);
                     [...activeTags].forEach((tag) => onToggleTag(tag));
                     onSelectMinRating(0);
+                    onSelectMaxDistance(0);
                   }}
                   className="shrink-0 text-[11px] font-medium text-amber-600 hover:underline dark:text-amber-400"
                 >
                   Clear
                 </button>
               )}
+            </div>
+            <div>
+              <div className="mb-1.5 text-[11px] font-semibold tracking-wide text-neutral-400 uppercase">Cafe type</div>
+              <div className="flex flex-wrap gap-1.5">
+                <Chip active={activeCategory === null} onClick={() => onSelectCategory(null)}>🗺️ All</Chip>
+                {CATEGORY_OPTIONS.map((option) => (
+                  <Chip key={option} active={activeCategory === option} onClick={() => onSelectCategory(activeCategory === option ? null : option)}>
+                    {CATEGORY_ICONS[option]} {CATEGORY_SHORT_LABELS[option]}
+                  </Chip>
+                ))}
+              </div>
             </div>
             <div>
               <div className="mb-1.5 text-[11px] font-semibold tracking-wide text-neutral-400 uppercase">
@@ -187,6 +181,37 @@ export default function TopBar({
                   </Chip>
                 ))}
               </div>
+            </div>
+            <div>
+              <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-semibold tracking-wide text-neutral-400 uppercase">
+                Distance
+                {locationStatus === "locating" && (
+                  <span className="normal-case text-amber-500">· locating…</span>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                <Chip active={maxDistanceKm === 0} onClick={() => onSelectMaxDistance(0)}>
+                  Any
+                </Chip>
+                {DISTANCE_OPTIONS.map((km) => (
+                  <Chip
+                    key={km}
+                    active={maxDistanceKm === km}
+                    onClick={() => onSelectMaxDistance(maxDistanceKm === km ? 0 : km)}
+                  >
+                    &lt;{km}km
+                  </Chip>
+                ))}
+              </div>
+              {/* Only shown right after a denial — the chips themselves
+                  already communicate "pick one to filter", so a
+                  permanent hint here would be redundant noise the rest
+                  of the time. */}
+              {locationStatus === "denied" && (
+                <p className="mt-1.5 text-[11px] text-red-500">
+                  Couldn&apos;t get your location — check location permissions and try again.
+                </p>
+              )}
             </div>
             {TAG_GROUPS.map((group) => (
               <div key={group.key}>
@@ -213,10 +238,10 @@ export default function TopBar({
         <AirQualityWidget pill />
       </div>
 
-      <div className="ml-auto flex items-center gap-1.5">
+      <div className="topbar-account ml-auto flex items-center gap-1.5">
         <button
           onClick={toggle3D}
-          className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium whitespace-nowrap transition-colors ${
+          className={`flex min-h-10 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium whitespace-nowrap transition-colors sm:min-h-0 ${
             is3D ? "bg-emerald-800 text-white" : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200"
           }`}
         >
@@ -226,21 +251,32 @@ export default function TopBar({
           </svg>
           <span className="hidden sm:inline">{is3D ? "3D View" : "2D View"}</span>
         </button>
-        {isSignedIn ? (
-          <div
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-sm font-semibold text-white"
-            title={`Signed in · +${phone}`}
-          >
-            {phone?.slice(-2)}
-          </div>
-        ) : (
-          <button
-            onClick={() => requireAuth(() => {})}
-            className="flex items-center gap-1.5 rounded-full bg-neutral-900 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white hover:bg-neutral-800 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
-          >
-            Sign in
-          </button>
-        )}
+        {/* Google sign-in is for public visitors leaving reviews/
+            bookmarks under their own identity — admin is a single
+            trusted operator, not someone who needs (or should be
+            prompted) to sign in with a Google account. */}
+        {publicMode &&
+          (isSignedIn ? (
+            <Link
+              href="/profile"
+              title={displayName ?? email ?? "Your profile"}
+              className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-amber-500 text-sm font-semibold text-white"
+            >
+              {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
+              ) : (
+                (displayName ?? email ?? "?").slice(0, 1).toUpperCase()
+              )}
+            </Link>
+          ) : (
+            <button
+              onClick={() => requireAuth(() => {})}
+              className="flex min-h-10 items-center gap-1.5 rounded-full bg-neutral-900 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white hover:bg-neutral-800 sm:min-h-0 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+            >
+              Sign in
+            </button>
+          ))}
       </div>
     </div>
   );

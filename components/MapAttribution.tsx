@@ -30,7 +30,7 @@ export default function MapAttribution() {
         onClick={() => setOpen((v) => !v)}
         aria-label="Map data attribution"
         aria-expanded={open}
-        className="panel-elevated flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+        className="panel-elevated flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold text-neutral-500 hover:text-neutral-700 sm:h-7 sm:w-7 dark:text-neutral-400 dark:hover:text-neutral-200"
       >
         i
       </button>
