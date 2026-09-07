@@ -64,6 +64,12 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   letter-spacing: -0.01em;
+  /* Safety net, not a layout mechanism — every genuinely wide element
+     (the analytics tables, day-bar charts, etc.) manages its own
+     overflow-x: auto internally; this just stops a rogue element
+     somewhere from ever widening the whole page and creating a
+     horizontal scrollbar that isn't intentional anywhere. */
+  overflow-x: hidden;
 }
 
 ::selection {
@@ -2149,6 +2155,7 @@ body {
   .category-table-row { grid-template-columns: 1.4fr 0.6fr 0.6fr 0.6fr; font-size: 11px; }
   .welcome-bonus-row label,
   .welcome-bonus-field { min-width: 0; flex-basis: 100%; }
+  .profile-avatar-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 @layer base {
