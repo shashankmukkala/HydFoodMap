@@ -30,6 +30,7 @@ import { useCollections } from "@/lib/useCollections";
 import { useRequireAuth } from "@/lib/AuthGate";
 import { useAdminAuth } from "@/lib/useAdminAuth";
 import { adminFetch } from "@/lib/adminFetch";
+import { MOBILE_QUERY, useMediaQuery } from "@/lib/useMediaQuery";
 import { TAG_ICONS, type Tag } from "@/lib/tags";
 import { BACKGROUND_GRADIENTS, CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
 import { distanceMeters } from "@/lib/geo";
@@ -77,6 +78,12 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   const [searchDismissDropdownSignal, setSearchDismissDropdownSignal] = useState(0);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [resultsPageSize, setResultsPageSize] = useState(5);
+  // On a phone every panel wants most of the screen, so only one may be
+  // open at a time. Collapsing the results *panel* rather than clearing
+  // the search keeps the map's filtered pins and the query intact — the
+  // list comes back when the cafe card is dismissed.
+  const [resultsCollapsed, setResultsCollapsed] = useState(false);
+  const isMobile = useMediaQuery(MOBILE_QUERY);
   const rightColumnRef = useRef<HTMLDivElement>(null);
   const { bookmarkedIds } = useBookmarks();
   const { visitedCount, visitedIds } = useVisitTracking();
@@ -231,6 +238,26 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     // resetting panelShapeKey's effect to try 5 again from scratch.
   }, [resultsPageSize, panelShapeKey, resultsMatch]);
 
+  // Escape closes the topmost panel, innermost first, so repeated presses
+  // unwind the stack in the order it was built rather than clearing
+  // everything at once. Nothing listened for Escape before this.
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      if (selected) {
+        dismissSelected();
+      } else if (feedTab) {
+        setFeedTab(null);
+      } else if (resultsMatch) {
+        clearAllFilters();
+      } else if (eventsOpen) {
+        setEventsOpen(false);
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [selected, feedTab, resultsMatch, eventsOpen]);
+
   useEffect(() => {
     const el = rightColumnRef.current;
     if (!el || typeof ResizeObserver === "undefined") return;
@@ -352,9 +379,24 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     [cafes, visitedIds]
   );
 
+  // Closes the open card, which is the gesture people reach for first and
+  // which previously did nothing at all — this returned immediately unless
+  // an admin was mid-placement, so a visitor tapping the map to dismiss a
+  // card got no response and the 28px X was the only way out.
+  // Marker clicks call stopPropagation (see CafeMarkers), so picking a
+  // different pin does not land here and cannot close the card it just
+  // opened.
+  function dismissSelected() {
+    setSelected(null);
+    setResultsCollapsed(false);
+  }
+
   function handleMapClick(lngLat: { lng: number; lat: number }) {
-    if (!isAdmin || !placingMode || placingMode === "aircraft") return;
-    setPendingCoords(lngLat);
+    if (isAdmin && placingMode && placingMode !== "aircraft") {
+      setPendingCoords(lngLat);
+      return;
+    }
+    if (selected) dismissSelected();
   }
 
   function cancelPlacement() {
@@ -432,7 +474,15 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     setSearchDismissDropdownSignal((n) => n + 1);
     if (selected?.kind === "cafe" && selected.item.id === cafe.id) {
       setSelected(null);
+      setResultsCollapsed(false);
       return;
+    }
+    // One card at a time on a phone. Desktop keeps stacking, which is the
+    // right call there — a 380px column has room for a list and a card,
+    // and you are usually picking through several results.
+    if (isMobile) {
+      setFeedTab(null);
+      setResultsCollapsed(true);
     }
     setSelected({ kind: "cafe", item: cafe });
     map?.flyTo({ center: [cafe.lng, cafe.lat], zoom: Math.max(map.getZoom(), 16), essential: true });
@@ -456,7 +506,12 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   function selectBillboard(billboard: Billboard) {
     if (selected?.kind === "billboard" && selected.item.id === billboard.id) {
       setSelected(null);
+      setResultsCollapsed(false);
       return;
+    }
+    if (isMobile) {
+      setFeedTab(null);
+      setResultsCollapsed(true);
     }
     setSelected({ kind: "billboard", item: billboard });
     if (billboard.ad_type !== "rail") {
@@ -502,7 +557,12 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   const bgKey: Category | "all" = activeCategory ?? "all";
 
   return (
-    <div className={`map-experience-shell relative isolate flex h-dvh w-dvw gap-1 overflow-hidden p-1 pb-[calc(0.25rem+env(safe-area-inset-bottom))] sm:gap-1.5 sm:p-2 ${isAdmin ? "is-admin" : "is-public"}`}>
+    // `has-open-panel` lets CSS get out of the way of a sheet on small
+    // screens — chiefly the ad rail, which shares the exact same bottom
+    // offset as the panel column and was being covered by the detail card
+    // rather than sitting beside it. Same pattern as a native map app,
+    // where bottom chrome yields to an open place sheet.
+    <div className={`map-experience-shell relative isolate flex h-dvh w-dvw gap-1 overflow-hidden p-1 pb-[calc(0.25rem+env(safe-area-inset-bottom))] sm:gap-1.5 sm:p-2 ${isAdmin ? "is-admin" : "is-public"} ${selected || feedTab || (resultsMatch && !resultsCollapsed) ? "has-open-panel" : ""}`}>
       {/* The aurora backdrop lives on this fixed base layer's own
           background (not a separately z-indexed overlay child) — a
           negative-z-index element only stays contained "behind its own
@@ -754,7 +814,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
               />
             )}
 
-            {resultsMatch && (
+            {resultsMatch && !resultsCollapsed && (
               <SearchResultsPanel
                 label={resultsMatch.label}
                 cafes={resultsMatch.cafes}

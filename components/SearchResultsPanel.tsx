@@ -91,7 +91,7 @@ export default function SearchResultsPanel({ label, cafes, onSelect, onClose, pa
         </div>
         <button
           onClick={onClose}
-          className="shrink-0 rounded-full p-1.5 text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-200"
+          className="panel-close-button shrink-0 rounded-full text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-200"
           aria-label="Close"
         >
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" className="h-4 w-4">

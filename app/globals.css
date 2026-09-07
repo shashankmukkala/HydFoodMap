@@ -1226,13 +1226,22 @@ body {
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
+/* In normal flow, not absolute.
+ *
+ * This was `position: absolute; right: 0; bottom: 0` while every other
+ * panel (FeedPanel, SearchResultsPanel, CollectionsPanel, EventsPanel) is
+ * a flex child of the same column — so the card was lifted out of the
+ * layout and pinned to the bottom of a box the others were flowing down
+ * from the top of. Two boxes, one space, neither aware of the other: open
+ * a cafe while search results were showing and the card landed on top of
+ * them. It was also 440px wide inside a 380px column, so it overhung its
+ * own container. Back in flow, panels stack instead of collide and the
+ * column's own gap spaces them. */
 .is-public .detail-card {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: min(440px, calc(100vw - 32px));
+  width: 100%;
   max-height: min(72dvh, 760px);
   overflow-y: auto;
+  overscroll-behavior: contain;
   border-color: rgba(185, 255, 227, 0.2);
   background:
     linear-gradient(145deg, rgba(25, 39, 37, 0.9), rgba(10, 16, 17, 0.94)),
@@ -1783,21 +1792,77 @@ body {
     right: 10px;
   }
 
+  /* Bottom-sheet area. `justify-content: flex-end` keeps a single panel
+     anchored to the bottom edge where a thumb reaches, and the column
+     scrolls rather than spilling — it was `overflow: visible` with a
+     max-height, so anything taller escaped upward across the map and top
+     bar instead of scrolling inside its own box. */
   .is-public .map-panels-column {
     top: auto;
     right: 10px;
     bottom: calc(10px + env(safe-area-inset-bottom));
     left: 10px;
     width: auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Bottom-anchors the stack via auto margin rather than
+     `justify-content: flex-end`, which combined with overflow makes
+     content that overruns the top edge unreachable in Chrome — the
+     scrollable area cannot be scrolled back past the start. An auto
+     margin on the first child collapses to zero once content fills the
+     box, so it bottom-anchors when short and scrolls correctly when
+     tall. */
+  .is-public .map-panels-column > *:first-child {
+    margin-block-start: auto;
   }
 
   .is-public .detail-card {
-    right: 0;
-    bottom: 0;
     width: 100%;
     max-height: 62dvh;
   }
 
+  /* The ad rail resolves to the identical bottom offset and edges as the
+     panel column, at a lower z-index — so an open card sat directly on
+     top of all five sponsored slots, which is the one thing paid
+     inventory must never do. Bottom chrome yields to an open sheet, the
+     same as a native map app, and returns the moment it is dismissed. */
+  .has-open-panel .ad-rail {
+    pointer-events: none;
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+
+  /* Drag handle: the affordance that says "this can be swiped away".
+     Hidden by default (see the rule outside this block) since the desktop
+     card is a column panel, not a sheet, and has nothing to drag. */
+  .map-experience-shell .detail-card-grabber {
+    display: flex;
+    width: 100%;
+    height: 26px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .map-experience-shell .detail-card-grabber > span {
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.26);
+  }
+
+  .map-experience-shell .detail-card-grabber:active > span {
+    background: rgba(255, 255, 255, 0.4);
+  }
 }
 
 @media (max-width: 639px) {
@@ -2167,5 +2232,86 @@ body {
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Touch targets and mobile performance
+   --------------------------------------------------------------------- */
+
+/* The sheet grabber only exists below 1024px, where the card is a bottom
+   sheet. Without this it would render as an unstyled element at the top
+   of the desktop card. */
+.detail-card-grabber {
+  display: none;
+}
+
+/* Every panel's close control. These were `p-1.5` around a 16px icon —
+   28x28 total, against the 44px minimum this project's own design rules
+   state, and the reason closing a card on a phone took two or three
+   attempts. The icon keeps its size; only the hit area grows, so nothing
+   about the visual weight of the header changes. */
+.panel-close-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  /* Extends the pressable area past the painted circle without taking
+     extra layout space, so the button still sits tight in the header. */
+  outline-offset: -6px;
+}
+
+@media (pointer: coarse) {
+  .panel-close-button {
+    width: 44px;
+    height: 44px;
+    margin: -6px -8px -6px 0;
+  }
+}
+
+/* Backdrop blur is the single most expensive thing in this stylesheet on
+   a phone: each blurred surface forces the compositor to re-sample
+   everything behind it every frame, and this app stacks them — a panel
+   over the ad rail over the animated aurora over a live WebGL map. The
+   panels stay translucent (the look survives) but at a blur radius a
+   mid-range GPU can sustain, and the saturate() pass is dropped since it
+   is the part that reads least at small sizes.
+
+   Scoped to coarse pointers rather than a width breakpoint: a small
+   desktop window has the GPU headroom, a large phone does not. */
+@media (pointer: coarse) {
+  .panel-elevated,
+  .is-public .panel-elevated {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .ad-rail,
+  .topbar-shell,
+  .is-public .topbar-shell {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* Panels animate in on transform/opacity only, which the compositor can
+   run without touching layout. `will-change` is set only while the sheet
+   is actually interactive, since holding a layer alive permanently costs
+   memory on the devices this is meant to help. */
+.is-public .detail-card,
+.is-public .map-panels-column > .panel-elevated {
+  will-change: transform, opacity;
+}
+
+/* Someone who has asked the OS to reduce motion should not be given a
+   sliding, fading sheet. The card still opens and closes — it just
+   appears rather than travels. */
+@media (prefers-reduced-motion: reduce) {
+  .is-public .map-panels-column > .panel-elevated,
+  .is-public .detail-card,
+  .ad-rail {
+    animation: none !important;
+    transition: none !important;
   }
 }

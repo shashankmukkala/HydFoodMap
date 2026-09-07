@@ -55,10 +55,21 @@ export default function BillboardLayer({ map, billboards }: BillboardLayerProps)
       },
 
       render(gl, args) {
+        // Nothing to draw: return without asking for another frame. This
+        // used to call triggerRepaint() unconditionally, which pins the
+        // map into a permanent render loop — every frame, forever, on
+        // every device, even with zero billboards placed (which is the
+        // normal state). On a phone that is a continuous GPU wake and one
+        // of the largest battery costs in the app, for an empty scene.
+        if (panelsRef.current.size === 0) return;
+
         const m = new THREE.Matrix4().fromArray(args.defaultProjectionData.mainMatrix);
         camera.projectionMatrix = m;
         renderer!.resetState();
         renderer!.render(scene!, camera);
+        // Still a self-driven loop while panels exist — the meshes are
+        // static, but MapLibre needs a repaint request to keep compositing
+        // this custom layer while the camera moves.
         map!.triggerRepaint();
       },
 

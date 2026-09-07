@@ -11,6 +11,8 @@ import { CATEGORY_ICONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/cate
 import ReviewsSection from "@/components/ReviewsSection";
 import EditCafeTaxonomy from "@/components/EditCafeTaxonomy";
 import VisitCheckin from "@/components/VisitCheckin";
+import { MOBILE_QUERY, useMediaQuery } from "@/lib/useMediaQuery";
+import { useSwipeToDismiss } from "@/lib/useSwipeToDismiss";
 
 function cafeIcon(cafe: Cafe) {
   if (cafe.category && cafe.category in CATEGORY_ICONS) return CATEGORY_ICONS[cafe.category as Category];
@@ -44,6 +46,11 @@ export default function DetailCard(props: DetailCardProps) {
   const [collectionsOpen, setCollectionsOpen] = useState(false);
   const [newCollectionName, setNewCollectionName] = useState("");
   const collectionsRef = useRef<HTMLDivElement>(null);
+  // Drag-to-dismiss is a phone gesture; on desktop the card is a column
+  // panel with a pointer and a close button, and binding touch listeners
+  // there would be dead weight.
+  const isMobile = useMediaQuery(MOBILE_QUERY);
+  const sheetRef = useSwipeToDismiss<HTMLDivElement>(onClose, isMobile);
 
   useEffect(() => {
     if (!collectionsOpen) return;
@@ -99,7 +106,23 @@ export default function DetailCard(props: DetailCardProps) {
   }
 
   return (
-    <div className={`detail-card panel-elevated w-full shrink-0 overflow-hidden rounded-3xl ${isCafe ? "detail-card-cafe" : "detail-card-ad"}`}>
+    <div
+      ref={sheetRef}
+      className={`detail-card panel-elevated w-full shrink-0 overflow-hidden rounded-3xl ${isCafe ? "detail-card-cafe" : "detail-card-ad"}`}
+      role="dialog"
+      aria-label={item.name}
+    >
+      {/* Visible only on small screens (CSS). Purely the visual cue that
+          the sheet can be dragged away — deliberately not a button: the
+          drag listener sits on the card itself, so a tappable grabber
+          would fire its click at the end of any drag that did not travel
+          far enough to dismiss, closing the card the user was trying to
+          pull back. There are already four ways out (swipe, the 44px X,
+          tapping the map, Escape). */}
+      <div className="detail-card-grabber" aria-hidden="true">
+        <span />
+      </div>
+
       <div className="flex items-start gap-2.5 p-3.5 pb-0">
         {cafe?.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -139,7 +162,7 @@ export default function DetailCard(props: DetailCardProps) {
             </div>
             <button
               onClick={onClose}
-              className="shrink-0 rounded-full p-1.5 text-neutral-400 hover:bg-white/10 hover:text-neutral-200"
+              className="panel-close-button shrink-0 rounded-full text-neutral-400 hover:bg-white/10 hover:text-neutral-200"
               aria-label="Close"
             >
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
