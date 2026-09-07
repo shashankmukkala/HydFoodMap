@@ -1,6 +1,6 @@
 "use client";
 
-import { getAvatarOption } from "@/lib/avatars";
+import { getAvatarOption, pickAvatarForSeed } from "@/lib/avatars";
 
 type Props = {
   avatarUrl: string | null;
@@ -8,35 +8,25 @@ type Props = {
   className?: string;
 };
 
-// One place that decides *what* to render for someone's avatar — a
-// preset emoji/gradient (avatar:<key>, see lib/avatars.ts), a real photo
-// URL, or an initial-letter fallback — so every avatar shown across the
-// app (top bar, profile, leaderboard, admin users) agrees on the same
-// three cases instead of each re-implementing this conditional. Renders
-// no layout of its own beyond the className passed in — sizing/rounding/
-// centering stays with the caller, since that varies per spot.
+// Every avatar shown anywhere in the app (top bar, profile, leaderboard,
+// admin users) is one of the 16 preset emoji/gradient faces (avatar:<key>,
+// see lib/avatars.ts) — never a real photo, and never an alphabet
+// initial. New signups get a random preset (0034) and every existing
+// account was backfilled the same way (0035), so `avatarUrl` should
+// always already be a preset value by the time this renders; the
+// deterministic fallback below only guards the case where it somehow
+// isn't (e.g. a row created between those migrations and this code
+// shipping) — still a face, seeded off the label so it's stable rather
+// than reshuffling on every render.
 export default function Avatar({ avatarUrl, label, className }: Props) {
-  const preset = getAvatarOption(avatarUrl);
+  const option = getAvatarOption(avatarUrl) ?? pickAvatarForSeed(label || "?");
 
-  if (preset) {
-    return (
-      <span
-        className={className}
-        style={{ background: `linear-gradient(145deg, ${preset.gradient[0]}, ${preset.gradient[1]})` }}
-      >
-        <span aria-hidden="true">{preset.emoji}</span>
-      </span>
-    );
-  }
-
-  if (avatarUrl) {
-    return (
-      <span className={className}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={avatarUrl} alt="" className="h-full w-full object-cover" />
-      </span>
-    );
-  }
-
-  return <span className={className}>{(label || "?").slice(0, 1).toUpperCase()}</span>;
+  return (
+    <span
+      className={className}
+      style={{ background: `linear-gradient(145deg, ${option.gradient[0]}, ${option.gradient[1]})` }}
+    >
+      <span aria-hidden="true">{option.emoji}</span>
+    </span>
+  );
 }
