@@ -276,7 +276,7 @@ export default function TopBar({
               onClick={() => requireAuth(() => {})}
               className="flex min-h-10 items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-emerald-700 sm:min-h-0"
             >
-              Sign in
+              Sign up
             </button>
           ))}
       </div>

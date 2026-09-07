@@ -120,7 +120,7 @@ export default function ProfilePage() {
   if (!session) {
     return (
       <CenteredMessage>
-        <p className="text-sm text-neutral-300">Sign in to see your personal details.</p>
+        <p className="text-sm text-neutral-300">Sign up or sign in to see your personal details.</p>
         <button
           onClick={() => signInWithGoogle()}
           className="mt-4 rounded-full bg-white px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-200"

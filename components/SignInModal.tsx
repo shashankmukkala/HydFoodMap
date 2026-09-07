@@ -28,7 +28,7 @@ export default function SignInModal({ onClose }: SignInModalProps) {
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Sign in to continue</DialogTitle>
+          <DialogTitle>Sign up or sign in</DialogTitle>
           <DialogDescription>
             Browsing is free. Saving, reviewing, and marking visits needs a Google account.
           </DialogDescription>
