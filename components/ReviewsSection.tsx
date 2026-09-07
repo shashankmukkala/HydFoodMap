@@ -2,29 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Review } from "@/lib/supabase";
-import { POINTS, usePoints } from "@/lib/usePoints";
+import { usePoints } from "@/lib/usePoints";
 import { useRequireAuth } from "@/lib/AuthGate";
 import { useAuth } from "@/lib/useAuth";
-import { distanceMeters, VISIT_RADIUS_METERS } from "@/lib/geo";
+import { useLocationCheckin } from "@/lib/useLocationCheckin";
+import { readAsDataUrl } from "@/lib/readAsDataUrl";
 
 type ReviewsSectionProps = {
   cafeId: string;
   cafeLat: number;
   cafeLng: number;
+  /** Admin is the operator viewing every cafe, not a visitor reacting to
+   *  one — reads reviews same as anyone, but can't post one. */
+  isAdmin?: boolean;
 };
-
-type GateState =
-  | { status: "idle" }
-  | { status: "confirm" }
-  | { status: "locating" }
-  | { status: "checking-in" }
-  | { status: "waiting"; checkinId: string; secondsLeft: number }
-  | { status: "ready"; checkinId: string; lat: number; lng: number; accuracy: number }
-  | { status: "too-far" }
-  | { status: "low-accuracy" }
-  | { status: "error"; message: string };
-
-const CHECKIN_WAIT_SECONDS = 30;
 
 function timeAgo(iso: string) {
   const diffMs = Date.now() - new Date(iso).getTime();
@@ -36,20 +27,11 @@ function timeAgo(iso: string) {
   return `${months} month${months === 1 ? "" : "s"} ago`;
 }
 
-function readAsDataUrl(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-export default function ReviewsSection({ cafeId, cafeLat, cafeLng }: ReviewsSectionProps) {
+export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = false }: ReviewsSectionProps) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loadedForId, setLoadedForId] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState(false);
-  const [gate, setGate] = useState<GateState>({ status: "idle" });
+  const { gate, start: startCheckin, confirm: checkLocation, cancel: cancelCheckin } = useLocationCheckin(cafeId, cafeLat, cafeLng);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [favoriteFood, setFavoriteFood] = useState("");
@@ -97,94 +79,13 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng }: ReviewsSect
   function startReview() {
     requireAuth(() => {
       setFormOpen(true);
-      setGate({ status: "confirm" });
+      startCheckin();
     });
   }
-
-  function getCurrentPosition() {
-    return new Promise<GeolocationPosition>((resolve, reject) => {
-      if (!navigator.geolocation) {
-        reject(new Error("This browser can't share your location."));
-        return;
-      }
-      navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 10000 });
-    });
-  }
-
-  async function checkLocation() {
-    setGate({ status: "locating" });
-    try {
-      const pos = await getCurrentPosition();
-      const dist = distanceMeters(
-        { lat: pos.coords.latitude, lng: pos.coords.longitude },
-        { lat: cafeLat, lng: cafeLng }
-      );
-      if (pos.coords.accuracy > 150) {
-        setGate({ status: "low-accuracy" });
-        return;
-      }
-      if (dist > VISIT_RADIUS_METERS) {
-        setGate({ status: "too-far" });
-        return;
-      }
-      if (!session) {
-        setGate({ status: "error", message: "Sign in again to verify your visit." });
-        return;
-      }
-
-      setGate({ status: "checking-in" });
-      const response = await fetch(`/api/cafes/${cafeId}/check-in`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify({ lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy }),
-      });
-      const body = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(body.error || "Couldn't start a verified check-in.");
-      setGate({ status: "waiting", checkinId: body.checkin_id, secondsLeft: body.wait_seconds ?? CHECKIN_WAIT_SECONDS });
-    } catch (error) {
-      setGate({ status: "error", message: error instanceof Error ? error.message : "Couldn't verify your location." });
-    }
-  }
-
-  const waitingCheckinId = gate.status === "waiting" ? gate.checkinId : null;
-
-  useEffect(() => {
-    if (!waitingCheckinId || !session) return;
-    const checkinId = waitingCheckinId;
-    const timer = window.setTimeout(async () => {
-      try {
-        const pos = await getCurrentPosition();
-        const response = await fetch(`/api/cafes/${cafeId}/check-in/verify`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
-          body: JSON.stringify({
-            checkin_id: checkinId,
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-            accuracy: pos.coords.accuracy,
-          }),
-        });
-        const body = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(body.error || "Couldn't verify your visit.");
-        setGate({ status: "ready", checkinId, lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy });
-      } catch (error) {
-        setGate({ status: "error", message: error instanceof Error ? error.message : "Couldn't verify your visit." });
-      }
-    }, CHECKIN_WAIT_SECONDS * 1000);
-    const countdown = window.setInterval(() => {
-      setGate((current) =>
-        current.status === "waiting" ? { ...current, secondsLeft: Math.max(0, current.secondsLeft - 1) } : current
-      );
-    }, 1000);
-    return () => {
-      window.clearTimeout(timer);
-      window.clearInterval(countdown);
-    };
-  }, [cafeId, waitingCheckinId, session]);
 
   function cancelReview() {
     setFormOpen(false);
-    setGate({ status: "idle" });
+    cancelCheckin();
     setSubmitError(null);
   }
 
@@ -225,9 +126,9 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng }: ReviewsSect
         const body = await res.json().catch(() => ({}));
         throw new Error(body.error || "Couldn't post your review.");
       }
-      const review: Review = await res.json();
+      const review: Review & { points_awarded?: number } = await res.json();
       setReviews((prev) => [review, ...prev]);
-      addPoints(POINTS.REVIEW);
+      addPoints(review.points_awarded ?? 0);
 
       setRating(0);
       setComment("");
@@ -256,7 +157,8 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng }: ReviewsSect
             <span className="text-xs text-neutral-400">{loading ? "Loading reviews…" : "Be the first to review"}</span>
           )}
         </div>
-        {!formOpen &&
+        {!isAdmin &&
+          !formOpen &&
           (alreadyReviewed ? (
             <span className="text-xs text-neutral-400">You&apos;ve reviewed this place</span>
           ) : (
@@ -266,13 +168,13 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng }: ReviewsSect
           ))}
       </div>
 
-      {!formOpen && !loading && reviews.length === 0 && (
+      {!isAdmin && !formOpen && !loading && reviews.length === 0 && (
         <p className="mt-1 text-xs text-neutral-400">
           Every review here is verified from the cafe itself — no reviews copied from elsewhere.
         </p>
       )}
 
-      {formOpen && (
+      {!isAdmin && formOpen && (
         <div className="mt-2.5">
           {gate.status === "confirm" && (
             <div className="rounded-md bg-neutral-50 px-2.5 py-2 text-xs text-neutral-600 dark:bg-neutral-800/60 dark:text-neutral-300">

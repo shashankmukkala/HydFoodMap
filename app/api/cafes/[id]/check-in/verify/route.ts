@@ -46,7 +46,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   if (checkin.verified_at) return NextResponse.json({ checkin_id: checkin.id }, { status: 200 });
   if (new Date(checkin.expires_at).getTime() <= Date.now()) return NextResponse.json({ error: "Check-in expired. Please start again." }, { status: 410 });
   if (Date.now() - new Date(checkin.started_at).getTime() < MIN_DWELL_SECONDS * 1000) {
-    return NextResponse.json({ error: "Please stay at the cafe a little longer before reviewing." }, { status: 425 });
+    return NextResponse.json({ error: "Please stay at the cafe a little longer before continuing." }, { status: 425 });
   }
 
   const { data: cafe, error: cafeError } = await supabase.from("cafes").select("lat, lng").eq("id", id).single();

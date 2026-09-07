@@ -13,7 +13,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { name, ad_type, slot_number, image_url, target_url, lng, lat, elevation_m, width_m, height_m, heading_deg } = body;
+  const { name, ad_type, slot_number, image_url, target_url, campaign_end, lng, lat, elevation_m, width_m, height_m, heading_deg } = body;
 
   if (!name || typeof lng !== "number" || typeof lat !== "number") {
     return NextResponse.json({ error: "name, lng, and lat are required" }, { status: 400 });
@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
       slot_number: ad_type === "rail" && Number.isInteger(slot_number) && slot_number >= 1 && slot_number <= 5 ? slot_number : null,
       image_url: image_url ?? null,
       target_url: target_url ?? null,
+      campaign_end: campaign_end || null,
       lng,
       lat,
       elevation_m: elevation_m ?? 0,

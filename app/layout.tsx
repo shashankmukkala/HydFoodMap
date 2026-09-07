@@ -34,7 +34,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={cn("h-full", "antialiased", "dark", geistMono.variable, "font-sans", sans.variable)}
     >
-      <body className="h-full overflow-hidden">
+      {/* Not overflow-hidden here — that would block normal page scroll
+          on every non-map route (e.g. /admin/users, /profile). The map
+          experience already contains its own scroll via
+          map-experience-shell's own h-dvh + overflow-hidden, so it
+          doesn't need the body to also clip. */}
+      <body className="h-full">
         <TooltipProvider delay={200}>
           <AuthGateProvider>{children}</AuthGateProvider>
         </TooltipProvider>

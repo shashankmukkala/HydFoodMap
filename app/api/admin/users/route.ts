@@ -21,6 +21,7 @@ export type AdminUserSummary = {
   collectionsCount: number;
   visitedCafeNames: string[];
   reviews: AdminUserReview[];
+  banned: boolean;
 };
 
 // Admin-only cross-user view — every other place these tables (profiles,
@@ -60,12 +61,19 @@ export async function GET(request: NextRequest) {
   // accounts (the `admins` table) are filtered out on purpose here —
   // this view is about visitor activity, not the operator's own login.
   const adminIds = new Set((admins ?? []).map((a) => a.user_id));
-  const authUsers: { id: string; email: string | null; created_at: string }[] = [];
+  const authUsers: { id: string; email: string | null; created_at: string; banned: boolean }[] = [];
   for (let page = 1; ; page++) {
     const { data, error } = await service.auth.admin.listUsers({ page, perPage: 200 });
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     for (const u of data.users) {
-      if (!adminIds.has(u.id)) authUsers.push({ id: u.id, email: u.email ?? null, created_at: u.created_at });
+      if (!adminIds.has(u.id)) {
+        authUsers.push({
+          id: u.id,
+          email: u.email ?? null,
+          created_at: u.created_at,
+          banned: !!u.banned_until && new Date(u.banned_until).getTime() > Date.now(),
+        });
+      }
     }
     if (data.users.length < 200) break;
   }
@@ -121,6 +129,7 @@ export async function GET(request: NextRequest) {
       collectionsCount: collectionsCounts.get(u.id) ?? 0,
       visitedCafeNames: visitedByUser.get(u.id) ?? [],
       reviews: reviewsByUser.get(u.id) ?? [],
+      banned: u.banned,
     };
   });
 

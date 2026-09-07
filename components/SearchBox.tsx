@@ -108,6 +108,30 @@ export default function SearchBox({ map, cafes, onSelectCafe, onGroupMatch, clea
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, cafes]);
 
+  // Logged separately from the group-match effect above (longer debounce
+  // — 900ms vs 350ms) so a search only gets recorded once someone
+  // actually pauses on it, not once per intermediate state while they're
+  // still typing toward a longer word. Fire-and-forget: analytics should
+  // never be able to affect the search UI itself, so no loading/error
+  // state here, and a failure is silently dropped.
+  useEffect(() => {
+    const q = query.trim();
+    if (q.length < 2) return;
+    const timer = setTimeout(() => {
+      const nameMatches = cafes.filter(
+        (c) => c.name.toLowerCase().includes(q.toLowerCase()) || c.category?.toLowerCase().includes(q.toLowerCase())
+      ).length;
+      const group = matchSearchGroup(q, cafes);
+      const resultCount = group ? group.cafes.length : nameMatches;
+      fetch("/api/search-logs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: q, resultCount }),
+      }).catch(() => {});
+    }, 900);
+    return () => clearTimeout(timer);
+  }, [query, cafes]);
+
   function search(value: string) {
     setQuery(value);
     if (debounceRef.current) clearTimeout(debounceRef.current);

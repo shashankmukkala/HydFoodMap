@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import ExplorerWidget from "@/components/ExplorerWidget";
 import PointsWidget from "@/components/PointsWidget";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
-export type FeedTab = "billboards" | "ad-enquiries" | "users" | "saved" | "visited" | "collections" | null;
+export type FeedTab = "saved" | "visited" | "collections" | null;
 
 type SidebarProps = {
   activeTab: FeedTab;
@@ -27,21 +28,18 @@ type SidebarProps = {
 
 const SIDEBAR_TRANSITION = "transition-all duration-300 ease-in-out";
 
-const BASE_NAV_ITEMS: { tab: FeedTab; label: string; icon: React.ReactNode }[] = [
-  {
-    tab: null,
-    label: "Explore Map",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
-        <circle cx="12" cy="12" r="9" />
-        <path d="M15 9l-2 6-6 2 2-6 6-2z" />
-      </svg>
-    ),
-  },
-];
+const EXPLORE_ICON = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
+    <circle cx="12" cy="12" r="9" />
+    <path d="M15 9l-2 6-6 2 2-6 6-2z" />
+  </svg>
+);
 
+// Admin-only nav items are their own pages (/admin/...), not panels
+// embedded in the map — mirrors USERS_NAV_ITEM's href+tab:null pattern.
 const BILLBOARDS_NAV_ITEM = {
-  tab: "billboards" as FeedTab,
+  tab: null as FeedTab,
+  href: "/admin/billboards",
   label: "Billboards",
   icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
@@ -83,8 +81,23 @@ const TAIL_NAV_ITEMS: { tab: FeedTab; label: string; icon: React.ReactNode }[] =
   },
 ];
 
+// Its own page (/leaderboard), not a feedTab panel — same href+tab:null
+// pattern as USERS_NAV_ITEM.
+const LEADERBOARD_NAV_ITEM = {
+  tab: null as FeedTab,
+  href: "/leaderboard",
+  label: "Leaderboard",
+  icon: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
+      <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z" />
+      <path d="M7 6H4a3 3 0 0 0 3 5M17 6h3a3 3 0 0 1-3 5" />
+    </svg>
+  ),
+};
+
 const AD_ENQUIRIES_NAV_ITEM = {
-  tab: "ad-enquiries" as FeedTab,
+  tab: null as FeedTab,
+  href: "/admin/ad-enquiries",
   label: "Ad enquiries",
   icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
@@ -93,14 +106,29 @@ const AD_ENQUIRIES_NAV_ITEM = {
   ),
 };
 
+// Not a feedTab — Users analytics is its own page (/admin/users), not a
+// panel embedded in the map experience, so this is a real navigation link
+// rather than something rendered via onSelectTab.
 const USERS_NAV_ITEM = {
-  tab: "users" as FeedTab,
+  tab: null as FeedTab,
+  href: "/admin/users",
   label: "Users",
   icon: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
       <circle cx="9" cy="8" r="3" />
       <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
       <path d="M16 8a3 3 0 1 1 0 6M20 20c0-2.5-1.8-4.6-4.2-5.4" />
+    </svg>
+  ),
+};
+
+const ANALYTICS_NAV_ITEM = {
+  tab: null as FeedTab,
+  href: "/admin/analytics",
+  label: "Analytics",
+  icon: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
+      <path d="M4 20V10M11 20V4M18 20v-7" />
     </svg>
   ),
 };
@@ -120,12 +148,18 @@ export default function Sidebar({
   onMobileClose,
 }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
-  const navItems = [
-    ...BASE_NAV_ITEMS,
+  // Admin isn't "exploring" the map the way a visitor browsing for a cafe
+  // is — they're previewing what visitors see, so the label reflects
+  // that instead of reusing the visitor-facing copy.
+  const exploreItem = { tab: null as FeedTab, label: showBillboards ? "Preview" : "Explore Map", icon: EXPLORE_ICON };
+  const navItems: { tab: FeedTab; label: string; icon: React.ReactNode; href?: string }[] = [
+    exploreItem,
     ...(showBillboards ? [BILLBOARDS_NAV_ITEM] : []),
     ...(showBillboards ? [AD_ENQUIRIES_NAV_ITEM] : []),
     ...(showBillboards ? [USERS_NAV_ITEM] : []),
+    ...(showBillboards ? [ANALYTICS_NAV_ITEM] : []),
     ...(!showBillboards ? TAIL_NAV_ITEMS : []),
+    ...(!showBillboards ? [LEADERBOARD_NAV_ITEM] : []),
   ];
 
   // `forceExpanded` is used for the mobile drawer, which always renders the
@@ -170,7 +204,29 @@ export default function Sidebar({
     return (
       <nav className="flex flex-col gap-0.5">
         {navItems.map((item) => {
-          const isActive = item.tab === activeTab;
+          const isActive = item.href ? false : item.tab === activeTab;
+          const className = `group flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium ${SIDEBAR_TRANSITION} ${
+            isActive ? "nav-item-active" : "text-neutral-400 hover:bg-white/10 hover:text-neutral-100"
+          }`;
+          const content = (
+            <>
+              <span className={`shrink-0 ${isActive ? "nav-item-icon-active" : ""}`}>{item.icon}</span>
+              <span
+                className={`overflow-hidden whitespace-nowrap ${SIDEBAR_TRANSITION} ${
+                  isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"
+                }`}
+              >
+                {item.label}
+              </span>
+            </>
+          );
+          if (item.href) {
+            return (
+              <Link key={item.label} href={item.href} title={isCollapsed ? item.label : undefined} onClick={onMobileClose} className={className}>
+                {content}
+              </Link>
+            );
+          }
           return (
             <button
               key={item.label}
@@ -180,20 +236,9 @@ export default function Sidebar({
                 else onSelectTab(item.tab);
                 onMobileClose();
               }}
-              className={`group flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium ${SIDEBAR_TRANSITION} ${
-                isActive
-                  ? "nav-item-active"
-                  : "text-neutral-400 hover:bg-white/10 hover:text-neutral-100"
-              }`}
+              className={className}
             >
-              <span className={`shrink-0 ${isActive ? "nav-item-icon-active" : ""}`}>{item.icon}</span>
-              <span
-                className={`overflow-hidden whitespace-nowrap ${SIDEBAR_TRANSITION} ${
-                  isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"
-                }`}
-              >
-                {item.label}
-              </span>
+              {content}
             </button>
           );
         })}

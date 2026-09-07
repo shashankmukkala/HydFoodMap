@@ -4,10 +4,15 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/lib/useAuth";
 import { supabase } from "@/lib/supabase";
 
-// Per-account via the `visited_cafes` table (0025_visited_cafes_and_points_reason.sql),
-// not per-browser localStorage — see useBookmarks.ts for the same
-// reasoning. Explicit, self-reported "I've been here", not inferred from
-// clicking a pin.
+// Per-account via the `visited_cafes` table (0025, RLS tightened in
+// 0031) — read-only now. There used to be a `setVisited` here that
+// inserted/deleted rows directly from the client with zero proof of ever
+// actually being at the cafe; 0031 dropped that table's insert/delete
+// policies for exactly that reason. Recording a real visit now only
+// happens server-side, gated by the same GPS check-in reviews use — see
+// app/api/cafes/[id]/log-visit and the "Have you been here?" flow in
+// components/DetailCard.tsx. `markVisitedLocally` below is this hook's
+// only remaining write, and it's local-only (optimistic UI, no DB call).
 export function useVisitTracking() {
   const { session } = useAuth();
   const [visitedIds, setVisitedIds] = useState<string[]>([]);
@@ -38,37 +43,15 @@ export function useVisitTracking() {
     };
   }, [session]);
 
-  const setVisited = useCallback(
-    (cafeId: string, visited: boolean) => {
-      if (!session) return;
-      const userId = session.user.id;
-      setVisitedIds((prev) => {
-        const isVisited = prev.includes(cafeId);
-        if (visited === isVisited) return prev;
-        if (visited) {
-          supabase
-            .from("visited_cafes")
-            .insert({ user_id: userId, cafe_id: cafeId })
-            .then(({ error }) => {
-              if (error) setVisitedIds((cur) => cur.filter((id) => id !== cafeId));
-            });
-          return [...prev, cafeId];
-        }
-        supabase
-          .from("visited_cafes")
-          .delete()
-          .eq("user_id", userId)
-          .eq("cafe_id", cafeId)
-          .then(({ error }) => {
-            if (error) setVisitedIds((cur) => (cur.includes(cafeId) ? cur : [...cur, cafeId]));
-          });
-        return prev.filter((id) => id !== cafeId);
-      });
-    },
-    [session]
-  );
+  // Optimistic-only — the real row was already written server-side by the
+  // time this is called (see app/api/cafes/[id]/log-visit). This just
+  // moves this hook instance's own badge/list without a redundant
+  // round trip; nothing here writes to the database.
+  const markVisitedLocally = useCallback((cafeId: string) => {
+    setVisitedIds((prev) => (prev.includes(cafeId) ? prev : [...prev, cafeId]));
+  }, []);
 
   const isVisited = useCallback((cafeId: string) => visitedIds.includes(cafeId), [visitedIds]);
 
-  return { visitedIds, visitedCount: visitedIds.length, setVisited, isVisited };
+  return { visitedIds, visitedCount: visitedIds.length, markVisitedLocally, isVisited };
 }

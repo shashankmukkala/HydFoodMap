@@ -26,6 +26,43 @@ export const supabase = new Proxy({} as SupabaseClient, {
   },
 });
 
+let adminClient: SupabaseClient | null = null;
+
+// A second, fully separate Supabase Auth session from the public
+// `supabase` client above — same project, different `storageKey`, so the
+// browser keeps two independent sessions side by side instead of one
+// shared one. Without this, signing into /admin (email+password) and
+// browsing the public map (Google) fought over the same localStorage
+// session: whichever signed in most recently "won", the admin operator's
+// account started showing up as a signed-in visitor on the public site,
+// and signing out of either logged both out. Used only by
+// lib/useAdminAuth.ts and the admin-only routes/components that read its
+// token — every visitor-facing hook (useAuth, useVisitTracking,
+// usePoints, ...) keeps using the plain `supabase` client above.
+function getAdminSupabase(): SupabaseClient {
+  if (adminClient) return adminClient;
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error(
+      "Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Copy .env.local.example to .env.local and fill in your Supabase project's values."
+    );
+  }
+
+  adminClient = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: { storageKey: "hydcafemap-admin-auth" },
+  });
+  return adminClient;
+}
+
+export const adminSupabase = new Proxy({} as SupabaseClient, {
+  get(_target, prop, receiver) {
+    return Reflect.get(getAdminSupabase(), prop, receiver);
+  },
+});
+
 export function isSupabaseConfigured(): boolean {
   return !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 }
@@ -72,6 +109,10 @@ export type Billboard = {
   slot_number: number | null;
   image_url: string | null;
   target_url: string | null;
+  /** ISO date, e.g. "2026-09-14" — when this placement's campaign ends,
+   *  set (optionally) at creation via PlaceRailAdForm/PlaceBillboardForm.
+   *  Null for placements without a known end date. */
+  campaign_end: string | null;
   lng: number;
   lat: number;
   elevation_m: number;
