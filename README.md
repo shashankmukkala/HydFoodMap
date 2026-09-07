@@ -50,10 +50,8 @@ Still MVP or pending:
 - Admin route authentication and role protection. The `admins` table and
   `is_admin()` now exist and gate the enquiry API, but the `/admin` page
   itself is still reachable by anyone.
-- Category and tag filters do not match the current 85-place dataset. The
-  live records carry 43 free-text categories and 19 tags, while
-  `lib/categories.ts` and `lib/tags.ts` still hold the previous vocabulary,
-  so every Type chip currently matches zero cafes.
+- Cafe photos. Only 5 of 85 places have an `image_url`, so most markers and
+  detail cards fall back to initials.
 - Cafe `hours_text`, `cost_for_two`, and most `image_url` values are empty
   in the live data, so those detail rows and any "open now" filter cannot
   render yet.
@@ -343,8 +341,27 @@ Important recent migrations:
 - `0020_ad_enquiry_payment_proof.sql`: payment proof URL.
 - `0021_rail_ads.sql`: rail ad type, slot number, slot validation, and unique slot protection.
 - `0022_admin_role_and_enquiry_access.sql`: `admins` table, `is_admin()`, and admin-only enquiry read/update.
+- `0023` through `0035`: admin recovery, profiles, server-side visited places and points, notifications, welcome/bulk bonuses, points config and leaderboard, search logs, verified repeat visits, campaign end dates, and preset avatars.
+- `0036_normalize_cafe_categories.sql`: maps every cafe onto the four values in `lib/categories.ts` and adds a CHECK constraint so the column and that list cannot drift apart again.
 
-For a fresh project, run all migrations from `0001` through `0022`. For the current rail publisher, `0021_rail_ads.sql` is required.
+For a fresh project, run all migrations from `0001` through `0036`. For the current rail publisher, `0021_rail_ads.sql` is required.
+
+### Cafe categories
+
+`lib/categories.ts` is the single source of truth for the Type filter, the
+pin form, and the admin correction form. The four values are `Cafe`,
+`Specialty Coffee`, `Dessert & Bakery`, and `Bistro & Kitchen`.
+
+They were derived from the categories actually present on the 85 curated
+places. The previous taxonomy described the older 140-entry dataset, which
+contained buffets and lounge bars; against the current data it matched 1 of
+85 rows, so every Type chip filtered to an empty map. `0036` remaps the
+column and constrains it, so an import carrying an unrecognised category now
+fails loudly instead of silently emptying a filter.
+
+Alcohol, rooftop, lakeside, pet-friendly, and vegetarian are deliberately
+tags rather than categories: a place can be several at once, which a
+single-value category cannot express.
 
 ### Notes on the ad_type history
 
