@@ -1250,37 +1250,14 @@ body {
   animation: detail-card-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-.detail-card-cafe > div:first-child {
-  padding-top: 18px;
-}
-
-.detail-card-logo {
-  border: 1px solid rgba(185, 255, 227, 0.28);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.24);
-}
-
-.detail-card-cafe > div:first-child {
-  position: relative;
-}
-
-.detail-card-cafe > div:first-child::before {
-  position: absolute;
-  top: 0;
-  right: 18px;
-  left: 18px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(121, 226, 178, 0.58), transparent);
-  content: "";
-}
-
-.detail-card-cafe .text-amber-600,
-.detail-card-cafe .dark\:text-amber-400 {
-  color: #79e2b2;
-}
-
-.detail-card-cafe .bg-amber-950 {
-  background: rgba(36, 75, 64, 0.72);
-}
+/* Removed with the header rework: these targeted `> div:first-child`,
+ * which was the header row until the drag grabber became the card's first
+ * child — after which the padding and the mint hairline were being applied
+ * to a 26px handle that is `display: none` on desktop. `.detail-card-logo`
+ * went with the 56px image tile it styled, and the two amber overrides
+ * existed to convert amber back to mint on cafe cards; the card now uses
+ * mint directly, and amber survives only on the sponsored block where the
+ * design system intends it. */
 
 @keyframes detail-card-in {
   from { opacity: 0; transform: translateY(14px) scale(0.985); }
@@ -2314,4 +2291,266 @@ body {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* ---------------------------------------------------------------------
+   Cafe detail card
+   ---------------------------------------------------------------------
+   Built on the palette the project already documents: mint for trust,
+   saffron/amber for advertising only. The card previously spent amber on
+   editorial content — tags, the "famous for" block, links, the saved
+   state — which left the advertising colour doing product work and the
+   trust colour unused on the one surface whose entire selling point is
+   trust. Amber now appears here only on sponsored placements.
+   --------------------------------------------------------------------- */
+
+.detail-card-banner {
+  display: block;
+  width: 100%;
+  height: 132px;
+  object-fit: cover;
+}
+
+.detail-card-name {
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.012em;
+  color: rgb(245 247 246);
+}
+
+/* One muted meta voice for area, type, hours and cost, so they read as a
+   single tier rather than four competing greys at four sizes. 12px, not
+   the 10-11px these used to be: this is a phone-first product and 10px is
+   a squint at arm's length. */
+.detail-card-meta {
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: rgba(233, 245, 240, 0.52);
+}
+
+/* The signature element. The one claim a general map cannot make: these
+   ratings come from people whose phone confirmed they were standing here.
+   It is the only mint-filled thing above the action row, so it reads as
+   the card's emphasis without needing size to say so. */
+.verified-seal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 9px 12px;
+  border: 1px solid rgba(121, 226, 178, 0.32);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(121, 226, 178, 0.14), rgba(121, 226, 178, 0.05));
+}
+
+.verified-seal-mark {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #79e2b2;
+  color: #06231a;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.verified-seal-score {
+  font-size: 15px;
+  font-weight: 700;
+  color: #b9ffe3;
+  font-variant-numeric: tabular-nums;
+}
+
+.verified-seal-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(185, 255, 227, 0.8);
+}
+
+/* Every cafe has zero verified reviews today, so this is the normal state
+   rather than an edge case. It asks for the first visit instead of
+   rendering an empty rating — an empty screen is an invitation to act. */
+.verified-seal-empty {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.verified-seal-empty .verified-seal-mark {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(233, 245, 240, 0.6);
+}
+
+.verified-seal-empty .verified-seal-label {
+  color: rgba(233, 245, 240, 0.55);
+}
+
+/* The only editorial writing on the card, and present for all 85 cafes.
+   Neutral surface, with the eyebrow carrying the structure — the label
+   says what the sentence is, so the sentence itself needs no decoration. */
+.known-for {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-left: 2px solid rgba(121, 226, 178, 0.45);
+  border-radius: 4px 14px 14px 4px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.known-for-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(121, 226, 178, 0.85);
+}
+
+.known-for-text {
+  margin-top: 5px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(240, 248, 245, 0.9);
+}
+
+.detail-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 12px;
+}
+
+/* Quiet by design. Tags are supporting facts, not the headline, and
+   rendering them in a saturated colour made eight of them shout as loudly
+   as the cafe's name. */
+.detail-card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(233, 245, 240, 0.76);
+  white-space: nowrap;
+}
+
+.detail-card-tag-more {
+  color: rgba(233, 245, 240, 0.5);
+  font-variant-numeric: tabular-nums;
+}
+
+/* One primary action, then icons. */
+.detail-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.detail-card-action-primary {
+  display: inline-flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 44px;
+  border-radius: 12px;
+  background: #79e2b2;
+  color: #06231a;
+  font-size: 13px;
+  font-weight: 650;
+  transition: background 140ms ease, transform 140ms ease;
+}
+
+.detail-card-action-primary:hover {
+  background: #8ceac0;
+}
+
+.detail-card-action-primary:active {
+  transform: scale(0.985);
+}
+
+.detail-card-action-static {
+  background: rgba(121, 226, 178, 0.14);
+  color: rgba(185, 255, 227, 0.9);
+}
+
+/* 44px square: the same minimum the close button now uses, and the reason
+   these lost their text labels — a labelled row of four could not reach
+   44px each without wrapping on a narrow phone. */
+.detail-card-action-icon {
+  position: relative;
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(233, 245, 240, 0.72);
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.detail-card-action-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgb(245 247 246);
+}
+
+.detail-card-action-icon.is-active {
+  background: rgba(121, 226, 178, 0.16);
+  color: #79e2b2;
+}
+
+.detail-card-action-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  min-width: 15px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: #79e2b2;
+  color: #06231a;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 15px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Reference detail, below the actions: you need the address once you have
+   decided to go, not while deciding. */
+.detail-card-footnote {
+  padding: 0 14px 12px;
+}
+
+.detail-card-address {
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(233, 245, 240, 0.45);
+}
+
+.detail-card-link {
+  display: inline-block;
+  margin-top: 5px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 550;
+  color: rgba(121, 226, 178, 0.85);
+}
+
+.detail-card-link:hover {
+  color: #b9ffe3;
+  text-decoration: underline;
 }

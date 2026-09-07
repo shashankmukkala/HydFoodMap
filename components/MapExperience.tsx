@@ -815,8 +815,9 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
                 <DetailCard
                   kind="cafe"
                   item={selected.item}
-                  onClose={() => setSelected(null)}
+                  onClose={dismissSelected}
                   isAdmin={isAdmin}
+                  rating={ratings[selected.item.id] ?? null}
                   adminAccessToken={adminAccessToken}
                   onCafeUpdated={(cafe) => {
                     setCafes((prev) => prev.map((c) => (c.id === cafe.id ? cafe : c)));
@@ -824,7 +825,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
                   }}
                 />
               ) : (
-                <DetailCard kind="billboard" item={selected.item} onClose={() => setSelected(null)} isAdmin={isAdmin} />
+                <DetailCard kind="billboard" item={selected.item} onClose={dismissSelected} isAdmin={isAdmin} />
               ))}
 
             {/* Every real panel below is independent — Sidebar tabs
