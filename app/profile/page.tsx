@@ -6,6 +6,8 @@ import { useAuth } from "@/lib/useAuth";
 import { supabase } from "@/lib/supabase";
 import type { Profile } from "@/lib/supabase";
 import type { LeaderboardEntry } from "@/app/api/leaderboard/route";
+import Avatar from "@/components/Avatar";
+import { AVATAR_OPTIONS, avatarKeyToValue } from "@/lib/avatars";
 
 // Personal details for a signed-in (Google) user. The profiles row
 // itself always exists by the time this loads — a database trigger
@@ -21,6 +23,8 @@ export default function ProfilePage() {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState<LeaderboardEntry | null>(null);
+  const [avatarPickerOpen, setAvatarPickerOpen] = useState(false);
+  const [avatarSaving, setAvatarSaving] = useState(false);
 
   // Flip into "loading" the moment a session appears — adjusted during
   // render (React's recommended pattern for state driven by a prop/
@@ -70,6 +74,22 @@ export default function ProfilePage() {
     };
   }, [session]);
 
+  async function chooseAvatar(key: string) {
+    if (!session || avatarSaving) return;
+    setAvatarSaving(true);
+    const { data, error } = await supabase
+      .from("profiles")
+      .update({ avatar_url: avatarKeyToValue(key), updated_at: new Date().toISOString() })
+      .eq("user_id", session.user.id)
+      .select()
+      .single();
+    setAvatarSaving(false);
+    if (!error) {
+      setProfile(data);
+      setAvatarPickerOpen(false);
+    }
+  }
+
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     if (!session || saving) return;
@@ -100,7 +120,7 @@ export default function ProfilePage() {
   if (!session) {
     return (
       <CenteredMessage>
-        <p className="text-sm text-neutral-300">Sign in to see your personal details.</p>
+        <p className="text-sm text-neutral-300">Sign up or sign in to see your personal details.</p>
         <button
           onClick={() => signInWithGoogle()}
           className="mt-4 rounded-full bg-white px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-200"
@@ -123,14 +143,19 @@ export default function ProfilePage() {
 
         <div className="panel-elevated space-y-5 rounded-3xl p-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-amber-500 text-lg font-semibold text-white">
-              {profile?.avatar_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={profile.avatar_url} alt="" className="h-full w-full object-cover" />
-              ) : (
-                (profile?.display_name ?? email ?? "?").slice(0, 1).toUpperCase()
-              )}
-            </div>
+            <button
+              type="button"
+              onClick={() => setAvatarPickerOpen((v) => !v)}
+              className="profile-avatar-button"
+              aria-label="Change your avatar"
+            >
+              <Avatar
+                avatarUrl={profile?.avatar_url ?? null}
+                label={profile?.display_name ?? email ?? "?"}
+                className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-amber-500 text-lg font-semibold text-white"
+              />
+              <span className="profile-avatar-edit-badge" aria-hidden="true">✎</span>
+            </button>
             <div className="min-w-0">
               <h1 className="truncate text-lg font-semibold text-neutral-100">
                 {profileLoading ? "…" : (profile?.display_name ?? "Your details")}
@@ -138,6 +163,24 @@ export default function ProfilePage() {
               <p className="truncate text-xs text-neutral-400">{email}</p>
             </div>
           </div>
+
+          {avatarPickerOpen && (
+            <div className="profile-avatar-grid">
+              {AVATAR_OPTIONS.map((option) => (
+                <button
+                  key={option.key}
+                  type="button"
+                  onClick={() => chooseAvatar(option.key)}
+                  disabled={avatarSaving}
+                  className="profile-avatar-option"
+                  style={{ background: `linear-gradient(145deg, ${option.gradient[0]}, ${option.gradient[1]})` }}
+                  aria-label={`Use the ${option.key} avatar`}
+                >
+                  {option.emoji}
+                </button>
+              ))}
+            </div>
+          )}
 
           {stats && (
             <div className="profile-stats-row">

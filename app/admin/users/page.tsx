@@ -5,6 +5,7 @@ import Link from "next/link";
 import AdminGate from "@/components/AdminGate";
 import WelcomeBonusSettings from "@/components/WelcomeBonusSettings";
 import PointsConfigSettings from "@/components/PointsConfigSettings";
+import Avatar from "@/components/Avatar";
 import { useAdminAuth } from "@/lib/useAdminAuth";
 import type { AdminUserSummary } from "@/app/api/admin/users/route";
 
@@ -495,14 +496,7 @@ function UserCard({
             aria-label={`Select ${user.displayName ?? user.email ?? "user"}`}
             className="admin-user-checkbox"
           />
-          <span className="admin-user-avatar">
-            {user.avatarUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={user.avatarUrl} alt="" />
-            ) : (
-              (user.displayName ?? user.email ?? "?").slice(0, 1).toUpperCase()
-            )}
-          </span>
+          <Avatar avatarUrl={user.avatarUrl} label={user.displayName ?? user.email ?? "?"} className="admin-user-avatar" />
           <div>
             <h3>
               {user.displayName ?? "Unnamed"}

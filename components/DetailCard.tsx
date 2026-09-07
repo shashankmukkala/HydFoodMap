@@ -291,7 +291,7 @@ export default function DetailCard(props: DetailCardProps) {
             </button>
 
             {collectionsOpen && (
-              <div className="panel-elevated absolute right-0 bottom-full z-20 mb-2 w-56 rounded-2xl p-3">
+              <div className="panel-elevated absolute right-0 bottom-full z-20 mb-2 w-56 max-w-[85vw] rounded-2xl p-3">
                 <div className="mb-2 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                   Add to collection
                 </div>
