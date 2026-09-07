@@ -6,6 +6,7 @@ import type { Map as MapLibreMap } from "maplibre-gl";
 import SearchBox, { type SearchGroupMatch } from "@/components/SearchBox";
 import { DEFAULT_BEARING, DEFAULT_PITCH } from "@/lib/mapStyle";
 import { useAuth } from "@/lib/useAuth";
+import { useProfile } from "@/lib/useProfile";
 import { useRequireAuth } from "@/lib/AuthGate";
 import WeatherWidget from "@/components/WeatherWidget";
 import AirQualityWidget from "@/components/AirQualityWidget";
@@ -66,7 +67,8 @@ export default function TopBar({
   const [is3D, setIs3D] = useState(true);
   const [vibeOpen, setVibeOpen] = useState(false);
   const vibeRef = useRef<HTMLDivElement>(null);
-  const { isSignedIn, email, displayName, avatarUrl } = useAuth();
+  const { isSignedIn, email } = useAuth();
+  const profile = useProfile();
   const requireAuth = useRequireAuth();
 
   useEffect(() => {
@@ -264,11 +266,11 @@ export default function TopBar({
         {publicMode && isSignedIn && <NotificationsBell />}
         {publicMode &&
           (isSignedIn ? (
-            <Link href="/profile" title={displayName ?? email ?? "Your profile"} className="shrink-0">
+            <Link href="/profile" title={profile?.display_name ?? email ?? "Your profile"} className="shrink-0">
               <Avatar
-                avatarUrl={avatarUrl}
-                label={displayName ?? email ?? "?"}
-                className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-amber-500 text-sm font-semibold text-white"
+                avatarUrl={profile?.avatar_url ?? null}
+                label={profile?.display_name ?? email ?? "?"}
+                className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full text-sm font-semibold text-white"
               />
             </Link>
           ) : (

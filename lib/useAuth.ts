@@ -63,8 +63,6 @@ export function useAuth() {
   return {
     session,
     email: session?.user.email ?? null,
-    displayName: (session?.user.user_metadata?.full_name as string | undefined) ?? null,
-    avatarUrl: (session?.user.user_metadata?.avatar_url as string | undefined) ?? null,
     isSignedIn: !!session,
     loading,
     signInWithGoogle,

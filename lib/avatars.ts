@@ -36,3 +36,15 @@ export function getAvatarOption(value: string | null | undefined): AvatarOption 
   const key = value.slice(AVATAR_PREFIX.length);
   return AVATAR_OPTIONS.find((o) => o.key === key) ?? null;
 }
+
+// Deterministic, not random — the same seed (a user id, a name) always
+// picks the same option, so a fallback avatar doesn't visibly change on
+// every re-render/reload. Used only as a last resort in components/Avatar
+// when a row somehow has no avatar_url at all (shouldn't normally happen
+// once 0034/0035 have run, but stays defensive) — the point is this is
+// still a face, never an alphabet initial.
+export function pickAvatarForSeed(seed: string): AvatarOption {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  return AVATAR_OPTIONS[hash % AVATAR_OPTIONS.length];
+}
