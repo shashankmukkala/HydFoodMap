@@ -163,11 +163,12 @@ export default function DetailCard(props: DetailCardProps) {
         />
       )}
 
-      <div className="flex items-start gap-2.5 p-3.5 pb-0">
-
-        <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-2">
-            <div className="min-w-0">
+      {/* One row: title block on the left, close button on the right. The
+          two extra wrappers this replaces existed to sit beside the 56px
+          image tile; with the tile gone they were a flex container holding
+          a single child. */}
+      <div className="flex items-start justify-between gap-2 px-3.5 pt-3.5">
+        <div className="min-w-0">
               <h2 className="detail-card-name truncate">{item.name}</h2>
               {/* Area and type on one line, separated by a dot. They were
                   two stacked rows plus a third for the address, which gave
@@ -194,8 +195,6 @@ export default function DetailCard(props: DetailCardProps) {
                 <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" />
               </svg>
             </button>
-          </div>
-        </div>
       </div>
 
       {/* Full-width, not nested in the text column above — the image is a
@@ -262,7 +261,7 @@ export default function DetailCard(props: DetailCardProps) {
         )}
 
         {isCafe && cafe?.hours_text && (
-          <div className="detail-card-meta mt-2">{cafe.hours_text}</div>
+          <div className="detail-card-meta detail-card-meta-spaced">{cafe.hours_text}</div>
         )}
 
         {billboard && (

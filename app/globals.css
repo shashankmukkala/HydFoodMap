@@ -2330,6 +2330,14 @@ body {
   color: rgba(233, 245, 240, 0.52);
 }
 
+/* Tailwind's utilities live in a cascade layer, and unlayered rules beat
+   layered ones whatever the source order — so a `mt-2` alongside
+   .detail-card-meta silently lost to the 3px above and did nothing. This
+   is the explicit version for the one place that wants real separation. */
+.detail-card-meta-spaced {
+  margin-top: 10px;
+}
+
 /* The signature element. The one claim a general map cannot make: these
    ratings come from people whose phone confirmed they were standing here.
    It is the only mint-filled thing above the action row, so it reads as
