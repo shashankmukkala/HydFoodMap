@@ -41,7 +41,9 @@ export default function LeaderboardPage() {
     };
   }, [session]);
 
-  const meInTop = me && top.some((entry) => entry.userId === me.userId);
+  // The API marks the caller's own row rather than returning ids to
+  // compare — see LeaderboardEntry.isMe for why the UUID left the payload.
+  const meInTop = me && top.some((entry) => entry.isMe);
 
   return (
     <div className="min-h-dvh bg-[#0b0b0d] text-neutral-100">
@@ -73,7 +75,7 @@ export default function LeaderboardPage() {
         {!loading &&
           !error &&
           top.map((entry) => (
-            <LeaderboardRow key={entry.userId} entry={entry} highlight={entry.userId === me?.userId} />
+            <LeaderboardRow key={entry.rank} entry={entry} highlight={entry.isMe} />
           ))}
       </div>
     </div>

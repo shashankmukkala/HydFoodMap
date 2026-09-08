@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Review } from "@/lib/supabase";
+import type { PublicReview } from "@/app/api/cafes/[id]/reviews/route";
 import { usePoints } from "@/lib/usePoints";
 import { useVisitTracking } from "@/lib/useVisitTracking";
 import { useRequireAuth } from "@/lib/AuthGate";
@@ -29,7 +29,7 @@ function timeAgo(iso: string) {
 }
 
 export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = false }: ReviewsSectionProps) {
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviews, setReviews] = useState<PublicReview[]>([]);
   const [loadedForId, setLoadedForId] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const { gate, start: startCheckin, confirm: checkLocation, cancel: cancelCheckin } = useLocationCheckin(cafeId, cafeLat, cafeLng);
@@ -66,7 +66,10 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
   }, [cafeId]);
 
   const average = reviews.length > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length : null;
-  const alreadyReviewed = !!session && reviews.some((r) => r.user_id === session.user.id);
+  // isMine is computed server-side now. The row no longer carries a
+  // user_id to compare against — publishing it let anyone join reviews to
+  // the leaderboard and name the author of each one.
+  const alreadyReviewed = reviews.some((r) => r.isMine);
 
   // Reviews can only be written from the cafe's actual location — checked
   // live via the browser's geolocation, not a self-reported "I've been
@@ -128,7 +131,7 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
         const body = await res.json().catch(() => ({}));
         throw new Error(body.error || "Couldn't post your review.");
       }
-      const review: Review & { points_awarded?: number } = await res.json();
+      const review: PublicReview & { points_awarded?: number } = await res.json();
       setReviews((prev) => [review, ...prev]);
       addPoints(review.points_awarded ?? 0);
       // Posting a verified review now records the visit too (see
@@ -332,9 +335,12 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
                   <span className="text-amber-500">{"★".repeat(review.rating)}</span>
-                  <span className="text-neutral-400">· {timeAgo(review.created_at)}</span>
+                  <span className="text-neutral-400">
+                    {review.authorName ? `${review.authorName} · ` : ""}
+                    {timeAgo(review.created_at)}
+                  </span>
                 </div>
-                {review.checkin_id && (
+                {review.isVerified && (
                   <span className="mt-1 inline-flex items-center rounded-full bg-emerald-50 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
                     ✓ Verified visit
                   </span>

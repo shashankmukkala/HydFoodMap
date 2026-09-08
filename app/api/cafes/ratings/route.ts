@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isSupabaseConfigured, supabase } from "@/lib/supabase";
+import { createServiceRoleClient, isSupabaseConfigured } from "@/lib/supabase";
 
 export type CafeRating = { avg: number; count: number };
 
@@ -13,7 +13,11 @@ export async function GET() {
     return NextResponse.json({});
   }
 
-  const { data, error } = await supabase.from("reviews").select("cafe_id, rating");
+  // Service role: 0040 removed the public read policy on reviews, so the
+  // anon client can no longer aggregate them. Only the average and count
+  // leave this route — no user_id, nothing that identifies a reviewer.
+  const service = createServiceRoleClient();
+  const { data, error } = await service.from("reviews").select("cafe_id, rating");
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   const byCafe: Record<string, { sum: number; count: number }> = {};

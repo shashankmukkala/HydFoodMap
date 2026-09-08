@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createAuthedClient, isSupabaseConfigured, supabase } from "@/lib/supabase";
+import { createAuthedClient, createServiceRoleClient, isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { localGetReviewsForCafe, localInsertReview } from "@/lib/localReviewStore";
 import { localGetAll } from "@/lib/localCafeStore";
 import { distanceMeters, VISIT_RADIUS_METERS } from "@/lib/geo";
@@ -18,21 +18,85 @@ function optionalText(value: unknown, maxLength: number) {
   return trimmed || null;
 }
 
-export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+/**
+ * A review as the public is allowed to see it.
+ *
+ * Deliberately no `user_id`. A review says a named account stood inside a
+ * specific building at a specific time, and publishing the UUID alongside
+ * it let anyone join these rows to /api/leaderboard and name the author of
+ * every review, plus every place they had been. `isMine` carries the one
+ * thing the client actually needed the id for.
+ */
+export type PublicReview = {
+  id: string;
+  cafe_id: string;
+  rating: number;
+  comment: string | null;
+  favorite_food: string | null;
+  photo_url: string | null;
+  created_at: string;
+  authorName: string | null;
+  isMine: boolean;
+  /**
+   * Whether a GPS check-in backs this review. The check-in id itself is
+   * internal and stays server-side — the badge only needs the fact.
+   */
+  isVerified: boolean;
+};
+
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   if (!isSupabaseConfigured()) {
     return NextResponse.json(localGetReviewsForCafe(id));
   }
 
-  const { data, error } = await supabase
+  // Service role because 0040 removed the public read policy: reviews are
+  // still public content, but what "public" means is decided here rather
+  // than by handing out the raw row.
+  const service = createServiceRoleClient();
+  const { data, error } = await service
     .from("reviews")
-    .select("*")
+    .select("id, cafe_id, user_id, rating, comment, favorite_food, photo_url, created_at, checkin_id")
     .eq("cafe_id", id)
     .order("created_at", { ascending: false });
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data);
+
+  const rows = data ?? [];
+
+  // Author names come from profiles, shortened by the same function the
+  // leaderboard uses, so a reviewer is identified the same way in both
+  // places and neither is the weaker link.
+  const authorIds = [...new Set(rows.map((r) => r.user_id))];
+  const names = new Map<string, string | null>();
+  if (authorIds.length > 0) {
+    const { data: profiles } = await service.rpc("public_display_names", { ids: authorIds });
+    for (const row of profiles ?? []) names.set(row.user_id, row.display_name);
+  }
+
+  const authHeader = request.headers.get("authorization");
+  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  let callerId: string | null = null;
+  if (token) {
+    const { data: userData } = await supabase.auth.getUser(token);
+    callerId = userData.user?.id ?? null;
+  }
+
+  const publicReviews: PublicReview[] = rows.map((row) => ({
+    id: row.id,
+    cafe_id: row.cafe_id,
+    rating: row.rating,
+    comment: row.comment,
+    favorite_food: row.favorite_food,
+    photo_url: row.photo_url,
+    created_at: row.created_at,
+    authorName: names.get(row.user_id) ?? null,
+    isMine: !!callerId && row.user_id === callerId,
+    isVerified: !!row.checkin_id,
+  }));
+
+  return NextResponse.json(publicReviews);
 }
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -190,5 +254,26 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   const { data: awarded } = await authed.from("points_ledger").select("amount").eq("review_id", data.id);
   const pointsAwarded = (awarded ?? []).reduce((sum, row) => sum + row.amount, 0) + visitPoints;
 
-  return NextResponse.json({ ...data, points_awarded: pointsAwarded }, { status: 201 });
+  // Returned in the same shape GET uses, for two reasons. It keeps the
+  // author's user_id out of the response — the caller's own id, but still
+  // the join key this change exists to stop publishing. And the client
+  // pushes this straight into its list, so a raw row would render without
+  // the verified badge or the author name until the next reload.
+  const { data: authorRows } = await createServiceRoleClient().rpc("public_display_names", {
+    ids: [userData.user.id],
+  });
+  const created: PublicReview = {
+    id: data.id,
+    cafe_id: data.cafe_id,
+    rating: data.rating,
+    comment: data.comment,
+    favorite_food: data.favorite_food,
+    photo_url: data.photo_url,
+    created_at: data.created_at,
+    authorName: authorRows?.[0]?.display_name ?? null,
+    isMine: true,
+    isVerified: !!data.checkin_id,
+  };
+
+  return NextResponse.json({ ...created, points_awarded: pointsAwarded }, { status: 201 });
 }
