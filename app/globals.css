@@ -686,10 +686,16 @@ body {
 .ad-rail {
   position: absolute;
   bottom: 24px;
-  left: 50%;
+  /* inset-inline + margin-inline auto centers a max-width box between
+     both edges directly — left:50%/translateX(-50%) (the previous
+     approach) instead computes its offset from the container's width,
+     so any mismatch between that and the box's own width (rounding,
+     a scrollbar, a resize mid-transition) reads as the panel drifting
+     off-center toward one side instead of sitting symmetrically. */
+  inset-inline: 16px;
+  margin-inline: auto;
+  max-width: 610px;
   z-index: 17;
-  width: min(610px, calc(100% - 32px));
-  transform: translateX(-50%);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 20px;
   background: rgba(11, 15, 16, 0.84);
@@ -1222,8 +1228,8 @@ body {
 }
 
 @keyframes ad-rail-in {
-  from { opacity: 0; transform: translate(-50%, 10px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* In normal flow, not absolute.
