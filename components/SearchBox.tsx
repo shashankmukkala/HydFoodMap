@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import type { Cafe } from "@/lib/supabase";
-import { matchSearchGroup, type SearchGroupMatch } from "@/lib/searchMatch";
+import { foldAccents, matchSearchGroup, type SearchGroupMatch } from "@/lib/searchMatch";
 
 type PlaceResult = {
   display_name: string;
@@ -69,12 +69,17 @@ export default function SearchBox({ map, cafes, onSelectCafe, onGroupMatch, clea
     setStatus("idle");
   }
 
-  const matchingCafes = query.trim().length >= 2
+  // Accent-folded on both sides, so a name typed on an English keyboard
+  // finds the cafe as spelled. "Conçu".toLowerCase().includes("concu") is
+  // false — ç is not c — which meant the one cafe most people would search
+  // for by name could not be found by name at all.
+  const foldedQuery = foldAccents(query.trim()).toLowerCase();
+  const matchingCafes = foldedQuery.length >= 2
     ? cafes
         .filter(
           (c) =>
-            c.name.toLowerCase().includes(query.toLowerCase()) ||
-            c.category?.toLowerCase().includes(query.toLowerCase())
+            foldAccents(c.name).toLowerCase().includes(foldedQuery) ||
+            (c.category ? foldAccents(c.category).toLowerCase().includes(foldedQuery) : false)
         )
         .slice(0, 5)
     : [];

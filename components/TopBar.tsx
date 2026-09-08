@@ -80,6 +80,16 @@ export default function TopBar({
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [vibeOpen]);
 
+  // Picking a single-choice filter is a finished action, so the panel gets
+  // out of the way — it sits over the map, so leaving it open hid the
+  // results the filter had just produced. Tags are deliberately excluded:
+  // they are multi-select and people usually pick two or three, so closing
+  // after each one would mean reopening the panel every time.
+  function pickOne(apply: () => void) {
+    apply();
+    setVibeOpen(false);
+  }
+
   function toggle3D() {
     if (!map) return;
     const next = !is3D;
@@ -150,6 +160,7 @@ export default function TopBar({
                     [...activeTags].forEach((tag) => onToggleTag(tag));
                     onSelectMinRating(0);
                     onSelectMaxDistance(0);
+                    setVibeOpen(false);
                   }}
                   className="shrink-0 text-[11px] font-medium text-amber-600 hover:underline dark:text-amber-400"
                 >
@@ -160,9 +171,9 @@ export default function TopBar({
             <div>
               <div className="mb-1.5 text-[11px] font-semibold tracking-wide text-neutral-400 uppercase">Cafe type</div>
               <div className="flex flex-wrap gap-1.5">
-                <Chip active={activeCategory === null} onClick={() => onSelectCategory(null)}>🗺️ All</Chip>
+                <Chip active={activeCategory === null} onClick={() => pickOne(() => onSelectCategory(null))}>🗺️ All</Chip>
                 {CATEGORY_OPTIONS.map((option) => (
-                  <Chip key={option} active={activeCategory === option} onClick={() => onSelectCategory(activeCategory === option ? null : option)}>
+                  <Chip key={option} active={activeCategory === option} onClick={() => pickOne(() => onSelectCategory(activeCategory === option ? null : option))}>
                     {CATEGORY_ICONS[option]} {CATEGORY_SHORT_LABELS[option]}
                   </Chip>
                 ))}
@@ -173,14 +184,14 @@ export default function TopBar({
                 Verified rating
               </div>
               <div className="flex flex-wrap gap-1.5">
-                <Chip active={minRating === 0} onClick={() => onSelectMinRating(0)}>
+                <Chip active={minRating === 0} onClick={() => pickOne(() => onSelectMinRating(0))}>
                   Any
                 </Chip>
                 {[3, 4, 4.5].map((threshold) => (
                   <Chip
                     key={threshold}
                     active={minRating === threshold}
-                    onClick={() => onSelectMinRating(minRating === threshold ? 0 : threshold)}
+                    onClick={() => pickOne(() => onSelectMinRating(minRating === threshold ? 0 : threshold))}
                   >
                     ★ {threshold}+
                   </Chip>
@@ -195,14 +206,14 @@ export default function TopBar({
                 )}
               </div>
               <div className="flex flex-wrap gap-1.5">
-                <Chip active={maxDistanceKm === 0} onClick={() => onSelectMaxDistance(0)}>
+                <Chip active={maxDistanceKm === 0} onClick={() => pickOne(() => onSelectMaxDistance(0))}>
                   Any
                 </Chip>
                 {DISTANCE_OPTIONS.map((km) => (
                   <Chip
                     key={km}
                     active={maxDistanceKm === km}
-                    onClick={() => onSelectMaxDistance(maxDistanceKm === km ? 0 : km)}
+                    onClick={() => pickOne(() => onSelectMaxDistance(maxDistanceKm === km ? 0 : km))}
                   >
                     &lt;{km}km
                   </Chip>

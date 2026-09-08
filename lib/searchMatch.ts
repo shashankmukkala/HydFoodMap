@@ -15,8 +15,23 @@ import { TAG_ICONS, TAG_OPTIONS, type Tag } from "@/lib/tags";
 
 const STOPWORDS = new Set(["in", "at", "near", "around", "the", "a", "an", "of", "for", "with"]);
 
+/**
+ * Folds accents to their base letters: "Conçu" -> "concu", "Lé" -> "le",
+ * "Nommè" -> "nomme".
+ *
+ * Without this the tokenizer's `[^a-z0-9\s]` replacement turned every
+ * accented letter into a *space*, splitting one word into fragments —
+ * "conçu" became the two tokens "con" and "u". That broke the cafe in two
+ * ways at once: nobody typing "concu" on an English keyboard could find
+ * it, and the stray one-letter token went on to match unrelated
+ * vocabulary. Three of the 85 cafes carry accents.
+ */
+export function foldAccents(text: string): string {
+  return text.normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
 function tokenize(text: string): string[] {
-  return text
+  return foldAccents(text)
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
@@ -62,8 +77,20 @@ function levenshtein(a: string, b: string): number {
 // codebase, not a hypothetical one. Prefix containment still catches the
 // legitimate plural/truncation cases ("cafe" -> "cafes") without matching
 // a short word buried inside an unrelated longer one.
+// The prefix rule needs its own floor. The length guard below sits *after*
+// the prefix check, so a one-letter token prefix-matched anything starting
+// with that letter: "u" matched the area "Uppal", "b" matched "Bakery",
+// "c" matched "Cafe". That is how searching "conçu" — which tokenized to
+// "con" + "u" — flew the map to Uppal, a different part of the city from
+// the cafe being searched for. Three characters is the shortest prefix
+// that carries real intent; "cafe" -> "cafes" and other plural or
+// truncation cases are all longer than that.
+const MIN_PREFIX_MATCH_LENGTH = 3;
+
 function wordsMatch(a: string, b: string): boolean {
-  if (a === b || a.startsWith(b) || b.startsWith(a)) return true;
+  if (a === b) return true;
+  const shorter = Math.min(a.length, b.length);
+  if (shorter >= MIN_PREFIX_MATCH_LENGTH && (a.startsWith(b) || b.startsWith(a))) return true;
   if (a.length < 4 || b.length < 4) return false;
   const maxDist = Math.max(a.length, b.length) <= 6 ? 1 : 2;
   return levenshtein(a, b) <= maxDist;
