@@ -78,11 +78,6 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   const [searchDismissDropdownSignal, setSearchDismissDropdownSignal] = useState(0);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [resultsPageSize, setResultsPageSize] = useState(5);
-  // On a phone every panel wants most of the screen, so only one may be
-  // open at a time. Collapsing the results *panel* rather than clearing
-  // the search keeps the map's filtered pins and the query intact — the
-  // list comes back when the cafe card is dismissed.
-  const [resultsCollapsed, setResultsCollapsed] = useState(false);
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const rightColumnRef = useRef<HTMLDivElement>(null);
   const { bookmarkedIds } = useBookmarks();
@@ -238,9 +233,35 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     // resetting panelShapeKey's effect to try 5 again from scratch.
   }, [resultsPageSize, panelShapeKey, resultsMatch]);
 
+  // On a phone every panel wants most of the screen, so exactly one is
+  // visible: the most specific thing the visitor last acted on.
+  //
+  // Derived rather than tracked. The previous version set a
+  // `resultsCollapsed` flag from inside selectCafe, which meant only that
+  // one entry point participated — opening a sidebar tab while a filter
+  // was active, or changing a filter while a card was open, stacked a
+  // second full-height sheet because those call sites never learned about
+  // the rule. A derived value cannot be forgotten by a new call site.
+  //
+  // Priority order is "most specific first": one cafe beats a list of
+  // cafes, and any of them beats the events filler. Admin is excluded —
+  // it is a desktop workspace where stacking is the point.
+  const singlePanelMode = isMobile && !isAdmin;
+  const mobilePanel = selected
+    ? "detail"
+    : feedTab
+      ? "feed"
+      : resultsMatch
+        ? "results"
+        : eventsOpen
+          ? "events"
+          : null;
+  const canShow = (panel: "detail" | "feed" | "results" | "events") =>
+    !singlePanelMode || mobilePanel === panel;
+
   // Any panel that overlays the map and so has to be steered around —
   // also what tells CSS to move the ad rail out of a sheet's way.
-  const hasOpenPanel = !!selected || !!feedTab || (!!resultsMatch && !resultsCollapsed);
+  const hasOpenPanel = !!selected || !!feedTab || !!resultsMatch || eventsOpen;
 
   // Padding passed to flyTo/fitBounds is persistent camera state, not a
   // one-off argument — MapLibre keeps it on the transform. Without this
@@ -435,7 +456,6 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   // opened.
   function dismissSelected() {
     setSelected(null);
-    setResultsCollapsed(false);
   }
 
   function handleMapClick(lngLat: { lng: number; lat: number }) {
@@ -458,8 +478,17 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     setSelected(null);
   }
 
-  function toggleTag(tag: Tag) {
+  // Changing a filter means "show me a different set", so the cafe that
+  // was open is stale context — on a phone it also sits directly on top
+  // of the results the filter just produced. Desktop keeps the card, where
+  // the column has room for both and you may be comparing against it.
+  function startFilterChange() {
     clearSearchIfActive();
+    if (singlePanelMode) setSelected(null);
+  }
+
+  function toggleTag(tag: Tag) {
+    startFilterChange();
     setActiveTags((prev) => {
       const next = new Set(prev);
       if (next.has(tag)) next.delete(tag);
@@ -469,12 +498,12 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   }
 
   function selectCategoryManually(category: Category | null) {
-    clearSearchIfActive();
+    startFilterChange();
     setActiveCategory(category);
   }
 
   function selectMinRatingManually(rating: number) {
-    clearSearchIfActive();
+    startFilterChange();
     setMinRating(rating);
   }
 
@@ -486,7 +515,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   // so this prompt only happens once. Choosing "Any" (km === 0) just
   // clears the filter and never needs a location at all.
   function selectMaxDistance(km: number) {
-    clearSearchIfActive();
+    startFilterChange();
     if (km === 0) {
       setMaxDistanceKm(0);
       return;
@@ -521,16 +550,13 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     setSearchDismissDropdownSignal((n) => n + 1);
     if (selected?.kind === "cafe" && selected.item.id === cafe.id) {
       setSelected(null);
-      setResultsCollapsed(false);
       return;
     }
-    // One card at a time on a phone. Desktop keeps stacking, which is the
-    // right call there — a 380px column has room for a list and a card,
-    // and you are usually picking through several results.
-    if (isMobile) {
-      setFeedTab(null);
-      setResultsCollapsed(true);
-    }
+    // Opening a cafe from a sidebar tab closes that tab on a phone, where
+    // the two cannot share a screen. The results list needs no equivalent
+    // call — canShow() hides it while a card is up and brings it back on
+    // dismiss, with no flag to keep in sync.
+    if (singlePanelMode) setFeedTab(null);
     setSelected({ kind: "cafe", item: cafe });
     map?.flyTo({
       center: [cafe.lng, cafe.lat],
@@ -558,13 +584,9 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   function selectBillboard(billboard: Billboard) {
     if (selected?.kind === "billboard" && selected.item.id === billboard.id) {
       setSelected(null);
-      setResultsCollapsed(false);
       return;
     }
-    if (isMobile) {
-      setFeedTab(null);
-      setResultsCollapsed(true);
-    }
+    if (singlePanelMode) setFeedTab(null);
     setSelected({ kind: "billboard", item: billboard });
     if (billboard.ad_type !== "rail") {
       map?.flyTo({
@@ -835,7 +857,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
                 two real panels on screen (see showEvents/realPanelCount
                 above) — it's the last one added and the first one
                 dropped. */}
-            {feedTab === "saved" && (
+            {feedTab === "saved" && canShow("feed") && (
               <FeedPanel
                 kind="cafe"
                 title="Favourites"
@@ -846,7 +868,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
                 onClose={() => setFeedTab(null)}
               />
             )}
-            {feedTab === "visited" && (
+            {feedTab === "visited" && canShow("feed") && (
               <FeedPanel
                 kind="cafe"
                 title="Visited"
@@ -857,7 +879,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
                 onClose={() => setFeedTab(null)}
               />
             )}
-            {feedTab === "collections" && (
+            {feedTab === "collections" && canShow("feed") && (
               <CollectionsPanel
                 collections={collections}
                 cafes={cafes}
@@ -868,7 +890,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
               />
             )}
 
-            {resultsMatch && !resultsCollapsed && (
+            {resultsMatch && canShow("results") && (
               <SearchResultsPanel
                 label={resultsMatch.label}
                 cafes={resultsMatch.cafes}
@@ -878,7 +900,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
               />
             )}
 
-            {showEvents && (isAdmin || eventsOpen) && (
+            {showEvents && (isAdmin || eventsOpen) && canShow("events") && (
               <EventsPanel
                 events={events}
                 isAdmin={isAdmin}
