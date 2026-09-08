@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAuthedClient, isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { distanceMeters, VISIT_RADIUS_METERS } from "@/lib/geo";
+import { enforceRateLimit, HOUR } from "@/lib/rateLimit";
 
 const MAX_LOCATION_ACCURACY_METERS = 150;
 const CHECKIN_MINUTES = 10;
@@ -18,6 +19,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   if (!isSupabaseConfigured()) {
     return NextResponse.json({ error: "Secure check-in needs Supabase to be configured." }, { status: 503 });
   }
+
+  // Each call creates a review_checkins row, and nothing else caps how
+  // many a signed-in user may start. Twenty an hour covers any real
+  // sequence of visits, retries and expiries, and stops the endpoint from
+  // being a row generator.
+  const limited = enforceRateLimit(request, "checkin", 20, HOUR, "Too many check-in attempts. Try again shortly.");
+  if (limited) return limited;
 
   const { token, user } = await getUser(request);
   if (!token || !user) return NextResponse.json({ error: "Sign in to check in." }, { status: 401 });

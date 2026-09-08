@@ -1,12 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { requireAdmin } from "@/lib/adminAuth";
+import { enforceRateLimit, HOUR } from "@/lib/rateLimit";
 
 function clean(value: unknown, max: number) {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
 
 export async function POST(request: NextRequest) {
+  // Anonymous submission is the point of /advertise, so this cannot be
+  // gated — which left the admin inbox floodable by a script, with a
+  // free-text payment_proof_url in every row. A genuine advertiser sends
+  // one enquiry, so five an hour is generous and a flood is not.
+  const limited = enforceRateLimit(
+    request,
+    "ad-enquiry",
+    5,
+    HOUR,
+    "You have sent several enquiries already. Please try again later, or reply to the last one."
+  );
+  if (limited) return limited;
+
   const body = await request.json();
   const brand_name = clean(body.brand_name, 120);
   const ad_format = clean(body.ad_format, 30) || "map_rail";

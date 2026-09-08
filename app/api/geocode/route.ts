@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { enforceRateLimit, MINUTE, rateLimit, tooManyRequests } from "@/lib/rateLimit";
 
 // Proxied server-side per Nominatim's usage policy (nominatim.org/release-docs/latest/api/Search/)
 // which requires a valid identifying User-Agent — a bare browser fetch from
@@ -8,6 +9,20 @@ const NOMINATIM_REVERSE_URL = "https://nominatim.openstreetmap.org/reverse";
 const USER_AGENT = "HydCafeMap/1.0 (https://github.com/; contact via repo issues)";
 
 export async function GET(request: NextRequest) {
+  // Two limits, because the risk here is not a database write — it is
+  // Nominatim blocking this server's IP, which silently kills address
+  // search for everyone at once. Their usage policy allows roughly one
+  // request per second in total, so a per-caller limit alone would not
+  // protect it: a hundred well-behaved visitors would still breach the
+  // global ceiling together.
+  const perCaller = enforceRateLimit(request, "geocode", 20, MINUTE, "Too many searches. Try again shortly.");
+  if (perCaller) return perCaller;
+
+  const global = rateLimit("geocode:all", 50, MINUTE);
+  if (!global.ok) {
+    return tooManyRequests(global.retryAfterSeconds, "Address search is busy. Try again in a moment.");
+  }
+
   const lat = request.nextUrl.searchParams.get("lat");
   const lon = request.nextUrl.searchParams.get("lon");
   if (lat && lon) return reverseGeocode(lat, lon);

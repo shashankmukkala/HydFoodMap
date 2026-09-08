@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceRoleClient, isSupabaseConfigured, supabase } from "@/lib/supabase";
+import { enforceRateLimit, MINUTE } from "@/lib/rateLimit";
 
 const MAX_QUERY_LENGTH = 200;
 
@@ -15,6 +16,15 @@ export async function POST(request: NextRequest) {
   if (typeof query !== "string" || !query.trim() || query.length > MAX_QUERY_LENGTH) {
     return NextResponse.json({ ok: true });
   }
+  // This route takes no authentication by design — an anonymous visitor's
+  // search is still the signal worth having — and it writes through the
+  // service role, which bypasses RLS. That combination meant one loop could
+  // insert unbounded rows into search_logs. 30/minute is well above real
+  // typing (the client already debounces to one log per 900ms pause) and
+  // far below what a script would want.
+  const limited = enforceRateLimit(request, "search-logs", 30, MINUTE, "Too many searches. Try again shortly.");
+  if (limited) return limited;
+
   const safeResultCount = Number.isInteger(resultCount) && resultCount >= 0 ? resultCount : 0;
 
   // Best-effort identity — a search log is still useful without one, so a

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceRoleClient } from "@/lib/supabase";
 import { verifyRecoveryCode } from "@/lib/recoveryCode";
+import { enforceRateLimit, MINUTE } from "@/lib/rateLimit";
 
 const DIGITS5 = /^\d{5}$/;
 
@@ -14,6 +15,21 @@ const DIGITS5 = /^\d{5}$/;
 // doesn't exist, has no recovery code set, or the code is wrong, so this
 // endpoint can't be used to enumerate which IDs are registered.
 export async function POST(request: NextRequest) {
+  // Unauthenticated by necessity — you cannot sign in to reset the
+  // password you have lost. The 20-digit recovery code makes guessing
+  // hopeless, so the exposure here is not the credential: every attempt
+  // runs scrypt, which is deliberately expensive, so an unlimited endpoint
+  // is a CPU exhaustion lever. Five tries per 15 minutes is far more than
+  // a real admin needs and removes that lever.
+  const limited = enforceRateLimit(
+    request,
+    "admin-reset",
+    5,
+    15 * MINUTE,
+    "Too many attempts. Wait a few minutes and try again."
+  );
+  if (limited) return limited;
+
   const body = await request.json().catch(() => null);
   if (!body) return NextResponse.json({ error: "Invalid request." }, { status: 400 });
 
