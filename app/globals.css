@@ -621,92 +621,61 @@ body {
   gap: 20px;
 }
 
-/* A tab on the right edge rather than a floating pill.
+/* A tab on the right edge, below the top bar.
  *
- * As a horizontal pill it carried two filled circles — a mint icon and a
- * coral count — plus a label, which read as two competing badges sitting
- * in the middle of the map. Flush to the edge and running vertically, it
- * takes about a third of the width, stops overlapping the map's own
- * content, and reads as chrome attached to the side rather than something
- * dropped on top of the map.
+ * Word only, in coral. It previously carried a mint icon circle and a
+ * coral count circle either side of the label, which read as two badges
+ * rather than one control. Coral is what the design system reserves for
+ * live signals, which is exactly what an events feed is — and with the
+ * circles gone the colour has to carry the meaning on its own.
  *
- * writing-mode rather than transform: rotate() — rotation would leave the
- * element's layout box unrotated, so it would still reserve a wide
+ * writing-mode rather than transform: rotate() — rotation leaves the
+ * layout box unrotated, so the element would still reserve a wide
  * horizontal slot and need transform-origin correction to sit flush. In
- * vertical writing mode the box itself is tall and narrow, so `right: 0`
- * genuinely touches the edge. The icon and count opt back into horizontal
- * flow so they stay upright. */
+ * vertical writing mode the box is tall and narrow, so right: 0 genuinely
+ * touches the edge.
+ *
+ * The count moved into the button's accessible name rather than being
+ * dropped: a screen reader still hears how many events are waiting, which
+ * a coloured circle never conveyed anyway. */
 .news-launcher {
   position: absolute;
-  top: 50%;
+  top: 142px;
   right: 0;
   z-index: 28;
   display: flex;
   align-items: center;
-  gap: 8px;
   writing-mode: vertical-rl;
-  padding: 12px 5px;
-  border: 1px solid rgba(185, 255, 227, 0.24);
+  padding: 14px 6px;
+  border: 1px solid rgba(255, 107, 107, 0.42);
   border-right: 0;
-  border-radius: 14px 0 0 14px;
-  background: rgba(17, 21, 22, 0.82);
-  color: #effff8;
+  border-radius: 12px 0 0 12px;
+  background: rgba(31, 15, 17, 0.82);
+  color: #ff6b6b;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  box-shadow: -8px 10px 26px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  transform: translateY(-50%);
-  transition: background-color 180ms ease, border-color 180ms ease, padding-right 180ms ease;
+  box-shadow: -8px 10px 26px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
 }
 
-/* Both circles keep their own upright orientation inside the vertical
-   tab; only the label runs with the writing mode. */
-.news-launcher-icon,
-.news-launcher-count {
-  writing-mode: horizontal-tb;
-}
-
-/* The vertical centring lives in `transform`, so any hover transform has
-   to restate it — the previous `translateY(-2px)` here replaced it
-   outright and would have thrown the tab to the top of the screen on
-   hover. A right-edge tab should lean out of its edge anyway, not lift. */
+/* No transform on the base rule any more, so hover is free to use one —
+   the previous version centred with translateY(-50%) and an unqualified
+   hover transform would have replaced it and thrown the tab off-screen. */
 .news-launcher:hover,
 .news-launcher[aria-expanded="true"] {
-  transform: translateY(-50%) translateX(-2px);
-  border-color: rgba(121, 226, 178, 0.7);
-  background: rgba(30, 61, 53, 0.9);
+  border-color: rgba(255, 107, 107, 0.85);
+  background: rgba(56, 20, 24, 0.92);
+  color: #ff8f8f;
 }
 
-.news-launcher-icon {
-  display: grid;
-  width: 30px;
-  height: 30px;
-  place-items: center;
-  border-radius: 999px;
-  background: linear-gradient(145deg, #b9ffe3, #46c995);
-  color: #08231a;
-}
 
-.news-launcher-icon svg {
-  width: 16px;
-  height: 16px;
-}
+/* .news-launcher-icon and .news-launcher-count removed with the two
+   circles they styled. */
 
-.news-launcher-count {
-  display: grid;
-  min-width: 26px;
-  height: 26px;
-  padding: 0 6px;
-  place-items: center;
-  border-radius: 999px;
-  background: #ff6b6b;
-  color: #fff;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-}
 
 .is-public .map-panels-column > .panel-elevated {
   animation: news-panel-in 220ms ease-out both;
@@ -1803,7 +1772,7 @@ body {
      tune per breakpoint — it only needs to sit clear of the top bar and
      the ticker, which centring already does. */
   .news-launcher {
-    top: 52%;
+    top: 160px;
   }
 
   /* Bottom-sheet area. `justify-content: flex-end` keeps a single panel
@@ -1898,9 +1867,9 @@ body {
   /* Shortest screens: a little tighter so the tab never reaches down into
      the sheet's area. */
   .news-launcher {
-    top: 46%;
-    padding-block: 10px;
-    letter-spacing: 0.08em;
+    top: 208px;
+    padding-block: 12px;
+    letter-spacing: 0.14em;
   }
 
   .is-public .map-panels-column {

@@ -738,15 +738,19 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
             type="button"
             className="news-launcher"
             aria-expanded={eventsOpen}
+            aria-label={
+              upcomingEventCount > 0
+                ? `News — ${upcomingEventCount} upcoming ${upcomingEventCount === 1 ? "event" : "events"}`
+                : "News"
+            }
             onClick={() => setEventsOpen((open) => !open)}
           >
-            <span className="news-launcher-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 17h16M6 17V9l6-4 6 4v8M9 17v-5h6v5" />
-              </svg>
-            </span>
+            {/* Word only. The icon and the count were two filled circles
+                either side of the label, which read as two badges rather
+                than one control. The count is still worth having, so it
+                goes in the accessible name instead of taking up space in
+                a tab this narrow. */}
             <span>News</span>
-            <span className="news-launcher-count">{upcomingEventCount.toString().padStart(2, "0")}</span>
           </button>
         )}
 
