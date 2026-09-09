@@ -8,8 +8,6 @@ import { DEFAULT_BEARING, DEFAULT_PITCH } from "@/lib/mapStyle";
 import { useAuth } from "@/lib/useAuth";
 import { useProfile } from "@/lib/useProfile";
 import { useRequireAuth } from "@/lib/AuthGate";
-import WeatherWidget from "@/components/WeatherWidget";
-import AirQualityWidget from "@/components/AirQualityWidget";
 import NotificationsBell from "@/components/NotificationsBell";
 import Avatar from "@/components/Avatar";
 import WelcomeBonusCard from "@/components/WelcomeBonusCard";
@@ -247,12 +245,13 @@ export default function TopBar({
         )}
       </div>
 
-      <div className="hidden h-6 w-px bg-neutral-200 sm:block dark:bg-neutral-800" />
-
-      <div className="hidden items-center gap-2 sm:flex">
-        <WeatherWidget pill />
-        <AirQualityWidget pill />
-      </div>
+      {/* Weather and AQI removed from the top bar, along with the divider
+          that separated them from the filters. Neither changes what a
+          visitor does next, and both cost a network request on every page
+          load to say something a phone's own status bar and weather app
+          already say. The components remain in the tree, unused, if a
+          better home turns up — a cafe card, say, where "34 degrees" is
+          an argument for an indoor table. */}
 
       <div className="topbar-account ml-auto flex items-center gap-1.5">
         <button
