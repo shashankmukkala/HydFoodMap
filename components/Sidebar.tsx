@@ -396,7 +396,15 @@ export default function Sidebar({
 
       {/* Mobile drawer */}
       <Sheet open={mobileOpen} onOpenChange={(open) => !open && onMobileClose()}>
-        <SheetContent side="left" className={`navigation-drawer flex w-72 max-w-[85vw] flex-col gap-1 p-4 ${publicMode ? "" : "lg:hidden"}`}>
+        {/* 256px, matching the expanded desktop rail (w-64) — the same
+            navigation should not be two different widths depending on how
+            it opened. It was 288px, which on a 390px phone covered nearly
+            three quarters of the map for a list of six short labels; the
+            widest thing inside is a 200px widget row, so the extra was
+            slack rather than content. The vw cap tightens with it so the
+            proportion holds on a small phone instead of the fixed width
+            taking over. */}
+        <SheetContent side="left" className={`navigation-drawer flex w-64 max-w-[80vw] flex-col gap-1 p-4 ${publicMode ? "" : "lg:hidden"}`}>
           <SheetTitle className="sr-only">Navigation</SheetTitle>
           {mobileContent}
         </SheetContent>
