@@ -624,9 +624,21 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     setPendingCoords(null);
   }
 
+  // Favourites, Visited and Collections are all per-account, so opening one
+  // while signed out showed an empty panel with no explanation — it read as
+  // "you have nothing saved" rather than "sign in to save things". The gate
+  // goes here rather than on each nav button because this is the single
+  // path every entry point already funnels through.
   function handleSelectTab(tab: FeedTab) {
-    setFeedTab(tab);
-    setSelected(null);
+    if (tab === null) {
+      setFeedTab(null);
+      setSelected(null);
+      return;
+    }
+    requireAuth(() => {
+      setFeedTab(tab);
+      setSelected(null);
+    });
   }
 
   const bgKey: Category | "all" = activeCategory ?? "all";

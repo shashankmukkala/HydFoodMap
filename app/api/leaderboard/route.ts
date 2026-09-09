@@ -40,6 +40,14 @@ export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
   const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
 
+  // Members only, matching the page. Gating only the UI would leave the
+  // names, points and visit counts one request away from anyone — the
+  // rule has to hold where the data leaves the server, not where it is
+  // drawn.
+  if (!token) {
+    return NextResponse.json({ error: "Sign in to see the leaderboard." }, { status: 401 });
+  }
+
   // Resolving the caller's own id runs in parallel with the aggregate,
   // rather than adding a round trip after it.
   const [{ data: rows, error }, meAuth] = await Promise.all([
@@ -49,9 +57,14 @@ export async function GET(request: NextRequest) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-  // The caller's own id stays in this scope and is never serialised — it
-  // is only used to decide which row gets isMe.
+  // The presence check above only proves a header was sent. This is the
+  // one that matters: without it `Authorization: Bearer anything` would
+  // fail to resolve a user, leave meUserId null, and still be handed the
+  // whole board — a gate that any string could walk through.
   const meUserId = meAuth?.data.user?.id ?? null;
+  if (!meUserId) {
+    return NextResponse.json({ error: "Your session has expired — sign in again." }, { status: 401 });
+  }
 
   // Already ordered by points desc in SQL, so rank is just position.
   const ranked: LeaderboardEntry[] = (rows ?? []).map(

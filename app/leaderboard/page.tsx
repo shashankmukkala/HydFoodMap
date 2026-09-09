@@ -8,12 +8,16 @@ import type { LeaderboardEntry } from "@/app/api/leaderboard/route";
 
 const MEDALS = ["🥇", "🥈", "🥉"];
 
-// Public — no sign-in required to see who's leading, only to appear on
-// it yourself (a leaderboard nobody signed-out can view isn't much of an
-// incentive). "me" comes back from /api/leaderboard when signed in, so
-// the caller's own row/rank shows even if they're outside the top 50.
+// Members only. It was public on the reasoning that a leaderboard nobody
+// signed-out can see is a weak incentive — but it lists real people's
+// names, their points and how many places they have been, which is not
+// something to hand to anyone who happens to load the page. Signed out it
+// asks for a sign-in instead, which is also the honest pitch: this is a
+// board you join, not one you spectate.
+// "me" still comes back from /api/leaderboard so the caller's own row
+// shows even when they are outside the top 50.
 export default function LeaderboardPage() {
-  const { session } = useAuth();
+  const { session, loading: authLoading, signInWithGoogle } = useAuth();
   const [top, setTop] = useState<LeaderboardEntry[]>([]);
   const [me, setMe] = useState<LeaderboardEntry | null>(null);
   const [loading, setLoading] = useState(true);
@@ -44,6 +48,38 @@ export default function LeaderboardPage() {
   // The API marks the caller's own row rather than returning ids to
   // compare — see LeaderboardEntry.isMe for why the UUID left the payload.
   const meInTop = me && top.some((entry) => entry.isMe);
+
+  // Waiting on the auth check rather than assuming signed-out, so someone
+  // arriving with a valid session never sees the sign-in screen flash
+  // before their own ranking loads.
+  if (authLoading) {
+    return (
+      <div className="flex min-h-dvh w-full items-center justify-center bg-[#0b0b0d] px-4 text-sm text-neutral-400">
+        Loading…
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="flex min-h-dvh w-full flex-col items-center justify-center bg-[#0b0b0d] px-4 text-center">
+        <span className="text-3xl" aria-hidden="true">🏆</span>
+        <h1 className="mt-3 text-lg font-semibold text-neutral-100">Leaderboard</h1>
+        <p className="mt-1 max-w-xs text-sm text-neutral-400">
+          Sign up to see who is leading — and to start earning points for the places you visit.
+        </p>
+        <button
+          onClick={() => signInWithGoogle()}
+          className="mt-5 rounded-full bg-white px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-200"
+        >
+          Continue with Google
+        </button>
+        <Link href="/" className="mt-4 text-xs text-neutral-400 hover:underline">
+          ← Back to map
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-dvh bg-[#0b0b0d] text-neutral-100">
