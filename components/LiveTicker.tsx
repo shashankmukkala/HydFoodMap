@@ -15,8 +15,19 @@ export default function LiveTicker({ events }: LiveTickerProps) {
 
   if (activeEvents.length === 0) return null;
 
-  const isSingle = activeEvents.length === 1;
-  const items = isSingle ? activeEvents : [...activeEvents, ...activeEvents];
+  const headlines = (
+    <div className="live-ticker-group" aria-hidden="false">
+      {activeEvents.map((event) => (
+        <span key={event.id} className="live-ticker-item">
+          <span className={event.event_date === today ? "live-ticker-flag-live" : "live-ticker-flag"}>
+            {event.event_date === today ? "LIVE" : "UPCOMING"}
+          </span>
+          <span className="live-ticker-headline">{event.name}</span>
+          {event.location && <span className="live-ticker-place">{event.location}</span>}
+        </span>
+      ))}
+    </div>
+  );
 
   return (
     <div className="live-ticker panel-elevated flex min-w-0 items-center overflow-hidden rounded-2xl px-3 py-2">
@@ -25,14 +36,29 @@ export default function LiveTicker({ events }: LiveTickerProps) {
         City broadcast
       </div>
       <div className="live-ticker-viewport min-w-0 flex-1 overflow-hidden">
-        <div className={`live-ticker-track flex w-max items-center gap-8 ${isSingle ? "live-ticker-static" : ""}`}>
-          {items.map((event, index) => (
-            <span key={`${event.id}-${index}`} className="flex items-center gap-2 text-xs text-neutral-200">
-              <span className="text-amber-300">{event.event_date === today ? "LIVE" : "UPCOMING"}</span>
-              <span className="max-w-64 truncate font-semibold">{event.name}</span>
-              {event.location && <span className="text-neutral-500">· {event.location}</span>}
-            </span>
-          ))}
+        {/* Two identical groups, each at least as wide as the viewport, with
+            the track animating exactly one group's width. That is what makes
+            the loop seamless no matter how much content there is — the
+            second group has already covered the viewport by the time the
+            first scrolls off.
+            It used to render a single static row whenever there was only one
+            event, which is most of the time: a news channel does not stop
+            its ticker because there is one headline, it repeats it. The
+            duplicate is aria-hidden so a screen reader hears each headline
+            once. */}
+        <div className="live-ticker-track">
+          {headlines}
+          <div className="live-ticker-group" aria-hidden="true">
+            {activeEvents.map((event) => (
+              <span key={`repeat-${event.id}`} className="live-ticker-item">
+                <span className={event.event_date === today ? "live-ticker-flag-live" : "live-ticker-flag"}>
+                  {event.event_date === today ? "LIVE" : "UPCOMING"}
+                </span>
+                <span className="live-ticker-headline">{event.name}</span>
+                {event.location && <span className="live-ticker-place">{event.location}</span>}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>

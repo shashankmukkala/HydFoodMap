@@ -475,18 +475,90 @@ body {
 }
 
 .live-ticker-track {
-  animation: live-ticker-scroll 34s linear infinite;
+  display: flex;
+  width: max-content;
+  animation: live-ticker-scroll 30s linear infinite;
 }
 
-.live-ticker-static {
-  width: 100%;
-  justify-content: space-between;
-  animation: none;
+/* Each group is at least a full viewport wide, so a short headline still
+   fills the strip instead of leaving a gap trailing behind it. Two of them
+   side by side means translating exactly one group's width returns the
+   track to a visually identical position, which is what makes the loop
+   seamless rather than snapping back. */
+.live-ticker-group {
+  display: flex;
+  min-width: 100%;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-around;
+  gap: 44px;
+  padding-right: 44px;
+}
+
+.live-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 12px;
+  color: rgba(233, 245, 240, 0.82);
+}
+
+/* Coral for LIVE, which is what the design system reserves for live
+   signals — it was amber, the advertising colour, which said "sponsored"
+   on an editorial strip. Anything not happening today stays quiet, so the
+   one that is actually live is what the eye finds. */
+.live-ticker-flag-live {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #ff6b6b;
+}
+
+.live-ticker-flag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(233, 245, 240, 0.4);
+}
+
+.live-ticker-headline {
+  font-weight: 600;
+  color: #f2fbf7;
+}
+
+.live-ticker-place {
+  color: rgba(233, 245, 240, 0.45);
+}
+
+.live-ticker-place::before {
+  content: "· ";
 }
 
 .live-ticker:hover .live-ticker-track,
 .live-ticker:focus-within .live-ticker-track {
   animation-play-state: paused;
+}
+
+/* A strip that never stops moving is exactly what this setting exists to
+   silence. Without the scroll the duplicate is just an off-screen copy, so
+   it goes, and the remaining row wraps instead of running past the edge. */
+@media (prefers-reduced-motion: reduce) {
+  .live-ticker-track {
+    animation: none;
+    width: 100%;
+  }
+
+  .live-ticker-track > .live-ticker-group[aria-hidden="true"] {
+    display: none;
+  }
+
+  .live-ticker-group {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 6px 20px;
+    padding-right: 0;
+  }
 }
 
 @keyframes live-ticker-scroll {
