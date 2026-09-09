@@ -419,14 +419,20 @@ export default function DetailCard(props: DetailCardProps) {
         )}
       </div>
 
-      {/* Reference detail, below the actions rather than above them: you
-          need the address once you have decided to go, not while deciding.
+      {/* The full street address is deliberately not shown. The area is on
+          the header line and Directions covers actually getting there, so
+          the address was the third way of saying where a place is — and
+          the least reliable of the three while the pin data is still being
+          validated.
+          It is only hidden, not deleted: cafes.address still holds it, the
+          admin form still edits it, and maps_url — which is what the
+          Directions button opens — is built from it. Removing the column
+          would break Directions for all 85 cafes.
           The link names its destination ("instagram.com/…") instead of
           labelling the field it came from — the old "Website or Instagram"
           told you which column it was stored in, not where it goes. */}
-      {isCafe && (cafe?.address || cafe?.website_or_instagram) && (
+      {isCafe && cafe?.website_or_instagram && (
         <div className="detail-card-footnote">
-          {cafe?.address && <div className="detail-card-address">{cafe.address}</div>}
           {cafe?.website_or_instagram && (
             <a
               href={cafe.website_or_instagram}

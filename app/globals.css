@@ -2593,11 +2593,10 @@ body {
   padding: 0 14px 12px;
 }
 
-.detail-card-address {
-  font-size: 12px;
-  line-height: 1.4;
-  color: rgba(233, 245, 240, 0.45);
-}
+/* .detail-card-address removed with the address itself — the area on the
+ * header line and the Directions button cover where a place is, and the
+ * street address was the least reliable of the three. The column and the
+ * admin field remain; only the card stopped rendering it. */
 
 .detail-card-link {
   display: inline-block;
