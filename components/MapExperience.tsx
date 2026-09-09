@@ -778,9 +778,11 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
             <ModelLayer map={map} />
             {isAdmin && placingMode !== "aircraft" && <PendingMarker map={map} coords={pendingCoords} onDragEnd={setPendingCoords} />}
 
-            <div className="map-spots-badge panel-elevated pointer-events-none absolute top-4 left-4 z-10 rounded-full px-3.5 py-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-200">
-              Showing {displayedCafes.length} spot{displayedCafes.length === 1 ? "" : "s"}
-            </div>
+            {/* The "Showing N spots" badge was removed. Unfiltered it read
+                "Showing 85 spots" permanently — a constant that told you
+                nothing — and while filtering it duplicated the count in
+                SearchResultsPanel's header, which also names what you
+                filtered by rather than only counting the result. */}
 
             <MapAttribution />
 

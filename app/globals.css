@@ -573,10 +573,7 @@ body {
   box-shadow: none;
 }
 
-.is-public .map-spots-badge {
-  top: 92px;
-  z-index: 25;
-}
+/* .map-spots-badge removed with the badge itself. */
 
 .is-public .map-panels-column {
   position: absolute;
@@ -1764,13 +1761,10 @@ body {
     left: 10px;
   }
 
-  .is-public .map-spots-badge {
-    top: 112px;
-  }
 
-  /* Vertically centred at every size now, so there is no top offset to
-     tune per breakpoint — it only needs to sit clear of the top bar and
-     the ticker, which centring already does. */
+  /* Sits below the top bar, under the sign-in control on the same edge.
+     The offset tracks the top bar and ticker, which get taller as the
+     viewport narrows. */
   .news-launcher {
     top: 160px;
   }
@@ -1860,12 +1854,8 @@ body {
     top: 160px;
   }
 
-  .is-public .map-spots-badge {
-    top: 160px;
-  }
 
-  /* Shortest screens: a little tighter so the tab never reaches down into
-     the sheet's area. */
+  /* The ticker wraps below 640px, pushing everything down another notch. */
   .news-launcher {
     top: 208px;
     padding-block: 12px;
