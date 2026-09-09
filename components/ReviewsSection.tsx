@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import type { PublicReview } from "@/app/api/cafes/[id]/reviews/route";
 import { usePoints } from "@/lib/usePoints";
 import { useVisitTracking } from "@/lib/useVisitTracking";
-import { useRequireAuth } from "@/lib/AuthGate";
 import { useAuth } from "@/lib/useAuth";
 import { useLocationCheckin } from "@/lib/useLocationCheckin";
 import { readAsDataUrl } from "@/lib/readAsDataUrl";
@@ -16,6 +15,16 @@ type ReviewsSectionProps = {
   /** Admin is the operator viewing every cafe, not a visitor reacting to
    *  one — reads reviews same as anyone, but can't post one. */
   isAdmin?: boolean;
+  /** Bump this (any value change) to open the review form from outside.
+   *  The trigger lives in the card header next to the verified seal, but
+   *  the form and its check-in state belong here — same signal pattern
+   *  SearchBox uses for clearSignal. */
+  openSignal?: number;
+  /** Reports whether the signed-in visitor has already reviewed this cafe,
+   *  so the header can show that instead of an unusable button. Pass a
+   *  stable setter: this fires from an effect and a fresh function
+   *  identity each render would loop. */
+  onAlreadyReviewedChange?: (alreadyReviewed: boolean) => void;
 };
 
 function timeAgo(iso: string) {
@@ -28,9 +37,8 @@ function timeAgo(iso: string) {
   return `${months} month${months === 1 ? "" : "s"} ago`;
 }
 
-export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = false }: ReviewsSectionProps) {
+export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = false, openSignal, onAlreadyReviewedChange }: ReviewsSectionProps) {
   const [reviews, setReviews] = useState<PublicReview[]>([]);
-  const [loadedForId, setLoadedForId] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const { gate, start: startCheckin, confirm: checkLocation, cancel: cancelCheckin } = useLocationCheckin(cafeId, cafeLat, cafeLng);
   const [rating, setRating] = useState(0);
@@ -40,10 +48,8 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const loading = loadedForId !== cafeId;
   const { addPoints } = usePoints();
   const { markVisitedLocally } = useVisitTracking();
-  const requireAuth = useRequireAuth();
   const { session } = useAuth();
 
   useEffect(() => {
@@ -53,23 +59,37 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
       .then((data) => {
         if (cancelled) return;
         setReviews(Array.isArray(data) ? data : []);
-        setLoadedForId(cafeId);
       })
       .catch(() => {
         if (cancelled) return;
         setReviews([]);
-        setLoadedForId(cafeId);
       });
     return () => {
       cancelled = true;
     };
   }, [cafeId]);
 
-  const average = reviews.length > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length : null;
   // isMine is computed server-side now. The row no longer carries a
   // user_id to compare against — publishing it let anyone join reviews to
   // the leaderboard and name the author of each one.
   const alreadyReviewed = reviews.some((r) => r.isMine);
+
+  // Tell the card header what to render in place of the trigger.
+  useEffect(() => {
+    onAlreadyReviewedChange?.(alreadyReviewed);
+  }, [alreadyReviewed, onAlreadyReviewedChange]);
+
+  // Opened from the header's button. Adjusted against the previous value
+  // rather than watched in an effect, so the form appears on the same
+  // render as the tap instead of a frame later.
+  const [lastOpenSignal, setLastOpenSignal] = useState(openSignal);
+  if (openSignal !== undefined && openSignal !== lastOpenSignal) {
+    setLastOpenSignal(openSignal);
+    if (!isAdmin && !alreadyReviewed) {
+      setFormOpen(true);
+      startCheckin();
+    }
+  }
 
   // Reviews can only be written from the cafe's actual location — checked
   // live via the browser's geolocation, not a self-reported "I've been
@@ -81,12 +101,10 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
   // request and drives people to just hit "Block". Explaining *why* first
   // (and requiring its own explicit tap) also keeps the geolocation call
   // inside a direct user gesture, which some browsers require anyway.
-  function startReview() {
-    requireAuth(() => {
-      setFormOpen(true);
-      startCheckin();
-    });
-  }
+  // The trigger moved to the card header, and so did its sign-in gate —
+  // DetailCard wraps the button in requireAuth, which is the right place
+  // for it: the prompt should appear on the tap, not after this component
+  // has already begun a check-in.
 
   function cancelReview() {
     setFormOpen(false);
@@ -154,35 +172,11 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
 
   return (
     <div className="border-t border-neutral-100 px-4 py-3 dark:border-neutral-800">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          {average !== null ? (
-            <>
-              <span className="text-sm font-semibold text-amber-500">★ {average.toFixed(1)}</span>
-              <span className="text-xs text-neutral-400">
-                ({reviews.length} review{reviews.length === 1 ? "" : "s"})
-              </span>
-            </>
-          ) : (
-            <span className="text-xs text-neutral-400">{loading ? "Loading reviews…" : "Be the first to review"}</span>
-          )}
-        </div>
-        {!isAdmin &&
-          !formOpen &&
-          (alreadyReviewed ? (
-            <span className="text-xs text-neutral-400">You&apos;ve reviewed this place</span>
-          ) : (
-            <button onClick={startReview} className="text-xs font-medium text-amber-600 hover:underline dark:text-amber-400">
-              Write a review
-            </button>
-          ))}
-      </div>
-
-      {!isAdmin && !formOpen && !loading && reviews.length === 0 && (
-        <p className="mt-1 text-xs text-neutral-400">
-          Every review here is verified from the cafe itself — no reviews copied from elsewhere.
-        </p>
-      )}
+      {/* No rating, no "be the first", no verified explainer and no trigger
+          here any more — the seal at the top of the card already says all
+          four, and saying them twice in one card read as the card repeating
+          itself. This section is now the form and the list; DetailCard owns
+          the header and opens the form through openSignal. */}
 
       {!isAdmin && formOpen && (
         <div className="mt-2.5">

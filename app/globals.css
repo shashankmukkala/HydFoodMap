@@ -2614,3 +2614,56 @@ body {
   color: #b9ffe3;
   text-decoration: underline;
 }
+
+/* The review trigger, inside the verified seal.
+ *
+ * Pushed to the far end with an auto margin so the seal reads left to
+ * right as "what the reviews say" then "add yours" — one row instead of
+ * the two places the card used to say the same thing. Mint on mint would
+ * disappear against the seal, so this is a light-on-dark chip rather than
+ * a second filled button competing with Directions. */
+.verified-seal-cta {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(121, 226, 178, 0.16);
+  color: #b9ffe3;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 140ms ease;
+}
+
+.verified-seal-cta:hover {
+  background: rgba(121, 226, 178, 0.26);
+}
+
+.verified-seal-empty .verified-seal-cta {
+  background: rgba(255, 255, 255, 0.09);
+  color: rgba(240, 248, 245, 0.9);
+}
+
+.verified-seal-empty .verified-seal-cta:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Same slot, no affordance — there is nothing to tap once you have
+   reviewed, and a disabled-looking button invites tapping anyway. */
+.verified-seal-done {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(233, 245, 240, 0.45);
+  white-space: nowrap;
+}
+
+@media (pointer: coarse) {
+  .verified-seal-cta {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    padding-inline: 14px;
+  }
+}

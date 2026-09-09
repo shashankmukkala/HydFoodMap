@@ -69,6 +69,10 @@ export default function DetailCard(props: DetailCardProps) {
   // node in an onError handler, which left an empty banner slot in the
   // layout. Tracking it as state removes the element instead.
   const [imageFailed, setImageFailed] = useState(false);
+  // Owned here because the trigger is here; ReviewsSection reports the
+  // value up and consumes the signal.
+  const [alreadyReviewed, setAlreadyReviewed] = useState(false);
+  const [openReviewSignal, setOpenReviewSignal] = useState(0);
   const [collectionsOpen, setCollectionsOpen] = useState(false);
   const [newCollectionName, setNewCollectionName] = useState("");
   const collectionsRef = useRef<HTMLDivElement>(null);
@@ -110,6 +114,33 @@ export default function DetailCard(props: DetailCardProps) {
   // Churrolto Film Nagar case). Falls back to lat/lng for cafes with no
   // source URL, e.g. ones pinned directly by an admin.
   const directionsUrl = cafe?.maps_url || `https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}`;
+
+  /**
+   * The review trigger, rendered inside the verified seal.
+   *
+   * It used to sit at the bottom of the card in ReviewsSection, under a
+   * second copy of the rating, a second "be the first" and a line
+   * explaining that reviews are verified — all of which the seal above
+   * already says. One card, saying the same thing twice, six inches apart.
+   *
+   * The button lives here and the form stays in ReviewsSection, connected
+   * by openSignal: the form owns a GPS check-in state machine that does
+   * not belong in a header. requireAuth wraps the tap rather than the
+   * form, so a signed-out visitor gets the sign-in prompt immediately
+   * instead of after a check-in has already started.
+   */
+  const reviewAction =
+    !isCafe || isAdmin ? null : alreadyReviewed ? (
+      <span className="verified-seal-done">Reviewed</span>
+    ) : (
+      <button
+        type="button"
+        className="verified-seal-cta"
+        onClick={() => requireAuth(() => setOpenReviewSignal((n) => n + 1))}
+      >
+        {rating && rating.count > 0 ? "Write a review" : "Be the first"}
+      </button>
+    );
 
   async function share() {
     const url = `${window.location.origin}${window.location.pathname}?lat=${item.lat}&lng=${item.lng}`;
@@ -221,11 +252,13 @@ export default function DetailCard(props: DetailCardProps) {
               <span className="verified-seal-label">
                 {rating.count} verified {rating.count === 1 ? "visit" : "visits"}
               </span>
+              {reviewAction}
             </div>
           ) : (
             <div className="verified-seal verified-seal-empty">
               <span className="verified-seal-mark" aria-hidden="true">✓</span>
-              <span className="verified-seal-label">No verified visits yet — be the first</span>
+              <span className="verified-seal-label">No verified visits yet</span>
+              {reviewAction}
             </div>
           ))}
 
@@ -466,7 +499,15 @@ export default function DetailCard(props: DetailCardProps) {
       )}
 
       {isCafe && cafe && (
-        <ReviewsSection key={item.id} cafeId={item.id} cafeLat={item.lat} cafeLng={item.lng} isAdmin={isAdmin} />
+        <ReviewsSection
+          key={item.id}
+          cafeId={item.id}
+          cafeLat={item.lat}
+          cafeLng={item.lng}
+          isAdmin={isAdmin}
+          openSignal={openReviewSignal}
+          onAlreadyReviewedChange={setAlreadyReviewed}
+        />
       )}
 
       {isCafe && cafe && isAdmin && (
