@@ -9,6 +9,7 @@ import {
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "@/lib/mapWorker";
+import { DOT_HIT_LAYERS } from "@/lib/mapDots";
 import {
   DEFAULT_ZOOM,
   GENERAL_POI_LAYER_IDS,
@@ -62,6 +63,11 @@ export default function Map({ placingMode, onMapClick, onMapReady, showRotationC
       // banner over the map with no way to keep it reliably collapsed —
       // replaced with our own small "i" badge (see MapAttribution.tsx).
       attributionControl: false,
+      // Default is 300ms. Halving it is the single cheapest thing that
+      // makes a MapLibre map feel quicker: it governs how long symbol
+      // layers cross-fade when tiles swap at a zoom step, which is the
+      // lag you read as the labels "settling" after you stop moving.
+      fadeDuration: 150,
     });
     mapRef.current = map;
 
@@ -100,6 +106,17 @@ export default function Map({ placingMode, onMapClick, onMapReady, showRotationC
     });
 
     map.on("click", (e: MapLayerMouseEvent) => {
+      // A click that landed on a cafe dot is CafeMarkers' to handle, and
+      // this handler's job — deselecting, or dropping an admin pin — must
+      // not also run. The DOM markers this replaced could just call
+      // stopPropagation; a circle layer has no element to stop an event
+      // on, and MapLibre fires this map-wide listener before the
+      // layer-scoped ones, so the flag trick does not work either. Asking
+      // the renderer what is under the cursor is the reliable answer.
+      const hitLayers = DOT_HIT_LAYERS.filter((id) => map.getLayer(id));
+      if (hitLayers.length > 0 && map.queryRenderedFeatures(e.point, { layers: hitLayers }).length > 0) {
+        return;
+      }
       onMapClickRef.current(e.lngLat);
     });
 

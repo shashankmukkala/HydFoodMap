@@ -1,103 +1,266 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { Map as MapLibreMap, Marker } from "maplibre-gl";
+import { useEffect, useRef, useState } from "react";
+import type {
+  DataDrivenPropertyValueSpecification,
+  GeoJSONSource,
+  Map as MapLibreMap,
+  MapLayerMouseEvent,
+} from "maplibre-gl";
 import type { Cafe } from "@/lib/supabase";
-import { CATEGORY_ICONS, type Category } from "@/lib/categories";
+import { DOT_LAYERS, DOT_SOURCES, dotPaint, kindIndexFor, type DotTheme } from "@/lib/mapDots";
 
-function iconFor(cafe: Cafe) {
-  if (cafe.category && cafe.category in CATEGORY_ICONS) {
-    return CATEGORY_ICONS[cafe.category as Category];
-  }
-  return "☕";
-}
+/**
+ * Cafe dots, drawn as GPU circle layers.
+ *
+ * See lib/mapDots.ts for the palette, the zoom ramps and why this replaced
+ * one DOM `<button>` per cafe. This file is the plumbing: build the
+ * GeoJSON, add the layers once, and keep three sources in step with props.
+ *
+ * Returns null — it renders nothing into React's tree and owns map state
+ * through effects, the same shape the DOM-marker version had.
+ */
 
-function initialsFor(name: string) {
-  const words = name.trim().split(/\s+/).filter(Boolean);
-  return (words.length > 1 ? `${words[0][0]}${words[1][0]}` : name.slice(0, 2)).toUpperCase();
-}
+/** The basemap is light paper; see lib/mapDots for the night variant. */
+const THEME: DotTheme = "day";
 
 type CafeMarkersProps = {
   map: MapLibreMap | null;
+  /**
+   * Every cafe, not just the ones matching the filter. Non-matching places
+   * are dimmed rather than removed, so they have to be here to be dimmed.
+   */
   cafes: Cafe[];
+  /**
+   * Ids matching the active filter, or null when nothing is filtered.
+   * Null is not the same as "every id": it switches the opacity ramps to
+   * plain numbers instead of per-feature conditionals.
+   */
+  activeIds: Set<string> | null;
   selectedId: string | null;
   onSelect: (cafe: Cafe) => void;
 };
 
-export default function CafeMarkers({ map, cafes, selectedId, onSelect }: CafeMarkersProps) {
-  const markersRef = useRef<Map<string, { marker: Marker; el: HTMLButtonElement }>>(new globalThis.Map());
+function emptyCollection(): GeoJSON.FeatureCollection {
+  return { type: "FeatureCollection", features: [] };
+}
+
+/**
+ * One feature per cafe, with deliberately terse property names.
+ *
+ * `k` kind index, `d` dimmed flag, `n` name. The payload is re-serialised
+ * and re-tessellated whenever it changes, so the names are part of the
+ * cost — and this is the convention the expressions in mapDots read.
+ */
+function toCollection(cafes: Cafe[], activeIds: Set<string> | null): GeoJSON.FeatureCollection {
+  return {
+    type: "FeatureCollection",
+    features: cafes
+      // A pin with no coordinate cannot be drawn, and a NaN in the
+      // coordinates array invalidates the tile rather than the one feature.
+      .filter((cafe) => Number.isFinite(cafe.lng) && Number.isFinite(cafe.lat))
+      .map((cafe) => ({
+        type: "Feature" as const,
+        id: cafe.id,
+        geometry: { type: "Point" as const, coordinates: [cafe.lng, cafe.lat] },
+        properties: {
+          id: cafe.id,
+          n: cafe.name,
+          k: kindIndexFor(cafe.category),
+          d: !activeIds || activeIds.has(cafe.id) ? 0 : 1,
+        },
+      })),
+  };
+}
+
+export default function CafeMarkers({ map, cafes, activeIds, selectedId, onSelect }: CafeMarkersProps) {
+  /**
+   * State, not a ref, so the effects that push data re-run once the layers
+   * exist. The layers are normally installed synchronously — MapExperience
+   * hands us the map from inside MapLibre's `load` — but on a style reload
+   * install defers to `styledata`, and a ref would leave the sources empty
+   * with nothing to re-trigger them.
+   */
+  const [installed, setInstalled] = useState(false);
+
+  // Read by the map's own listeners, which are registered once. Assigned
+  // in an effect rather than during render: a ref write during render is
+  // not safe under concurrent rendering, and React's lint rules reject it.
+  const cafesRef = useRef(cafes);
   const onSelectRef = useRef(onSelect);
+  useEffect(() => {
+    cafesRef.current = cafes;
+  }, [cafes]);
   useEffect(() => {
     onSelectRef.current = onSelect;
   }, [onSelect]);
 
+  // Read only for the layers' first paint; a dedicated effect below keeps
+  // it current without rebuilding them.
+  const dimmingAtInstallRef = useRef(activeIds !== null);
+  useEffect(() => {
+    dimmingAtInstallRef.current = activeIds !== null;
+  }, [activeIds]);
+
+  // ---- Add sources and layers, once per map --------------------------
   useEffect(() => {
     if (!map) return;
 
-    const existing = markersRef.current;
-    const nextIds = new Set(cafes.map((c) => c.id));
+    let cancelled = false;
 
-    for (const [id, entry] of existing) {
-      if (!nextIds.has(id)) {
-        entry.marker.remove();
-        existing.delete(id);
+    function install() {
+      if (cancelled || !map) return;
+      // Adding a layer before the style's own layers exist throws.
+      if (!map.isStyleLoaded()) {
+        map.once("styledata", install);
+        return;
       }
-    }
+      if (map.getSource(DOT_SOURCES.points)) return;
 
-    for (const cafe of cafes) {
-      if (existing.has(cafe.id)) continue;
+      const paint = dotPaint(THEME, dimmingAtInstallRef.current);
 
-      const el = document.createElement("button");
-      el.type = "button";
-      el.className = "cafe-pin";
-      el.setAttribute("aria-label", `Open ${cafe.name}`);
+      // `lights` is simplified harder than `points` on purpose: it only
+      // ever draws a blurred 1–3px dot, so geometry detail that survives
+      // tessellation is detail nobody can see. `points` keeps a bigger
+      // buffer so a dot near a tile edge is not clipped mid-pan.
+      map.addSource(DOT_SOURCES.lights, {
+        type: "geojson",
+        data: emptyCollection(),
+        buffer: 16,
+        tolerance: 0.6,
+      });
+      map.addSource(DOT_SOURCES.points, { type: "geojson", data: emptyCollection(), buffer: 32 });
+      map.addSource(DOT_SOURCES.showcase, { type: "geojson", data: emptyCollection() });
 
-      const icon = document.createElement("span");
-      icon.className = "cafe-pin-icon";
-      if (cafe.image_url) {
-        const image = document.createElement("img");
-        image.src = cafe.image_url;
-        image.alt = "";
-        image.addEventListener("error", () => {
-          image.remove();
-          icon.textContent = initialsFor(cafe.name);
-          icon.classList.add("cafe-pin-icon-fallback");
-        });
-        icon.appendChild(image);
-      } else {
-        icon.textContent = initialsFor(cafe.name);
-        icon.classList.add("cafe-pin-icon-fallback");
-        icon.title = iconFor(cafe);
-      }
+      map.addLayer({ id: DOT_LAYERS.glow, type: "circle", source: DOT_SOURCES.lights, paint: paint[DOT_LAYERS.glow] });
+      map.addLayer({ id: DOT_LAYERS.lights, type: "circle", source: DOT_SOURCES.lights, paint: paint[DOT_LAYERS.lights] });
+      map.addLayer({ id: DOT_LAYERS.points, type: "circle", source: DOT_SOURCES.points, paint: paint[DOT_LAYERS.points] });
 
-      const label = document.createElement("span");
-      label.className = "cafe-pin-label";
-      label.textContent = cafe.name;
-      el.append(icon, label);
-      el.addEventListener("click", (event) => {
-        event.stopPropagation();
-        onSelectRef.current(cafe);
+      // Selection draws above the field, so a selected dot is never buried
+      // under a neighbour where places sit close together.
+      map.addLayer({ id: DOT_LAYERS.halo, type: "circle", source: DOT_SOURCES.showcase, paint: paint[DOT_LAYERS.halo] });
+      map.addLayer({ id: DOT_LAYERS.ring, type: "circle", source: DOT_SOURCES.showcase, paint: paint[DOT_LAYERS.ring] });
+      map.addLayer({
+        id: DOT_LAYERS.label,
+        type: "symbol",
+        source: DOT_SOURCES.showcase,
+        layout: {
+          "text-field": ["get", "n"],
+          // Served by the same glyph endpoint our style already uses.
+          "text-font": ["Noto Sans Bold"],
+          "text-size": 12,
+          "text-anchor": "top",
+          // Clears the ring at its widest, so the name never sits on the dot.
+          "text-offset": [0, 1.1],
+          "text-max-width": 9,
+          // One label, and it belongs to the thing just clicked, so it is
+          // never a candidate for collision removal.
+          "text-allow-overlap": true,
+          "text-ignore-placement": true,
+        },
+        paint: paint[DOT_LAYERS.label],
       });
 
-      const marker = new Marker({ element: el, anchor: "bottom" }).setLngLat([cafe.lng, cafe.lat]).addTo(map);
-
-      existing.set(cafe.id, { marker, el });
+      setInstalled(true);
     }
-  }, [map, cafes]);
 
-  useEffect(() => {
-    for (const [id, entry] of markersRef.current) {
-      entry.el.classList.toggle("cafe-pin-selected", id === selectedId);
-    }
-  }, [selectedId]);
+    install();
 
-  useEffect(() => {
-    const existing = markersRef.current;
     return () => {
-      for (const entry of existing.values()) entry.marker.remove();
-      existing.clear();
+      cancelled = true;
+      setInstalled(false);
+      // The map is torn down by components/Map.tsx on its own unmount, and
+      // removing a layer from a removed map throws.
+      if (!map.getStyle()) return;
+      // Order matters: a source cannot be removed while a layer uses it.
+      for (const id of Object.values(DOT_LAYERS)) {
+        if (map.getLayer(id)) map.removeLayer(id);
+      }
+      for (const id of Object.values(DOT_SOURCES)) {
+        if (map.getSource(id)) map.removeSource(id);
+      }
     };
-  }, []);
+  }, [map]);
+
+  // ---- Feed the two field sources ------------------------------------
+  useEffect(() => {
+    if (!map || !installed) return;
+    const collection = toCollection(cafes, activeIds);
+    // Both layers draw the same places at different zooms, so they read the
+    // same features — the sources differ only in simplification.
+    for (const id of [DOT_SOURCES.lights, DOT_SOURCES.points]) {
+      (map.getSource(id) as GeoJSONSource | undefined)?.setData(collection);
+    }
+  }, [map, installed, cafes, activeIds]);
+
+  // ---- Switch the opacity ramps when a filter turns on or off --------
+  useEffect(() => {
+    if (!map || !installed) return;
+    const paint = dotPaint(THEME, activeIds !== null);
+    for (const layerId of [DOT_LAYERS.glow, DOT_LAYERS.lights, DOT_LAYERS.points] as const) {
+      if (!map.getLayer(layerId)) continue;
+      const layerPaint = paint[layerId] as Record<
+        string,
+        DataDrivenPropertyValueSpecification<number> | undefined
+      >;
+      // `as const` so these stay literal keys — setPaintProperty is typed
+      // on the paint-property union, not on string.
+      for (const property of ["circle-opacity", "circle-stroke-opacity"] as const) {
+        if (property in layerPaint) {
+          map.setPaintProperty(layerId, property, layerPaint[property]);
+        }
+      }
+    }
+  }, [map, installed, activeIds]);
+
+  // ---- The selected place --------------------------------------------
+  useEffect(() => {
+    if (!map || !installed) return;
+    const source = map.getSource(DOT_SOURCES.showcase) as GeoJSONSource | undefined;
+    if (!source) return;
+
+    const selected = selectedId ? cafes.find((cafe) => cafe.id === selectedId) : null;
+    // activeIds is deliberately not passed: the selected place is never
+    // dimmed, even when it falls outside the current filter.
+    source.setData(selected ? toCollection([selected], null) : emptyCollection());
+  }, [map, installed, cafes, selectedId]);
+
+  // ---- Clicking and hovering a dot -----------------------------------
+  useEffect(() => {
+    if (!map) return;
+
+    function handleClick(event: MapLayerMouseEvent) {
+      const id = event.features?.[0]?.properties?.id;
+      if (typeof id !== "string") return;
+      const cafe = cafesRef.current.find((candidate) => candidate.id === id);
+      if (cafe) onSelectRef.current(cafe);
+    }
+
+    function showPointer() {
+      map!.getCanvas().style.cursor = "pointer";
+    }
+    function clearPointer() {
+      map!.getCanvas().style.cursor = "";
+    }
+
+    // Both dot layers are clickable, so a place can be opened at the
+    // zoomed-out `lights` scale too rather than only once `points` has
+    // faded in.
+    const layers = [DOT_LAYERS.points, DOT_LAYERS.lights] as const;
+    for (const layer of layers) {
+      map.on("click", layer, handleClick);
+      map.on("mouseenter", layer, showPointer);
+      map.on("mouseleave", layer, clearPointer);
+    }
+
+    return () => {
+      for (const layer of layers) {
+        map.off("click", layer, handleClick);
+        map.off("mouseenter", layer, showPointer);
+        map.off("mouseleave", layer, clearPointer);
+      }
+    };
+  }, [map]);
 
   return null;
 }

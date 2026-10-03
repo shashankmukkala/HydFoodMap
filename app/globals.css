@@ -176,79 +176,6 @@ body {
     0 0 0 1px rgba(255, 255, 255, 0.07);
 }
 
-/* Icon-only by default — with hundreds of cafes on the map, showing every
-   name at once is unreadable clutter. The name only appears once a pin is
-   selected (click), alongside the detail card. */
-.cafe-pin {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.96);
-  border: 2px solid rgba(255, 255, 255, 0.82);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(120, 53, 15, 0.2);
-  cursor: pointer;
-  font: inherit;
-  transition: transform 0.16s ease, box-shadow 0.16s ease, padding 0.16s ease;
-}
-
-.cafe-pin:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
-}
-
-.cafe-pin-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 9999px;
-  background: #fffbeb;
-  color: #92400e;
-  overflow: hidden;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-}
-
-.cafe-pin-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.cafe-pin-icon-fallback {
-  background: linear-gradient(145deg, #fff7ed, #fcd34d);
-}
-
-.cafe-pin-label {
-  display: none;
-  font-size: 11px;
-  font-weight: 600;
-  color: #262626;
-  white-space: nowrap;
-  max-width: 160px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cafe-pin-selected {
-  padding: 4px 10px 4px 5px;
-  background: #d97706;
-  box-shadow: 0 5px 18px rgba(217, 119, 6, 0.48), 0 0 0 3px rgba(255, 237, 213, 0.35);
-}
-
-.cafe-pin-selected .cafe-pin-icon {
-  background: #ffffff;
-}
-
-.cafe-pin-selected .cafe-pin-label {
-  display: inline;
-  color: #ffffff;
-}
-
 .billboard-pin {
   display: flex;
   align-items: center;
@@ -3103,49 +3030,8 @@ h1,
 /* A small framed photo, like a print pinned to the map: white mount, 6px
    corners, a hairline. On a pale basemap the pin has to supply its own
    contrast, and the mount is what does it against roads and parkland. */
-.cafe-pin {
-  border: 1px solid var(--ink-line-strong);
-  border-radius: var(--radius-control);
-  background: #ffffff;
-  box-shadow: 0 1px 2px #24211e14, 0 6px 14px -8px #24211e59;
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), padding 0.2s var(--ease-out);
-}
-
-.cafe-pin:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 1px 2px #24211e14, 0 10px 20px -10px #24211e73;
-}
-
-.cafe-pin-icon {
-  border-radius: 4px;
-  background: var(--paper-deep);
-  color: var(--brand-deep);
-}
-
-.cafe-pin-icon-fallback {
-  background: var(--paper-deep);
-}
-
-.cafe-pin-label {
-  color: var(--ink);
-}
-
 /* Selected is terracotta: the wall colour, and the product's voice for
    "this one". The photo keeps a white mount so it stays readable. */
-.cafe-pin-selected {
-  border-color: var(--brand);
-  background: var(--brand);
-  box-shadow: 0 10px 22px -10px #6e2718a6;
-}
-
-.cafe-pin-selected .cafe-pin-icon {
-  background: #ffffff;
-}
-
-.cafe-pin-selected .cafe-pin-label {
-  color: #fffaf4;
-}
-
 .pending-pin {
   border-radius: var(--radius-control);
   transform: none;
@@ -4378,18 +4264,6 @@ h1,
 /* Pins stay small — a dot on a map reads at this size, and bigger pins
    turn a busy area into a pile of buttons — so the target grows instead,
    on a pseudo-element that cannot move the marker off its coordinate. */
-@media (pointer: coarse) {
-  .cafe-pin {
-    position: relative;
-  }
-
-  .cafe-pin::before {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    border-radius: inherit;
-  }
-}
 
 /* ---- Legal prose ------------------------------------------------------- */
 
