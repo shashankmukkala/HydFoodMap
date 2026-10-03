@@ -23,6 +23,10 @@ async function getTotal(): Promise<number | null> {
   const { count, error } = await supabase.from("cafes").select("id", { count: "exact", head: true });
   if (error) {
     console.error("[/] cafe count failed:", error.message);
+    // Matches /api/cafes: the seed count in development so the cover is not
+    // missing its number on a machine with no database reach, nothing in
+    // production rather than a figure from a stale file.
+    if (process.env.NODE_ENV !== "production") return localGetAll().length;
     return null;
   }
   return count ?? 0;
