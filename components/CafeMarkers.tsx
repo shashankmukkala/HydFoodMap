@@ -119,6 +119,23 @@ export default function CafeMarkers({ map, cafes, activeIds, selectedId, onSelec
    */
   const [installed, setInstalled] = useState(false);
 
+  /**
+   * Re-entry guard, and the reason it is a ref as well as state.
+   *
+   * Adding a layer mutates the style, which makes MapLibre fire
+   * `styledata` — so a retry listener waiting for the style to settle gets
+   * called by the very install it was waiting for. With only the `installed`
+   * state to check, that re-entrant call saw `false` (setInstalled had not
+   * committed yet) and installed again, firing styledata again: a loop
+   * that removed and re-added all six layers roughly three times a second
+   * and left the sources empty, because the effect that pushes data keys
+   * on `installed`, which never changed after the first pass.
+   *
+   * This is set before anything touches the map, so the re-entrant call
+   * returns immediately.
+   */
+  const installedRef = useRef(false);
+
   // Read by the map's own listeners, which are registered once. Assigned
   // in an effect rather than during render: a ref write during render is
   // not safe under concurrent rendering, and React's lint rules reject it.
@@ -143,25 +160,33 @@ export default function CafeMarkers({ map, cafes, activeIds, selectedId, onSelec
     if (!map) return;
 
     let cancelled = false;
+    let retryQueued = false;
 
     function install() {
       if (cancelled || !map) return;
+      if (installedRef.current) return;
 
-      // Adding a layer before the style's own layers exist throws, so wait
-      // and try again. Both events are listened for because `styledata`
-      // fires while a style is still settling and can arrive when the map
-      // is not yet ready, whereas `idle` is guaranteed to come after it is.
+      // Adding a layer before the style exists throws, so wait for one
+      // event — `idle`, which fires after the style has settled — and only
+      // ever have one retry outstanding. Listening on `styledata` too, and
+      // re-registering on every attempt, is what multiplied the listeners.
       if (!canTakeLayers(map)) {
-        if (isDead(map)) return;
-        map.once("styledata", install);
-        map.once("idle", install);
-        if (DEV) console.info("[CafeMarkers] style not ready; retrying on styledata/idle");
+        if (isDead(map) || retryQueued) return;
+        retryQueued = true;
+        map.once("idle", () => {
+          retryQueued = false;
+          install();
+        });
         return;
       }
 
-      // Idempotent rather than bailing when something is already there.
-      // Bailing was a silent no-op that left `installed` false forever, so
-      // the effects that push data never ran and the map stayed empty.
+      // Claim the install before touching the style, so the styledata the
+      // addLayer calls below emit cannot re-enter this function.
+      installedRef.current = true;
+
+      // Re-adding is for hot reload, where the previous layers survive the
+      // module swap. Guarded per id rather than wholesale, so this is a
+      // no-op on a clean map instead of a remove/add cycle.
       try {
         for (const id of Object.values(DOT_LAYERS)) {
           if (map.getLayer(id)) map.removeLayer(id);
@@ -225,9 +250,8 @@ export default function CafeMarkers({ map, cafes, activeIds, selectedId, onSelec
 
     return () => {
       cancelled = true;
+      installedRef.current = false;
       setInstalled(false);
-      map.off("styledata", install);
-      map.off("idle", install);
 
       // Nothing in here may throw. React aborts the commit when an effect
       // cleanup does, which previously meant the next map never got its

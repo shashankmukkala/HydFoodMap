@@ -3,7 +3,7 @@ import type {
   ExpressionSpecification,
   SymbolLayerSpecification,
 } from "maplibre-gl";
-import { CATEGORY_OPTIONS, type Category } from "@/lib/categories";
+import { CATEGORY_OPTIONS, normalizeCategory, type Category } from "@/lib/categories";
 import { MAP_BACKGROUND_COLOR } from "@/lib/mapStyle";
 
 /**
@@ -121,46 +121,18 @@ const LABEL_HALO: Record<DotTheme, string> = {
 const DIM_FACTOR = 0.18;
 
 /**
- * The same cascade 0036_normalize_cafe_categories.sql applies in Postgres,
- * in the same order.
+ * The integer written into each feature's `k`.
  *
- * An exact match on the current taxonomy is tried first and is what every
- * row in the real database hits, because 0036 normalised them and added a
- * CHECK constraint. The regexes are for everything that has not been
- * through it — above all the dev seed file, whose 140 rows still carry the
- * pre-0036 taxonomy ("Classic Cafe & Specialty Coffee Shop", "Gourmet
- * Buffet & Live Grill", ...). Without them every seeded dot fell through to
- * unclassified grey, so the whole palette was invisible in local
- * development even though nothing was technically broken.
- *
- * Deliberately a copy of the migration's logic rather than a second
- * taxonomy of its own: if these two disagree, a dot is a different colour
- * from the category its own detail card shows.
+ * Goes through normalizeCategory so a row that never passed through
+ * 0036 — the dev seed's pre-migration taxonomy, above all — lands on the
+ * same colour as the same place would in production, instead of falling
+ * through to unclassified grey. The cascade itself lives in
+ * lib/categories.ts, so there is one copy of it.
  */
 export function kindIndexFor(category: string | null): number {
-  const UNCLASSIFIED = CATEGORY_OPTIONS.length;
-  if (!category || !category.trim()) return UNCLASSIFIED;
-
-  const exact = (CATEGORY_OPTIONS as readonly string[]).indexOf(category);
-  if (exact !== -1) return exact;
-
-  const indexOf = (name: Category) => CATEGORY_OPTIONS.indexOf(name);
-  if (/(patisserie|bakery|bakehouse|bakes|dessert|chocolat|ice cream|creamery)/i.test(category)) {
-    return indexOf("Dessert & Bakery");
-  }
-  if (
-    /(bistro|restaurant|continental|italian|multi-cuisine|kitchen|pizzeria|pizzateria|thai|asian|fast food|cafe bar)/i.test(
-      category
-    )
-  ) {
-    return indexOf("Bistro & Kitchen");
-  }
-  if (/(specialty coffee|latte art|vietnamese coffee)/i.test(category)) {
-    return indexOf("Specialty Coffee");
-  }
-  // The migration's own fallthrough: anything that names no stronger signal
-  // is a cafe, which is the honest answer rather than "unknown".
-  return indexOf("Cafe");
+  const normalized = normalizeCategory(category);
+  if (!normalized) return CATEGORY_OPTIONS.length;
+  return CATEGORY_OPTIONS.indexOf(normalized);
 }
 
 /** `["match", ["get","k"], 0, colour, 1, colour, …, unclassified]`. */

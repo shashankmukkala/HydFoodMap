@@ -40,6 +40,49 @@ export const CATEGORY_OPTIONS = [
 
 export type Category = (typeof CATEGORY_OPTIONS)[number];
 
+/**
+ * Coerces any category string onto the current four, using the same
+ * cascade — and the same order — that
+ * 0036_normalize_cafe_categories.sql applies in Postgres.
+ *
+ * Every row in the real database already satisfies this: 0036 rewrote them
+ * and added a CHECK constraint. It exists for data that has NOT been
+ * through the migration, which in practice means the dev seed file, whose
+ * 140 rows still carry the pre-0036 taxonomy ("Classic Cafe & Specialty
+ * Coffee Shop", "Gourmet Buffet & Live Grill", ...).
+ *
+ * Leaving those unnormalised broke local development in a way that looked
+ * like broken code rather than stale data: every Type chip filtered to an
+ * empty map, searching "cafe" or "dessert" returned nothing (the group
+ * matcher reports a category and the caller filters on equality), and
+ * every map dot fell through to unclassified grey.
+ *
+ * Deliberately a copy of the SQL rather than a second taxonomy: if the two
+ * disagree, a cafe is filed under one category in Postgres and shown under
+ * another in the interface.
+ */
+export function normalizeCategory(raw: string | null | undefined): Category | null {
+  if (!raw || !raw.trim()) return null;
+  if ((CATEGORY_OPTIONS as readonly string[]).includes(raw)) return raw as Category;
+
+  if (/(patisserie|bakery|bakehouse|bakes|dessert|chocolat|ice cream|creamery)/i.test(raw)) {
+    return "Dessert & Bakery";
+  }
+  if (
+    /(bistro|restaurant|continental|italian|multi-cuisine|kitchen|pizzeria|pizzateria|thai|asian|fast food|cafe bar)/i.test(
+      raw
+    )
+  ) {
+    return "Bistro & Kitchen";
+  }
+  if (/(specialty coffee|latte art|vietnamese coffee)/i.test(raw)) {
+    return "Specialty Coffee";
+  }
+  // The migration's own fallthrough: anything naming no stronger signal is
+  // a cafe, which is the honest answer rather than "unknown".
+  return "Cafe";
+}
+
 export const CATEGORY_ICONS: Record<Category, string> = {
   Cafe: "☕",
   "Specialty Coffee": "🌟",

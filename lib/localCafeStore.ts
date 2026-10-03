@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { Cafe } from "@/lib/supabase";
+import { normalizeCategory } from "@/lib/categories";
 
 // Dev-only fallback so the map shows real data before Supabase is wired up.
 // Reads/writes a plain JSON file on disk — great for local development, but
@@ -12,7 +13,22 @@ import type { Cafe } from "@/lib/supabase";
 // set, the API routes stop calling this entirely and use the real database.
 const STORE_DIR = path.join(process.cwd(), "local-data");
 const STORE_PATH = path.join(STORE_DIR, "cafes.json");
-const SEED_PATH = path.join(process.cwd(), "scripts", "seed-cafes.json");
+/**
+ * The curated 85, not scripts/seed-cafes.json.
+ *
+ * That file is the pre-curation 140-record import, and it is the dataset
+ * the whole interface was *not* built for: its categories and its tag
+ * vocabulary both predate the current ones, so seeding from it left every
+ * Type chip and almost every vibe filter matching nothing, and searching
+ * "cafe" or "dessert" returning an empty map. It also has no addresses and
+ * no famous-for notes, so detail cards opened half empty.
+ *
+ * The curated file is what the live database holds: current tags,
+ * addresses and notes on all 85, and the five image_urls. Its categories
+ * are the slash-form ("Cafe / Bakery / Desserts"), which normalizeCategory
+ * resolves the same way 0036 does in Postgres.
+ */
+const SEED_PATH = path.join(process.cwd(), "scripts", "seed-cafes-curated-86.json");
 
 type SeedCafe = Omit<Cafe, "id" | "created_at">;
 
@@ -57,8 +73,15 @@ function writeStore(cafes: Cafe[]) {
 }
 
 export function localGetAll(): Cafe[] {
-  return ensureStore().sort(
-    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  return (
+    ensureStore()
+      // The seed predates 0036, so its categories are the old taxonomy.
+      // Normalising here rather than at each call site means the Type
+      // filter, search, the map dots and the detail card all see the same
+      // values the database would give them — without rewriting the file,
+      // which is a fixture and should stay as it is.
+      .map((cafe) => ({ ...cafe, category: normalizeCategory(cafe.category) }))
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
   );
 }
 
