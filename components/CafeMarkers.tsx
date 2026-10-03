@@ -46,6 +46,42 @@ function emptyCollection(): GeoJSON.FeatureCollection {
 }
 
 /**
+ * Whether this map can take a layer right now.
+ *
+ * Every call is wrapped because a *removed* map throws from these rather
+ * than returning false, and a removed map is routine here: React's strict
+ * mode mounts components twice in development, so components/Map.tsx
+ * builds a map, removes it, and builds a second one. The first map can
+ * already have reached `load` and been handed to this component before it
+ * is torn down, which leaves us holding a dead reference.
+ *
+ * This being unguarded is what broke the dots: the cleanup called
+ * `map.getStyle()` on that dead map, which threw, and a throwing effect
+ * cleanup aborts the commit — so the install for the *second* map never
+ * ran, and no layer was ever added.
+ */
+function canTakeLayers(map: MapLibreMap): boolean {
+  try {
+    // isStyleLoaded is typed `boolean | void` in this version of MapLibre,
+    // so it is compared rather than trusted as a boolean.
+    return Boolean(map.getStyle()) && map.isStyleLoaded() === true;
+  } catch {
+    return false;
+  }
+}
+
+/** True once the map is gone for good and cleanup should not touch it. */
+function isDead(map: MapLibreMap): boolean {
+  try {
+    return !map.getStyle();
+  } catch {
+    return true;
+  }
+}
+
+const DEV = process.env.NODE_ENV !== "production";
+
+/**
  * One feature per cafe, with deliberately terse property names.
  *
  * `k` kind index, `d` dimmed flag, `n` name. The payload is re-serialised
@@ -110,12 +146,32 @@ export default function CafeMarkers({ map, cafes, activeIds, selectedId, onSelec
 
     function install() {
       if (cancelled || !map) return;
-      // Adding a layer before the style's own layers exist throws.
-      if (!map.isStyleLoaded()) {
+
+      // Adding a layer before the style's own layers exist throws, so wait
+      // and try again. Both events are listened for because `styledata`
+      // fires while a style is still settling and can arrive when the map
+      // is not yet ready, whereas `idle` is guaranteed to come after it is.
+      if (!canTakeLayers(map)) {
+        if (isDead(map)) return;
         map.once("styledata", install);
+        map.once("idle", install);
+        if (DEV) console.info("[CafeMarkers] style not ready; retrying on styledata/idle");
         return;
       }
-      if (map.getSource(DOT_SOURCES.points)) return;
+
+      // Idempotent rather than bailing when something is already there.
+      // Bailing was a silent no-op that left `installed` false forever, so
+      // the effects that push data never ran and the map stayed empty.
+      try {
+        for (const id of Object.values(DOT_LAYERS)) {
+          if (map.getLayer(id)) map.removeLayer(id);
+        }
+        for (const id of Object.values(DOT_SOURCES)) {
+          if (map.getSource(id)) map.removeSource(id);
+        }
+      } catch {
+        // A partially torn-down style; the adds below will surface it.
+      }
 
       const paint = dotPaint(THEME, dimmingAtInstallRef.current);
 
@@ -162,6 +218,7 @@ export default function CafeMarkers({ map, cafes, activeIds, selectedId, onSelec
       });
 
       setInstalled(true);
+      if (DEV) console.info("[CafeMarkers] dot layers installed");
     }
 
     install();
@@ -169,15 +226,23 @@ export default function CafeMarkers({ map, cafes, activeIds, selectedId, onSelec
     return () => {
       cancelled = true;
       setInstalled(false);
-      // The map is torn down by components/Map.tsx on its own unmount, and
-      // removing a layer from a removed map throws.
-      if (!map.getStyle()) return;
-      // Order matters: a source cannot be removed while a layer uses it.
-      for (const id of Object.values(DOT_LAYERS)) {
-        if (map.getLayer(id)) map.removeLayer(id);
-      }
-      for (const id of Object.values(DOT_SOURCES)) {
-        if (map.getSource(id)) map.removeSource(id);
+      map.off("styledata", install);
+      map.off("idle", install);
+
+      // Nothing in here may throw. React aborts the commit when an effect
+      // cleanup does, which previously meant the next map never got its
+      // layers — see canTakeLayers above.
+      if (isDead(map)) return;
+      try {
+        // Order matters: a source cannot be removed while a layer uses it.
+        for (const id of Object.values(DOT_LAYERS)) {
+          if (map.getLayer(id)) map.removeLayer(id);
+        }
+        for (const id of Object.values(DOT_SOURCES)) {
+          if (map.getSource(id)) map.removeSource(id);
+        }
+      } catch (error) {
+        if (DEV) console.info("[CafeMarkers] cleanup skipped:", error);
       }
     };
   }, [map]);
@@ -190,6 +255,11 @@ export default function CafeMarkers({ map, cafes, activeIds, selectedId, onSelec
     // same features — the sources differ only in simplification.
     for (const id of [DOT_SOURCES.lights, DOT_SOURCES.points]) {
       (map.getSource(id) as GeoJSONSource | undefined)?.setData(collection);
+    }
+    if (DEV) {
+      console.info(
+        `[CafeMarkers] ${collection.features.length} dots pushed (of ${cafes.length} cafes)`
+      );
     }
   }, [map, installed, cafes, activeIds]);
 

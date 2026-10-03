@@ -24,8 +24,6 @@ export async function GET() {
   // nothing anywhere said the database was down. An error the client can
   // see is recoverable; confident wrong data is not.
   if (error) {
-    console.error("[/api/cafes] Supabase read failed:", error.message);
-
     // Development keeps the seed fallback, because a developer whose
     // network cannot reach Supabase at all still has to be able to work on
     // the map. What made the old behaviour wrong was not the fallback — it
@@ -33,13 +31,14 @@ export async function GET() {
     // is loud and cannot reach production.
     if (process.env.NODE_ENV !== "production") {
       console.warn(
-        "[/api/cafes] DEV FALLBACK: serving scripts/seed-cafes.json instead. " +
-          "This data is STALE — no photos, no addresses, and it still contains places " +
-          "that have since been removed or relocated. Production returns 503 here."
+        `[/api/cafes] Supabase unreachable (${error.message}) — DEV FALLBACK: serving ` +
+          "scripts/seed-cafes.json. That data is STALE: no photos, no addresses, and it " +
+          "still contains places since removed or relocated. Production returns 503 here."
       );
       return NextResponse.json(localGetAll());
     }
 
+    console.error("[/api/cafes] Supabase read failed:", error.message);
     return NextResponse.json(
       { error: "Cafes are temporarily unavailable." },
       { status: 503, headers: { "Retry-After": "30" } }

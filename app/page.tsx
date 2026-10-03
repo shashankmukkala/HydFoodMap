@@ -22,11 +22,21 @@ async function getTotal(): Promise<number | null> {
   if (!isSupabaseConfigured()) return localGetAll().length;
   const { count, error } = await supabase.from("cafes").select("id", { count: "exact", head: true });
   if (error) {
-    console.error("[/] cafe count failed:", error.message);
-    // Matches /api/cafes: the seed count in development so the cover is not
-    // missing its number on a machine with no database reach, nothing in
+    // console.warn, not console.error: Next's dev overlay treats a
+    // console.error from a Server Component as a page error and throws the
+    // red panel up over the app. This condition is expected and handled —
+    // the count falls back below — so presenting it as a failure of the
+    // page was itself the bug.
+    const message = `[/] cafe count unavailable (${error.message})`;
+
+    // The seed count in development, so the cover is not missing its
+    // number on a machine that cannot reach the database; nothing in
     // production rather than a figure from a stale file.
-    if (process.env.NODE_ENV !== "production") return localGetAll().length;
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(`${message} — using the local seed count for development.`);
+      return localGetAll().length;
+    }
+    console.warn(message);
     return null;
   }
   return count ?? 0;
