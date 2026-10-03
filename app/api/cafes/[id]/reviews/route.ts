@@ -4,6 +4,7 @@ import { localGetReviewsForCafe, localInsertReview } from "@/lib/localReviewStor
 import { localGetAll } from "@/lib/localCafeStore";
 import { distanceMeters, VISIT_RADIUS_METERS } from "@/lib/geo";
 import { recordVerifiedVisit } from "@/lib/recordVisit";
+import { enforceRateLimit, HOUR } from "@/lib/rateLimit";
 
 const MAX_LOCATION_ACCURACY_METERS = 150;
 const MAX_COMMENT_LENGTH = 1200;
@@ -101,6 +102,17 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+
+  // Check-in *creation* was limited; the write it leads to was not. A
+  // review body can carry a 1.5MB photo data URL (MAX_PHOTO_DATA_LENGTH
+  // above), so an unlimited POST here is a request-size amplifier as well
+  // as a row generator — and every accepted review also writes a visit and
+  // fires the points trigger. The one-review-per-user-per-cafe constraint
+  // caps distinct successes, but not attempts, and not the bandwidth or
+  // the service-role work each attempt costs.
+  const limited = enforceRateLimit(request, "review-post", 15, HOUR, "Too many review attempts. Try again shortly.");
+  if (limited) return limited;
+
   const body = await request.json();
   const { rating, comment, favorite_food, photo_url, lat, lng, accuracy, checkin_id } = body;
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAuthedClient, isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { distanceMeters, VISIT_RADIUS_METERS } from "@/lib/geo";
+import { enforceRateLimit, HOUR } from "@/lib/rateLimit";
 
 const MAX_LOCATION_ACCURACY_METERS = 150;
 const MIN_DWELL_SECONDS = 30;
@@ -8,6 +9,16 @@ const MIN_DWELL_SECONDS = 30;
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!isSupabaseConfigured()) return NextResponse.json({ error: "Secure check-in is unavailable." }, { status: 503 });
+
+  // The companion to the limit on check-in creation. Verification is the
+  // step that decides whether a GPS position is close enough, so leaving
+  // it unlimited allowed a caller to brute-force coordinates against one
+  // check-in — retrying a position until it passed the radius test — and
+  // each attempt is a token lookup plus a row read. Sixty an hour covers
+  // the real flow, which retries every few seconds while the user waits
+  // out the 30-second dwell.
+  const limited = enforceRateLimit(request, "checkin-verify", 60, HOUR, "Too many verification attempts. Try again shortly.");
+  if (limited) return limited;
 
   const header = request.headers.get("authorization");
   const token = header?.startsWith("Bearer ") ? header.slice(7) : null;

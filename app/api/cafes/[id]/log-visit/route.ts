@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAuthedClient, isSupabaseConfigured, supabase } from "@/lib/supabase";
 import { recordVerifiedVisit } from "@/lib/recordVisit";
+import { enforceRateLimit, HOUR } from "@/lib/rateLimit";
 
 // Records a GPS-verified visit — the client must already hold a verified,
 // unused check-in from /api/cafes/[id]/check-in{,/verify} (the exact same
@@ -18,6 +19,15 @@ import { recordVerifiedVisit } from "@/lib/recordVisit";
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!isSupabaseConfigured()) return NextResponse.json({ error: "Visit logging needs Supabase to be configured." }, { status: 503 });
+
+  // Each accepted call writes two rows (visited_cafes, visit_log) and
+  // fires two points triggers. The 20-hour repeat-visit cooldown in 0031
+  // caps what a caller can *earn*, but not what they can make this route
+  // do — the cooldown is checked inside the trigger, after the inserts
+  // have already been attempted. Thirty an hour is far above any real
+  // sequence of visits and retries.
+  const limited = enforceRateLimit(request, "log-visit", 30, HOUR, "Too many visit logs. Try again shortly.");
+  if (limited) return limited;
 
   const authHeader = request.headers.get("authorization");
   const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
