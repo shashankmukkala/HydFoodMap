@@ -21,8 +21,8 @@ import { DOT_LAYERS, DOT_SOURCES, dotPaint, kindIndexFor, type DotTheme } from "
  * through effects, the same shape the DOM-marker version had.
  */
 
-/** The basemap is light paper; see lib/mapDots for the night variant. */
-const THEME: DotTheme = "day";
+/** The basemap is dark; see lib/mapDots for the day variant. */
+const THEME: DotTheme = "night";
 
 type CafeMarkersProps = {
   map: MapLibreMap | null;

@@ -102,7 +102,10 @@ export const ROAD_LINE_COLOR_OVERRIDES: Record<string, string> = {
 // The ivory page colour (--paper in app/globals.css), so the map's own
 // ground and the page around it read as one surface rather than two
 // different whites.
-export const MAP_BACKGROUND_COLOR = "#f7f3ec";
+// Their --bg. Matches --paper in globals.css, so the seam where the map
+// meets the page is invisible — and it is what the dots' knockout stroke
+// is drawn in (lib/mapDots.ts).
+export const MAP_BACKGROUND_COLOR = "#0e1116";
 
 // General-interest POI layers in OpenFreeMap's "liberty" style (poi_r1/r7/r20,
 // source-layer "poi") render every OSM point of interest — hospitals,

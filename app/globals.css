@@ -47,11 +47,24 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  /* The IVORY palette (defined at the bottom of this file), exposed as
+  /* Switzer for the interface, Boska for the headlines — the pair the
+     night theme this follows uses, served from Fontshare by the <link> in
+     app/layout.tsx. Declared here rather than coming from next/font (which
+     has no Fontshare provider), so `font-sans` and `font-display` resolve
+     to real stacks and `var(--font-display)` keeps working for the hand-
+     written rules further down.
+
+     The fallbacks are chosen, not generic: Boska is a high-contrast
+     Transitional serif, so Iowan/Palatino stand in for it far better than
+     Times; Switzer is a neutral Grotesque, which is what the system UI
+     faces already are. */
+  --font-sans: "Switzer", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Boska", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+
+  /* The night palette (defined at the bottom of this file), exposed as
      utilities — text-ink, bg-paper, border-line, text-brand and so on —
      so components use the palette rather than Tailwind's neutral greys,
-     which are cool and read as a different product next to warm paper. */
-  --font-display: var(--font-display);
+     which are cool and read as a different product next to warm ink. */
   --color-paper: var(--paper);
   --color-paper-deep: var(--paper-deep);
   --color-ink: var(--ink);
@@ -66,6 +79,13 @@
   --color-awning: var(--awning);
   --color-plum: var(--plum);
   --color-danger: var(--danger);
+  /* Raised surfaces, which only the night theme needs: on near-black a
+     shadow is invisible, so a card separates from the page by being
+     lighter rather than by casting anything. */
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-high: var(--surface-high);
+  --color-cool: var(--cool);
 }
 
 html,
@@ -2733,36 +2753,81 @@ body {
 
 :root,
 .map-experience-shell {
-  --paper: #f7f3ec;
-  --paper-deep: #efe8dc;
+  /* ── NIGHT ──────────────────────────────────────────────────────────
+     Ported from nyc-foodmap.vercel.app's `night` theme, which is the
+     look this product was asked to resemble.
 
-  --ink: #24211e;
-  --ink-muted: #24211ea8;
-  --ink-soft: #24211e7a;
-  --ink-line: #24211e1f;
-  --ink-line-strong: #24211e38;
-  --ink-hover: #24211e0a;
+     The token NAMES are the ones the IVORY light theme established, and
+     every component already reads through them, so the whole interface
+     turns over from this block alone — nothing downstream needed editing.
+     The names keep their meaning rather than their hue: "paper" is the
+     page, "ink" is type on it. On a dark page that makes ink the pale
+     value and paper the dark one, which reads as a contradiction here and
+     as consistency in all forty-odd files that use them.
 
-  --brand: #9a3a24;
-  --brand-deep: #6e2718;
-  --brand-tint: #9a3a241c;
+     Their palette, for reference:
+       --bg #0E1116  --surface #151A21  --surface-2 #1B222B
+       --text #F2EADF  --muted #B4AB9E  --faint #7F786E
+       --accent #F2A33A  --accent-ink #1A1206
+       --cool #8FBCD0  --ok #93C790  --warn #E6B85C  --bad #E58A7B
+     ─────────────────────────────────────────────────────────────────── */
 
-  --awning: #2f5b4e;
-  --awning-tint: #2f5b4e1c;
+  /* Tells the browser to render form controls, scrollbars and the
+     caret dark. Without it, every <select> and scrollbar stays light and
+     punches a bright hole in an otherwise dark interface. */
+  color-scheme: dark;
 
-  --lamp: #eba258;
-  --lamp-ink: #96570f;
-  --lamp-tint: #eba25833;
+  --paper: #0e1116;
+  --paper-deep: #151a21;
 
-  --plum: #6b4a7d;
-  --plum-tint: #6b4a7d17;
-  --plum-line: #6b4a7d3d;
+  /* Raised surfaces, which a dark theme needs and a light one does not:
+     on paper, depth comes from shadow, and shadow on near-black is
+     invisible — so a card has to be *lighter* than the page instead. */
+  --surface: #151a21;
+  --surface-raised: #1b222b;
+  --surface-high: #232b35;
 
-  --danger: #a3301c;
-  --danger-tint: #a3301c14;
+  --ink: #f2eadf;
+  --ink-muted: #b4ab9e;
+  --ink-soft: #7f786e;
+  --ink-line: #f2eadf1a;
+  --ink-line-strong: #f2eadf33;
+  --ink-hover: #f2eadf0f;
 
-  --shadow-card: 0 1px 2px #24211e0a, 0 8px 24px -18px #24211e2e;
-  --shadow-panel: 0 1px 2px #24211e0a, 0 14px 36px -22px #24211e40;
+  /* Their one accent. The light theme's terracotta had no equivalent in a
+     night palette built around a single warm signal. */
+  --brand: #f2a33a;
+  --brand-deep: #c9821f;
+  --brand-tint: #f2a33a24;
+
+  --awning: #93c790;
+  --awning-tint: #93c79024;
+
+  /* Kept distinct from --brand the way the light theme kept lamp distinct
+     from terracotta: same family, a step softer, for eyebrows and kickers. */
+  --lamp: #e6b85c;
+  --lamp-ink: #1a1206;
+  --lamp-tint: #e6b85c2e;
+
+  --plum: #b39de3;
+  --plum-tint: #b39de31f;
+  --plum-line: #b39de34d;
+
+  --danger: #e58a7b;
+  --danger-tint: #e58a7b1f;
+
+  --cool: #8fbcd0;
+
+  /* Their --glass. Panels float over the map, so they are a translucent
+     surface rather than an opaque one — and on a dark map the translucency
+     has to be dark too, or every panel reads as a lit box. */
+  --glass: rgba(21, 26, 33, 0.86);
+  --glass-strong: rgba(21, 26, 33, 0.94);
+
+  /* Their --shadow. Deeper and wider than the paper theme's hairline
+     shadows, because on near-black a shadow only reads at this strength. */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.35), 0 10px 40px rgba(0, 0, 0, 0.45);
+  --shadow-panel: 0 2px 8px rgba(0, 0, 0, 0.35), 0 10px 40px rgba(0, 0, 0, 0.45);
 
   --radius-card: 10px;
   --radius-control: 6px;
@@ -2773,17 +2838,20 @@ body {
      hover wash, not a brand colour — which is why the brand is --brand. */
   --background: var(--paper);
   --foreground: var(--ink);
-  --card: #ffffff;
+  /* Lighter than the page, not white — see --surface above. */
+  --card: var(--surface);
   --card-foreground: var(--ink);
-  --popover: #ffffff;
+  --popover: var(--surface-raised);
   --popover-foreground: var(--ink);
+  /* Inverted, as a dark theme requires: a primary button is the pale
+     value carrying dark type, rather than dark-on-light. */
   --primary: var(--ink);
-  --primary-foreground: #fffaf4;
+  --primary-foreground: var(--paper);
   --secondary: var(--paper-deep);
   --secondary-foreground: var(--ink);
   --muted: var(--paper-deep);
   --muted-foreground: var(--ink-muted);
-  --accent: var(--paper-deep);
+  --accent: var(--surface-raised);
   --accent-foreground: var(--ink);
   --destructive: var(--danger);
   --border: var(--ink-line);
@@ -2826,7 +2894,7 @@ h1,
 .is-public .panel-elevated,
 .is-admin .panel-elevated {
   border: 1px solid var(--ink-line);
-  background-color: #fffffff2;
+  background-color: var(--glass);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   box-shadow: var(--shadow-panel);
@@ -2844,7 +2912,7 @@ h1,
 .is-admin .topbar-shell {
   border: 1px solid var(--ink-line);
   border-radius: var(--radius-card);
-  background: #fffffff2;
+  background: var(--glass);
   box-shadow: var(--shadow-panel);
 }
 
@@ -2853,7 +2921,7 @@ h1,
   border: 1px solid var(--ink-line);
   border-radius: var(--radius-card);
   background-image: none;
-  background-color: #ffffff;
+  background-color: var(--surface);
   box-shadow: var(--shadow-panel);
 }
 
@@ -2929,18 +2997,18 @@ h1,
 .chip-solid {
   border-color: var(--ink);
   background: var(--ink);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .chip-solid:hover {
-  border-color: #3a352f;
-  background: #3a352f;
-  color: #fffaf4;
+  border-color: var(--surface-high);
+  background: var(--surface-high);
+  color: var(--paper);
 }
 
 .chip-count {
   border-radius: 999px;
-  background: #ffffff2e;
+  background: var(--ink-line-strong);
   padding-inline: 6px;
   font-size: 11px;
   font-weight: 700;
@@ -2963,11 +3031,11 @@ h1,
 
 .btn-primary {
   background: var(--ink);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #3a352f;
+  background: var(--surface-high);
 }
 
 .btn-primary:disabled,
@@ -2992,7 +3060,7 @@ h1,
   width: 100%;
   border: 1px solid var(--ink-line-strong);
   border-radius: var(--radius-control);
-  background: #ffffff;
+  background: var(--surface);
   padding: 0.55rem 0.8rem;
   color: var(--ink);
   font: inherit;
@@ -3036,7 +3104,7 @@ h1,
   border-radius: var(--radius-control);
   transform: none;
   background: var(--ink);
-  border: 2px solid #ffffff;
+  border: 2px solid var(--paper);
   box-shadow: var(--shadow-panel);
 }
 
@@ -3044,7 +3112,7 @@ h1,
 .billboard-pin {
   border: 1px solid var(--plum-line);
   border-radius: var(--radius-control);
-  background: #ffffff;
+  background: var(--surface);
   color: var(--ink);
   box-shadow: 0 1px 2px #24211e14, 0 6px 14px -8px #6b4a7d73;
 }
@@ -3056,7 +3124,7 @@ h1,
 .billboard-pin-icon {
   border-radius: 4px;
   background: var(--plum);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .billboard-pin-label {
@@ -3070,12 +3138,12 @@ h1,
 }
 
 .billboard-pin-selected .billboard-pin-label {
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .billboard-pin-aircraft {
   border-color: var(--plum-line);
-  background: #ffffff;
+  background: var(--surface);
 }
 
 /* The aircraft banner keeps its own saturated palette on purpose: it is an
@@ -3104,7 +3172,7 @@ h1,
 .map-action-button,
 .map-add-button {
   border: 1px solid var(--ink-line-strong) !important;
-  background: #ffffff !important;
+  background: var(--surface) !important;
   color: var(--ink) !important;
   box-shadow: var(--shadow-card) !important;
   backdrop-filter: none;
@@ -3126,7 +3194,7 @@ h1,
   transform: none;
   border-color: var(--ink) !important;
   background: var(--ink) !important;
-  color: #fffaf4 !important;
+  color: var(--paper) !important;
 }
 
 .map-rotation-pad button {
@@ -3160,7 +3228,7 @@ h1,
 .maplibregl-ctrl-group {
   border: 1px solid var(--ink-line-strong) !important;
   border-radius: var(--radius-control) !important;
-  background: #ffffff !important;
+  background: var(--surface) !important;
   box-shadow: var(--shadow-card) !important;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -3185,7 +3253,7 @@ h1,
 
 .billboard-compass {
   border: 1px solid var(--ink-line-strong);
-  background: #ffffff;
+  background: var(--surface);
 }
 
 .billboard-compass-north {
@@ -3197,7 +3265,7 @@ h1,
 }
 
 .billboard-compass-dot {
-  border-color: #ffffff;
+  border-color: var(--paper);
   background: var(--ink);
 }
 
@@ -3239,7 +3307,7 @@ h1,
   border: 1px solid var(--ink-line-strong);
   border-right: 0;
   border-radius: var(--radius-control) 0 0 var(--radius-control);
-  background: #ffffff;
+  background: var(--surface);
   color: var(--lamp-ink);
   box-shadow: var(--shadow-card);
   backdrop-filter: none;
@@ -3250,7 +3318,7 @@ h1,
 .news-launcher[aria-expanded="true"] {
   border-color: var(--ink);
   background: var(--ink);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 /* ---- The ad rail ------------------------------------------------------- */
@@ -3260,7 +3328,7 @@ h1,
 .ad-rail {
   border: 1px solid var(--ink-line);
   border-radius: var(--radius-card);
-  background: #fffffff5;
+  background: var(--glass-strong);
   box-shadow: var(--shadow-panel);
 }
 
@@ -3329,7 +3397,7 @@ h1,
 .ad-rail-slot-image {
   border-radius: 4px;
   background: var(--plum);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .ad-rail-arrow,
@@ -3347,7 +3415,7 @@ h1,
 
 .ad-rail-reopen span:first-child {
   background: var(--plum);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .ad-rail-full-notice {
@@ -3378,7 +3446,7 @@ h1,
   border: 1px solid var(--ink-line);
   border-radius: var(--radius-card);
   background-image: none;
-  background-color: #ffffff;
+  background-color: var(--surface);
   color: var(--ink);
   box-shadow: var(--shadow-panel);
 }
@@ -3410,7 +3478,7 @@ h1,
 .advertise-form-card textarea {
   border: 1px solid var(--ink-line-strong);
   border-radius: var(--radius-control);
-  background: #ffffff;
+  background: var(--surface);
   color: var(--ink);
   font-size: 13px;
 }
@@ -3432,7 +3500,7 @@ h1,
 }
 
 .advertise-form-card select option {
-  background: #ffffff;
+  background: var(--surface);
   color: var(--ink);
 }
 
@@ -3443,7 +3511,7 @@ h1,
   min-height: 44px;
   border-radius: var(--radius-control);
   background: var(--ink);
-  color: #fffaf4;
+  color: var(--paper);
   font-size: 13px;
   font-weight: 600;
   transition: background-color 0.15s ease;
@@ -3452,7 +3520,7 @@ h1,
 .ad-enquiry-primary:hover:not(:disabled) {
   transform: none;
   filter: none;
-  background: #3a352f;
+  background: var(--surface-high);
 }
 
 .ad-enquiry-error {
@@ -3511,7 +3579,7 @@ h1,
   border: 1px solid var(--ink-line);
   border-radius: var(--radius-card);
   background-image: none;
-  background-color: #ffffff;
+  background-color: var(--surface);
   box-shadow: var(--shadow-card);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -3588,7 +3656,7 @@ h1,
 .advertise-qr-placeholder {
   border: 1px dashed var(--ink-line-strong);
   border-radius: var(--radius-control);
-  background: #ffffff;
+  background: var(--surface);
   color: var(--ink-muted);
 }
 
@@ -3606,7 +3674,7 @@ h1,
   height: 82px;
   flex: 0 0 82px;
   border-radius: var(--radius-control);
-  background: #ffffff;
+  background: var(--surface);
   padding: 4px;
   object-fit: contain;
   image-rendering: pixelated;
@@ -3660,7 +3728,7 @@ h1,
 
 .verified-seal-mark {
   background: var(--awning);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .verified-seal-score,
@@ -3686,7 +3754,7 @@ h1,
 .verified-seal-cta {
   border-radius: var(--radius-control);
   background: var(--awning);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .verified-seal-cta:hover {
@@ -3695,11 +3763,11 @@ h1,
 
 .verified-seal-empty .verified-seal-cta {
   background: var(--ink);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .verified-seal-empty .verified-seal-cta:hover {
-  background: #3a352f;
+  background: var(--surface-high);
 }
 
 .known-for {
@@ -3730,12 +3798,12 @@ h1,
 .detail-card-action-primary {
   border-radius: var(--radius-control);
   background: var(--ink);
-  color: #fffaf4;
+  color: var(--paper);
   font-weight: 600;
 }
 
 .detail-card-action-primary:hover {
-  background: #3a352f;
+  background: var(--surface-high);
 }
 
 .detail-card-action-static {
@@ -3764,7 +3832,7 @@ h1,
 
 .detail-card-action-badge {
   background: var(--brand);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .detail-card-link {
@@ -3803,7 +3871,7 @@ h1,
 
 .notifications-badge {
   background: var(--brand);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 /* ---- Leaderboard, profile, admin lists --------------------------------- */
@@ -3813,14 +3881,14 @@ h1,
 .admin-enquiry-item {
   border: 1px solid var(--ink-line);
   border-radius: var(--radius-control);
-  background: #ffffff;
+  background: var(--surface);
 }
 
 /* A ruled table, not a stack of cards: rows share their borders. */
 .leaderboard-row {
   border: 1px solid var(--ink-line);
   border-radius: 0;
-  background: #ffffff;
+  background: var(--surface);
 }
 
 .leaderboard-row + .leaderboard-row {
@@ -3841,7 +3909,7 @@ h1,
   position: relative;
   z-index: 1;
   border-color: var(--lamp);
-  background: #fdf6ec;
+  background: var(--lamp-tint);
 }
 
 .leaderboard-rank,
@@ -3882,9 +3950,9 @@ h1,
 }
 
 .profile-avatar-edit-badge {
-  border-color: #ffffff;
+  border-color: var(--paper);
   background: var(--ink);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .profile-avatar-option:hover {
@@ -3899,7 +3967,7 @@ h1,
 .admin-enquiries-panel {
   border: 1px solid var(--ink-line);
   border-radius: var(--radius-card);
-  background: #ffffff;
+  background: var(--surface);
 }
 
 .admin-enquiries-header {
@@ -3989,12 +4057,12 @@ h1,
 .bulk-bonus-bar-inner > button[type="button"]:not(.bulk-bonus-cancel) {
   border: 1px solid var(--ink) !important;
   background: var(--ink) !important;
-  color: #fffaf4 !important;
+  color: var(--paper) !important;
 }
 
 .admin-enquiry-approve:hover {
   filter: none;
-  background: #3a352f !important;
+  background: var(--surface-high) !important;
 }
 
 .admin-enquiry-reject,
@@ -4026,8 +4094,8 @@ h1,
 }
 
 .kpi-card-warn {
-  border-color: #a3301c4d;
-  background: #fbf1ee;
+  border-color: #e58a7b4d;
+  background: var(--danger-tint);
 }
 
 .admin-user-points {
@@ -4055,7 +4123,7 @@ h1,
 .bulk-bonus-bar input {
   border: 1px solid var(--ink-line-strong);
   border-radius: var(--radius-control);
-  background: #ffffff;
+  background: var(--surface);
   color: var(--ink);
 }
 
@@ -4085,7 +4153,7 @@ h1,
 
 .preset-amount-btn {
   border: 1px solid var(--ink-line-strong);
-  background: #ffffff;
+  background: var(--surface);
   color: var(--ink-muted);
 }
 
@@ -4098,7 +4166,7 @@ h1,
 .analytics-tab-active {
   border-color: var(--ink);
   background: var(--ink);
-  color: #fffaf4;
+  color: var(--paper);
 }
 
 .ranked-bar-track {
@@ -4137,14 +4205,14 @@ h1,
 
 .rail-slot-options button {
   border: 1px solid var(--ink-line-strong);
-  background: #ffffff;
+  background: var(--surface);
   color: var(--ink-muted);
 }
 
 .rail-slot-options button.selected {
   border-color: var(--plum);
   background: var(--plum);
-  color: #fffaf4;
+  color: var(--paper);
   box-shadow: none;
 }
 

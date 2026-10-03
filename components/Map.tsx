@@ -10,13 +10,16 @@ import {
 import "maplibre-gl/dist/maplibre-gl.css";
 import "@/lib/mapWorker";
 import { DOT_HIT_LAYERS } from "@/lib/mapDots";
+import { darkenMapStyle } from "@/lib/darkenMapStyle";
 import {
+  BUILDING_HEIGHT_COLOR_RAMP,
   DEFAULT_ZOOM,
   GENERAL_POI_LAYER_IDS,
   DEFAULT_MAP_CENTER,
   KEEP_POI_CLASSES,
   MAP_BACKGROUND_COLOR,
   OPENFREEMAP_STYLE_URL,
+  ROAD_LINE_COLOR_OVERRIDES,
   TELANGANA_BOUNDS,
   TELANGANA_MAX_ZOOM,
   TELANGANA_MIN_ZOOM,
@@ -74,21 +77,42 @@ export default function Map({ placingMode, onMapClick, onMapReady, showRotationC
     map.addControl(new NavigationControl({ visualizePitch: true }), "bottom-right");
 
     map.on("load", () => {
-      // The map is light now, so OpenFreeMap's "liberty" style is used very
-      // nearly as it ships — it already reads as a paper map, which is what
-      // sits well under ivory panels. The runtime dark inversion that used
-      // to run here (lib/darkenMapStyle.ts), and the charcoal building ramp
-      // and faint-white road hierarchy tuned on top of it
-      // (BUILDING_HEIGHT_COLOR_RAMP, ROAD_LINE_COLOR_OVERRIDES), are kept in
-      // the tree: they are a working dark map, and one call brings it back.
+      // The night map. OpenFreeMap's "liberty" ships light, so it is
+      // inverted at runtime: a generic lightness inversion across every
+      // layer first (lib/darkenMapStyle.ts explains why that beats
+      // hand-tuning ~90 layers), then the two hand-made overrides below,
+      // which run after and win because they encode design decisions a
+      // generic inversion cannot make — a height-based building ramp and a
+      // road hierarchy.
       //
-      // Two adjustments remain, because they are about this product rather
-      // than about light versus dark: the page's paper behind the tiles, so
-      // the seam between map and page does not read as two whites, and the
-      // POI narrowing below.
+      // This is the path the product used before the light redesign; it was
+      // left in the tree precisely so it could come back in one call.
+      darkenMapStyle(map);
+
+      // Last, so it beats the inversion: the page's own background behind
+      // the tiles, so the seam between map and page is invisible.
       map.setPaintProperty("background", "background-color", MAP_BACKGROUND_COLOR);
 
       const layers = map.getStyle().layers ?? [];
+
+      // Height reads as *lighter* here, the opposite of a paper map —
+      // otherwise the skyline becomes a flat black wall of silhouettes.
+      const buildingLayer = layers.find(
+        (layer) => layer.type === "fill-extrusion" && layer.id.includes("building")
+      );
+      if (buildingLayer) {
+        map.setPaintProperty(buildingLayer.id, "fill-extrusion-color", BUILDING_HEIGHT_COLOR_RAMP);
+      }
+
+      // Liberty's roads are cream and yellow; inverted they go muddy. These
+      // put them back as faint low-alpha whites, so the network reads as a
+      // quiet structural hint rather than a grid competing with the dots.
+      for (const layer of layers) {
+        const color = ROAD_LINE_COLOR_OVERRIDES[layer.id];
+        if (color && layer.type === "line") {
+          map.setPaintProperty(layer.id, "line-color", color);
+        }
+      }
 
       for (const layerId of GENERAL_POI_LAYER_IDS) {
         const layer = layers.find((l) => l.id === layerId);

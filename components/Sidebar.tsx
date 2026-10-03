@@ -182,7 +182,9 @@ export default function Sidebar({
         {/* The mark links home — the cover is the one place that says what
             this is, and the drawer is where people look for a way back. */}
         <Link href="/" aria-label="HydCafeMap home" className="brand-mark flex h-9 w-9 shrink-0 items-center justify-center">
-          <Image src="/logo-mark.png" alt="" width={256} height={256} className="h-8 w-8" />
+          {/* The light mark: the sidebar is a dark surface now, and the ink mark
+              disappeared into it. */}
+          <Image src="/logo-mark-light.png" alt="" width={256} height={256} className="h-8 w-8" />
         </Link>
         <div
           className={`min-w-0 flex-1 overflow-hidden ${SIDEBAR_TRANSITION} ${
