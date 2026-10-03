@@ -34,6 +34,7 @@ import { MOBILE_QUERY, useMediaQuery } from "@/lib/useMediaQuery";
 import { TAG_ICONS, type Tag } from "@/lib/tags";
 import { CATEGORY_ICONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
 import { distanceMeters } from "@/lib/geo";
+import { invalidateSafeAreaInsets, readSafeAreaInsets } from "@/lib/safeAreaInsets";
 import type { Billboard, Cafe, CafeEvent } from "@/lib/supabase";
 import type { CafeRating } from "@/app/api/cafes/ratings/route";
 
@@ -129,6 +130,22 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   }, []);
 
 
+  // Safe-area insets change when the device turns, and they are cached
+  // because reading them touches layout. resize covers orientation on
+  // every browser; orientationchange is kept for older iOS Safari, which
+  // fires it before resize.
+  useEffect(() => {
+    function remeasure() {
+      invalidateSafeAreaInsets();
+    }
+    window.addEventListener("resize", remeasure);
+    window.addEventListener("orientationchange", remeasure);
+    return () => {
+      window.removeEventListener("resize", remeasure);
+      window.removeEventListener("orientationchange", remeasure);
+    };
+  }, []);
+
   // Tags and rating narrow meaningfully alongside a search (a manually
   // picked "Quiet" tag chip plus a typed area both make sense together),
   // but Category deliberately doesn't pre-filter this — a cafe has
@@ -181,6 +198,31 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       ? searchMatch.cafes.filter((c) => c.category === activeCategory)
       : searchMatch.cafes
     : visibleCafes;
+
+  /**
+   * Which places the map should show at full strength.
+   *
+   * The map now draws every cafe and dims the ones that do not match
+   * (lib/mapDots), instead of removing their pins. Filtering by deleting
+   * pins takes the city's texture with it: you lose any sense of where the
+   * matches sit relative to everything else, and on a sparse filter the
+   * map goes nearly blank. Dimming makes a filter read as focus.
+   *
+   * null rather than "a set containing everything" when nothing is
+   * filtered — it switches the layers' opacity ramps back to plain
+   * numbers instead of a per-feature conditional.
+   */
+  const isFiltered =
+    Boolean(searchMatch) ||
+    activeCategory !== null ||
+    activeTags.size > 0 ||
+    minRating > 0 ||
+    maxDistanceKm > 0;
+
+  const activeCafeIds = useMemo(
+    () => (isFiltered ? new Set(displayedCafes.map((cafe) => cafe.id)) : null),
+    [isFiltered, displayedCafes]
+  );
 
   // The results panel shows whenever ANY criterion — manual filter or
   // search — is active, combining both into one label (e.g. "☕ Cafe ·
@@ -376,18 +418,30 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     const width = container.clientWidth;
     const height = container.clientHeight;
 
+    // The container runs edge to edge under the notch and the home
+    // indicator, and fitBounds measures in container pixels — so padding
+    // derived only from our own panels still lets a pin settle under the
+    // hardware. On a landscape iPhone the left inset alone is 44px, wider
+    // than the 16px gutter below.
+    const safe = readSafeAreaInsets();
+
     if (isMobile) {
       // Top bar and ticker sit over the map's top edge; the sheet takes
       // the bottom. Clamped so the two never squeeze the visible strip
       // below ~140px, which MapLibre needs to place a camera at all.
-      const top = Math.min(150, height * 0.22);
-      const bottom = Math.max(0, Math.min(height * 0.55, height - top - 140));
-      return { top, bottom, left: 16, right: 16 };
+      const top = Math.min(150, height * 0.22) + safe.top;
+      const bottom = Math.max(0, Math.min(height * 0.55, height - top - 140)) + safe.bottom;
+      return { top, bottom, left: 16 + safe.left, right: 16 + safe.right };
     }
 
     // Desktop: the panel column is pinned to the right at 380px wide plus
     // its own margins, and the top bar overlays the top.
-    return { top: 96, bottom: 32, left: 32, right: Math.min(420, width * 0.42) };
+    return {
+      top: 96 + safe.top,
+      bottom: 32 + safe.bottom,
+      left: 32 + safe.left,
+      right: Math.min(420, width * 0.42) + safe.right,
+    };
   }
 
   function fitMapToCafes(target: Cafe[]) {
@@ -774,9 +828,12 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
         <div className="map-content-layer relative z-10 flex min-h-0 flex-1 flex-col gap-1.5 sm:gap-2 lg:flex-row">
           <div className="map-canvas-shell relative h-[min(56dvh,34rem)] min-h-[18rem] min-w-0 shrink-0 overflow-hidden rounded-3xl shadow-xl sm:h-[50vh] lg:h-auto lg:flex-1">
             <MapView placingMode={placingMode} onMapClick={handleMapClick} onMapReady={setMap} showRotationControls />
+            {/* Every cafe, plus which ones match: non-matching places are
+                dimmed in place rather than unmounted. */}
             <CafeMarkers
               map={map}
-              cafes={displayedCafes}
+              cafes={cafes}
+              activeIds={activeCafeIds}
               selectedId={selected?.kind === "cafe" ? selected.item.id : null}
               onSelect={selectCafeFromMap}
             />
