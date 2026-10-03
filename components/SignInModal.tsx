@@ -35,12 +35,12 @@ export default function SignInModal({ onClose }: SignInModalProps) {
         </DialogHeader>
 
         <div className="space-y-2.5">
-          {error && <p className="text-[11px] text-red-500">{error}</p>}
+          {error && <p className="text-[11px] text-danger">{error}</p>}
           <button
             type="button"
             onClick={handleGoogleSignIn}
             disabled={busy}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-200 bg-white py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-line bg-white py-2 text-sm font-medium text-ink hover:bg-paper disabled:opacity-50"
           >
             <svg viewBox="0 0 48 48" className="h-4 w-4" aria-hidden="true">
               <path

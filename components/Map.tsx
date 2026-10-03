@@ -10,21 +10,18 @@ import {
 import "maplibre-gl/dist/maplibre-gl.css";
 import "@/lib/mapWorker";
 import {
-  BUILDING_HEIGHT_COLOR_RAMP,
   DEFAULT_ZOOM,
   GENERAL_POI_LAYER_IDS,
   DEFAULT_MAP_CENTER,
   KEEP_POI_CLASSES,
   MAP_BACKGROUND_COLOR,
   OPENFREEMAP_STYLE_URL,
-  ROAD_LINE_COLOR_OVERRIDES,
   TELANGANA_BOUNDS,
   TELANGANA_MAX_ZOOM,
   TELANGANA_MIN_ZOOM,
   DEFAULT_BEARING,
   DEFAULT_PITCH,
 } from "@/lib/mapStyle";
-import { darkenMapStyle } from "@/lib/darkenMapStyle";
 
 type PlacingMode = "cafe" | "billboard" | "aircraft" | "rail" | null;
 
@@ -71,28 +68,21 @@ export default function Map({ placingMode, onMapClick, onMapReady, showRotationC
     map.addControl(new NavigationControl({ visualizePitch: true }), "bottom-right");
 
     map.on("load", () => {
-      // Generic pass first (inverts every layer's colors — see
-      // lib/darkenMapStyle.ts for why this beats hand-tuning ~90 layers),
-      // then the hand-picked building/road overrides below run after and
-      // win, since those need real design choices the generic inversion
-      // can't make on its own (a height-based ramp, road hierarchy).
-      darkenMapStyle(map);
+      // The map is light now, so OpenFreeMap's "liberty" style is used very
+      // nearly as it ships — it already reads as a paper map, which is what
+      // sits well under ivory panels. The runtime dark inversion that used
+      // to run here (lib/darkenMapStyle.ts), and the charcoal building ramp
+      // and faint-white road hierarchy tuned on top of it
+      // (BUILDING_HEIGHT_COLOR_RAMP, ROAD_LINE_COLOR_OVERRIDES), are kept in
+      // the tree: they are a working dark map, and one call brings it back.
+      //
+      // Two adjustments remain, because they are about this product rather
+      // than about light versus dark: the page's paper behind the tiles, so
+      // the seam between map and page does not read as two whites, and the
+      // POI narrowing below.
       map.setPaintProperty("background", "background-color", MAP_BACKGROUND_COLOR);
 
       const layers = map.getStyle().layers ?? [];
-      const buildingLayer = layers.find(
-        (layer) => layer.type === "fill-extrusion" && layer.id.includes("building")
-      );
-      if (buildingLayer) {
-        map.setPaintProperty(buildingLayer.id, "fill-extrusion-color", BUILDING_HEIGHT_COLOR_RAMP);
-      }
-
-      for (const layer of layers) {
-        const color = ROAD_LINE_COLOR_OVERRIDES[layer.id];
-        if (color && layer.type === "line") {
-          map.setPaintProperty(layer.id, "line-color", color);
-        }
-      }
 
       for (const layerId of GENERAL_POI_LAYER_IDS) {
         const layer = layers.find((l) => l.id === layerId);

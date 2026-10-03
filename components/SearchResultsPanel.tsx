@@ -80,18 +80,18 @@ export default function SearchResultsPanel({ label, cafes, onSelect, onClose, pa
 
   return (
     <div className="panel-elevated w-full shrink-0 overflow-hidden rounded-3xl">
-      <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3 dark:border-neutral-800/80">
+      <div className="flex items-center justify-between border-b border-line px-4 py-3">
         <div className="min-w-0">
-          <div className="truncate text-[13.5px] font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
+          <div className="truncate text-[13.5px] font-semibold tracking-tight text-ink">
             {label}
           </div>
-          <div className="text-[11px] text-neutral-400">
+          <div className="text-[11px] text-ink-muted">
             {cafes.length} match{cafes.length === 1 ? "" : "es"}
           </div>
         </div>
         <button
           onClick={onClose}
-          className="panel-close-button shrink-0 rounded-full text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-200"
+          className="panel-close-button shrink-0 rounded-full text-ink-muted transition-colors hover:bg-ink/5 hover:text-ink"
           aria-label="Close"
         >
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" className="h-4 w-4">
@@ -101,7 +101,7 @@ export default function SearchResultsPanel({ label, cafes, onSelect, onClose, pa
       </div>
 
       {cafes.length === 0 ? (
-        <div className="px-4 py-6 text-center text-sm text-neutral-400">No cafes match yet.</div>
+        <div className="px-4 py-6 text-center text-sm text-ink-muted">No cafes match yet.</div>
       ) : (
         <div className="relative">
           <div
@@ -112,18 +112,18 @@ export default function SearchResultsPanel({ label, cafes, onSelect, onClose, pa
             {pages.map((page, i) => (
               <div
                 key={i}
-                className={`w-full shrink-0 snap-start divide-y divide-neutral-800/80 py-1 ${pages.length > 1 ? "px-9" : "px-2"}`}
+                className={`w-full shrink-0 snap-start divide-y divide-line py-1 ${pages.length > 1 ? "px-9" : "px-2"}`}
               >
                 {page.map((cafe) => (
                   <button
                     key={cafe.id}
                     onClick={() => onSelect(cafe)}
-                    className="flex w-full items-center gap-3 px-2 py-2.5 text-left hover:bg-white/10"
+                    className="flex w-full items-center gap-3 px-2 py-2.5 text-left hover:bg-ink/5"
                   >
                     <span className="text-lg leading-none">{cafeIcon(cafe)}</span>
                     <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-medium text-neutral-100">{cafe.name}</div>
-                      <div className="truncate text-xs text-neutral-400">
+                      <div className="truncate text-sm font-medium text-ink">{cafe.name}</div>
+                      <div className="truncate text-xs text-ink-muted">
                         {cafe.category && cafe.category in CATEGORY_SHORT_LABELS
                           ? CATEGORY_SHORT_LABELS[cafe.category as Category]
                           : cafe.category}
@@ -142,7 +142,7 @@ export default function SearchResultsPanel({ label, cafes, onSelect, onClose, pa
                 onClick={() => goToPage(pageIndex - 1)}
                 disabled={pageIndex === 0}
                 aria-label="Previous page"
-                className="absolute top-1/2 left-1 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-neutral-900/80 text-neutral-200 shadow-md hover:bg-white/10 disabled:pointer-events-none disabled:opacity-0"
+                className="absolute top-1/2 left-1 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-ink/90 text-ink shadow-md hover:bg-ink/5 disabled:pointer-events-none disabled:opacity-0"
               >
                 <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
                   <path d="M12 5l-5 5 5 5" />
@@ -152,7 +152,7 @@ export default function SearchResultsPanel({ label, cafes, onSelect, onClose, pa
                 onClick={() => goToPage(pageIndex + 1)}
                 disabled={pageIndex === pages.length - 1}
                 aria-label="Next page"
-                className="absolute top-1/2 right-1 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-neutral-900/80 text-neutral-200 shadow-md hover:bg-white/10 disabled:pointer-events-none disabled:opacity-0"
+                className="absolute top-1/2 right-1 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-ink/90 text-ink shadow-md hover:bg-ink/5 disabled:pointer-events-none disabled:opacity-0"
               >
                 <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
                   <path d="M8 5l5 5-5 5" />
@@ -170,7 +170,7 @@ export default function SearchResultsPanel({ label, cafes, onSelect, onClose, pa
               key={i}
               onClick={() => goToPage(i)}
               aria-label={`Go to page ${i + 1}`}
-              className={`h-1.5 rounded-full transition-all ${i === pageIndex ? "w-4 bg-amber-400" : "w-1.5 bg-neutral-600 hover:bg-neutral-400"}`}
+              className={`h-1.5 rounded-full transition-all ${i === pageIndex ? "w-4 bg-lamp" : "w-1.5 bg-ink/70 hover:bg-ink/40"}`}
             />
           ))}
         </div>

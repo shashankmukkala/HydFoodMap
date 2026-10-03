@@ -51,7 +51,7 @@ export default function CollectionsPanel({
         headerAction={
           <button
             onClick={() => setOpenId(null)}
-            className="rounded-full p-1.5 text-neutral-400 hover:bg-white/10"
+            className="rounded-full p-1.5 text-ink-muted hover:bg-ink/5"
             aria-label="Back to collections"
           >
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
@@ -62,7 +62,7 @@ export default function CollectionsPanel({
         onClose={onClose}
       >
         {openCafes.length === 0 && (
-          <div className="px-3 py-6 text-center text-sm text-neutral-400">
+          <div className="px-3 py-6 text-center text-sm text-ink-muted">
             No cafes in this collection yet. Add one from a cafe&apos;s detail card.
           </div>
         )}
@@ -70,15 +70,15 @@ export default function CollectionsPanel({
           <button
             key={cafe.id}
             onClick={() => onSelectCafe(cafe)}
-            className="flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-white/10"
+            className="flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-ink/5"
           >
             <span className="text-lg leading-none">☕</span>
             <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">
+              <div className="truncate text-sm font-medium text-ink">
                 {cafe.name}
               </div>
               {cafe.category && (
-                <div className="truncate text-xs text-neutral-400">{shortCategory(cafe.category)}</div>
+                <div className="truncate text-xs text-ink-muted">{shortCategory(cafe.category)}</div>
               )}
             </div>
           </button>
@@ -93,17 +93,17 @@ export default function CollectionsPanel({
       subtitle={`${collections.length} lists`}
       onClose={onClose}
       footer={
-        <form onSubmit={submitNew} className="flex gap-1.5 border-t border-neutral-100 p-2.5 dark:border-neutral-800">
+        <form onSubmit={submitNew} className="flex gap-1.5 border-t border-line p-2.5">
           <input
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             placeholder="New collection name…"
-            className="min-w-0 flex-1 rounded-lg border border-neutral-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100"
+            className="min-w-0 flex-1 rounded-lg border border-line px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ink/20"
           />
           <button
             type="submit"
             disabled={!newName.trim()}
-            className="rounded-lg bg-amber-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-600 disabled:opacity-50"
+            className="rounded-lg bg-ink px-3 py-1.5 text-sm font-medium text-white hover:bg-ink/85 disabled:opacity-50"
           >
             Add
           </button>
@@ -111,31 +111,31 @@ export default function CollectionsPanel({
       }
     >
       {collections.length === 0 && (
-        <div className="px-3 py-6 text-center text-sm text-neutral-400">
+        <div className="px-3 py-6 text-center text-sm text-ink-muted">
           No collections yet. Create one below, or start one from a cafe&apos;s detail card.
         </div>
       )}
       {collections.map((collection) => (
         <div
           key={collection.id}
-          className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-white/10"
+          className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-ink/5"
         >
           <button onClick={() => setOpenId(collection.id)} className="flex min-w-0 flex-1 items-center gap-3 text-left">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-50 text-base dark:bg-amber-950">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-lamp/15 text-base">
               📁
             </span>
             <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">
+              <div className="truncate text-sm font-medium text-ink">
                 {collection.name}
               </div>
-              <div className="text-xs text-neutral-400">
+              <div className="text-xs text-ink-muted">
                 {collection.cafeIds.length} {collection.cafeIds.length === 1 ? "cafe" : "cafes"}
               </div>
             </div>
           </button>
           <button
             onClick={() => onDelete(collection.id)}
-            className="shrink-0 rounded-full p-1.5 text-neutral-300 opacity-100 hover:bg-white/10 hover:text-neutral-100 sm:opacity-0 sm:group-hover:opacity-100"
+            className="shrink-0 rounded-full p-1.5 text-ink-muted opacity-100 hover:bg-ink/5 hover:text-ink sm:opacity-0 sm:group-hover:opacity-100"
             aria-label={`Delete ${collection.name}`}
           >
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">

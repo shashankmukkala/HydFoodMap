@@ -62,60 +62,60 @@ export default function PlaceBillboardForm({ coords, initialAdType = "billboard"
   return (
     <PanelShell title={adType === "aircraft" ? "Aircraft banner" : "Place a billboard"} onClose={onCancel}>
       <form onSubmit={handleSubmit} className="px-2 pb-2">
-        {adType !== "aircraft" && <div className="rounded-lg bg-neutral-50 px-3 py-2 text-xs dark:bg-neutral-800/60">
-          {addressStatus === "loading" && <span className="text-neutral-400">Locating…</span>}
+        {adType !== "aircraft" && <div className="rounded-lg bg-paper px-3 py-2 text-xs">
+          {addressStatus === "loading" && <span className="text-ink-muted">Locating…</span>}
           {addressStatus === "error" && (
-            <span className="text-amber-600 dark:text-amber-400">
+            <span className="text-lamp-ink">
               Couldn&apos;t resolve a real address for this point — drag the pin on the map to adjust it
               before saving.
             </span>
           )}
           {addressStatus === "idle" && address && (
             <>
-              <span className="font-medium text-neutral-700 dark:text-neutral-200">{address}</span>
-              <div className="mt-0.5 text-neutral-400">
+              <span className="font-medium text-ink">{address}</span>
+              <div className="mt-0.5 text-ink-muted">
                 {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)} · drag the pin on the map to adjust
               </div>
             </>
           )}
         </div>}
 
-        <label className="mt-4 block text-xs font-medium text-neutral-600">
+        <label className="mt-4 block text-xs font-medium text-ink-muted">
           {adType === "aircraft" ? "Ad banner text" : "Name"}
         </label>
         <input
           autoFocus
           value={adType === "aircraft" ? bannerText : name}
           onChange={(e) => (adType === "aircraft" ? setBannerText(e.target.value) : setName(e.target.value))}
-          className="mt-1 w-full rounded-md border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+          className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ink/20"
           placeholder={adType === "aircraft" ? "Weekend sale · 20% off" : "Weekend Sale"}
         />
 
-        {initialAdType === "billboard" && <label className="mt-3 block text-xs font-medium text-neutral-600">Ad format</label>}
+        {initialAdType === "billboard" && <label className="mt-3 block text-xs font-medium text-ink-muted">Ad format</label>}
         {initialAdType === "billboard" && <select
           value={adType}
           onChange={(e) => setAdType(e.target.value as Billboard["ad_type"])}
-          className="mt-1 w-full rounded-md border border-neutral-200 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-neutral-700"
+          className="mt-1 w-full rounded-md border border-line bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ink/20"
         >
           <option value="billboard">Standard billboard</option>
           <option value="aircraft">Aircraft with banner</option>
         </select>}
-        {initialAdType === "billboard" && <p className="mt-1 text-[11px] text-neutral-400">Aircraft ads fly across the map with a branded banner behind them.</p>}
+        {initialAdType === "billboard" && <p className="mt-1 text-[11px] text-ink-muted">Aircraft ads fly across the map with a branded banner behind them.</p>}
 
 
-        <label className="mt-3 block text-xs font-medium text-neutral-600">Banner image URL</label>
+        <label className="mt-3 block text-xs font-medium text-ink-muted">Banner image URL</label>
         <input
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
-          className="mt-1 w-full rounded-md border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+          className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ink/20"
           placeholder="https://.../brand-banner.png"
         />
 
         {adType === "aircraft" && (
           <div className="aircraft-preview mt-3">
             <div className="mb-1.5 flex items-center justify-between">
-              <span className="text-[10px] font-semibold tracking-[0.14em] text-amber-300 uppercase">Live preview</span>
-              <span className="text-[10px] text-neutral-500">Sky lane</span>
+              <span className="text-[10px] font-semibold tracking-[0.14em] text-lamp-ink uppercase">Live preview</span>
+              <span className="text-[10px] text-ink-muted">Sky lane</span>
             </div>
             <div className="aircraft-preview-stage">
               <div className="aircraft-ad aircraft-ad-preview">
@@ -144,12 +144,12 @@ export default function PlaceBillboardForm({ coords, initialAdType = "billboard"
 
         {adType !== "aircraft" && (
           <>
-            <label className="mt-3 block text-xs font-medium text-neutral-600">Click destination URL</label>
+            <label className="mt-3 block text-xs font-medium text-ink-muted">Click destination URL</label>
             <input
               type="url"
               value={targetUrl}
               onChange={(e) => setTargetUrl(e.target.value)}
-              className="mt-1 w-full rounded-md border border-neutral-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ink/20"
               placeholder="https://brand.example/offer"
             />
           </>
@@ -157,52 +157,52 @@ export default function PlaceBillboardForm({ coords, initialAdType = "billboard"
 
         {adType !== "aircraft" && <div className="mt-3 grid grid-cols-3 gap-2">
           <div>
-            <label className="block text-xs font-medium text-neutral-600">Width (m)</label>
+            <label className="block text-xs font-medium text-ink-muted">Width (m)</label>
             <input
               type="number"
               min={1}
               value={widthM}
               onChange={(e) => setWidthM(Number(e.target.value))}
-              className="mt-1 w-full rounded-md border border-neutral-200 px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="mt-1 w-full rounded-md border border-line px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ink/20"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-neutral-600">Height (m)</label>
+            <label className="block text-xs font-medium text-ink-muted">Height (m)</label>
             <input
               type="number"
               min={1}
               value={heightM}
               onChange={(e) => setHeightM(Number(e.target.value))}
-              className="mt-1 w-full rounded-md border border-neutral-200 px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="mt-1 w-full rounded-md border border-line px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ink/20"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-neutral-600">Heading (°)</label>
+            <label className="block text-xs font-medium text-ink-muted">Heading (°)</label>
             <input
               type="number"
               value={headingDeg}
               onChange={(e) => setHeadingDeg(Number(e.target.value))}
-              className="mt-1 w-full rounded-md border border-neutral-200 px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="mt-1 w-full rounded-md border border-line px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ink/20"
             />
           </div>
         </div>}
 
-        {adType !== "aircraft" && <div className="mt-3 flex items-center gap-3 rounded-2xl border border-amber-900/40 bg-amber-950/30 px-3 py-2.5">
+        {adType !== "aircraft" && <div className="mt-3 flex items-center gap-3 rounded-2xl border border-lamp/40 bg-lamp/15 px-3 py-2.5">
           <div className="billboard-compass" aria-hidden="true">
             <span className="billboard-compass-north">N</span>
             <span className="billboard-compass-arrow" style={{ transform: `rotate(${headingDeg}deg)` }} />
             <span className="billboard-compass-dot" />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-[10px] font-semibold tracking-[0.14em] text-amber-300 uppercase">Banner direction</div>
-            <div className="mt-0.5 text-xs leading-4 text-neutral-400">Choose the face direction, then inspect it with the map rotation controls.</div>
+            <div className="text-[10px] font-semibold tracking-[0.14em] text-lamp-ink uppercase">Banner direction</div>
+            <div className="mt-0.5 text-xs leading-4 text-ink-muted">Choose the face direction, then inspect it with the map rotation controls.</div>
             <div className="mt-2 flex flex-wrap gap-1">
               {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
                 <button
                   key={angle}
                   type="button"
                   onClick={() => setHeadingDeg(angle)}
-                  className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${headingDeg === angle ? "bg-amber-500 text-white" : "bg-white/10 text-neutral-300 hover:bg-white/15"}`}
+                  className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${headingDeg === angle ? "bg-ink text-white" : "bg-ink/5 text-ink-muted hover:bg-ink/10"}`}
                 >
                   {angle === 0 ? "N" : angle === 45 ? "NE" : angle === 90 ? "E" : angle === 135 ? "SE" : angle === 180 ? "S" : angle === 225 ? "SW" : angle === 270 ? "W" : "NW"}
                 </button>
@@ -211,20 +211,20 @@ export default function PlaceBillboardForm({ coords, initialAdType = "billboard"
           </div>
         </div>}
 
-        {error && <p className="mt-2 text-xs text-red-500">{error}</p>}
+        {error && <p className="mt-2 text-xs text-danger">{error}</p>}
 
         <div className="mt-4 flex justify-end gap-2">
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-md px-3 py-2 text-sm text-neutral-400 hover:bg-white/10"
+            className="rounded-md px-3 py-2 text-sm text-ink-muted hover:bg-ink/5"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={submitting || !(adType === "aircraft" ? bannerText.trim() : name.trim())}
-            className="rounded-md bg-amber-500 px-3 py-2 text-sm font-medium text-white hover:bg-amber-600 disabled:opacity-50"
+            className="rounded-md bg-ink px-3 py-2 text-sm font-medium text-white hover:bg-ink/85 disabled:opacity-50"
           >
             {submitting ? "Saving…" : adType === "aircraft" ? "Launch aircraft banner" : "Place billboard"}
           </button>

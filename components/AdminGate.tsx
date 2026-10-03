@@ -74,7 +74,7 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
         <p>Signed in as {session?.user.email ?? "an account"} without admin access.</p>
         <button
           onClick={() => signOut()}
-          className="mt-4 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/15"
+          className="mt-4 rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper hover:bg-ink/85"
         >
           Sign out and try another account
         </button>
@@ -87,10 +87,10 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
 
 function FullPageMessage({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
-    <div className="flex h-dvh w-dvw items-center justify-center bg-[#0b0b0d] px-4 text-center text-neutral-100">
+    <div className="flex h-dvh w-dvw items-center justify-center bg-paper px-4 text-center text-ink">
       <div>
         <p className="text-sm font-medium">{title}</p>
-        {children && <div className="mt-2 text-xs text-neutral-400">{children}</div>}
+        {children && <div className="mt-2 text-xs text-ink-muted">{children}</div>}
       </div>
     </div>
   );
@@ -146,14 +146,14 @@ function AdminLoginForm({
   }
 
   return (
-    <div className="flex h-dvh w-dvw items-center justify-center bg-[#0b0b0d] px-4">
+    <div className="flex h-dvh w-dvw items-center justify-center bg-paper px-4">
       <form
         onSubmit={handleSubmit}
         className="panel-elevated w-full max-w-sm space-y-3 rounded-3xl p-6"
       >
         <div>
-          <h1 className="text-lg font-semibold text-neutral-100">Admin sign-in</h1>
-          <p className="mt-1 text-xs text-neutral-400">Restricted to HydCafeMap admins.</p>
+          <h1 className="text-[28px] leading-tight text-ink">Admin sign-in</h1>
+          <p className="mt-1 text-xs text-ink-muted">Restricted to HydCafeMap admins.</p>
         </div>
 
         <input
@@ -162,7 +162,7 @@ function AdminLoginForm({
           placeholder="Admin ID"
           autoComplete="username"
           autoFocus
-          className="w-full rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm text-neutral-100 focus:outline-none"
+          className="w-full rounded-lg border border-line bg-transparent px-3 py-2 text-sm text-ink focus:outline-none"
         />
 
         <input
@@ -171,15 +171,15 @@ function AdminLoginForm({
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           autoComplete="current-password"
-          className="w-full rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm text-neutral-100 focus:outline-none"
+          className="w-full rounded-lg border border-line bg-transparent px-3 py-2 text-sm text-ink focus:outline-none"
         />
 
-        {error && <p className="text-[11px] text-red-400">{error}</p>}
+        {error && <p className="text-[11px] text-danger">{error}</p>}
 
         <button
           type="submit"
           disabled={!idValid || !password || busy}
-          className="w-full rounded-lg bg-emerald-600 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
+          className="w-full rounded-lg bg-ink py-2 text-sm font-medium text-white hover:bg-ink/85 disabled:opacity-50"
         >
           {busy ? "Signing in…" : "Sign in"}
         </button>
@@ -187,7 +187,7 @@ function AdminLoginForm({
         <button
           type="button"
           onClick={() => setMode("reset")}
-          className="w-full text-center text-[11px] text-neutral-400 hover:underline"
+          className="w-full text-center text-[11px] text-ink-muted hover:underline"
         >
           Forgot password?
         </button>
@@ -257,17 +257,17 @@ function AdminResetPasswordForm({
         onChange={(e) => setValue(e.target.value.replace(/\D/g, "").slice(0, 5))}
         placeholder={placeholder}
         inputMode="numeric"
-        className="w-full rounded-lg border border-white/10 bg-transparent px-3 py-2 text-center text-sm text-neutral-100 focus:outline-none"
+        className="w-full rounded-lg border border-line bg-transparent px-3 py-2 text-center text-sm text-ink focus:outline-none"
       />
     );
   }
 
   return (
-    <div className="flex h-dvh w-dvw items-center justify-center bg-[#0b0b0d] px-4">
+    <div className="flex h-dvh w-dvw items-center justify-center bg-paper px-4">
       <form onSubmit={handleSubmit} className="panel-elevated w-full max-w-sm space-y-3 rounded-3xl p-6">
         <div>
-          <h1 className="text-lg font-semibold text-neutral-100">Reset admin password</h1>
-          <p className="mt-1 text-xs text-neutral-400">
+          <h1 className="text-[28px] leading-tight text-ink">Reset admin password</h1>
+          <p className="mt-1 text-xs text-ink-muted">
             Enter the first 5 and last 5 digits of each of your two recovery numbers.
           </p>
         </div>
@@ -278,11 +278,11 @@ function AdminResetPasswordForm({
           placeholder="Admin ID"
           autoComplete="username"
           autoFocus
-          className="w-full rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm text-neutral-100 focus:outline-none"
+          className="w-full rounded-lg border border-line bg-transparent px-3 py-2 text-sm text-ink focus:outline-none"
         />
 
         <div>
-          <p className="mb-1 text-[11px] text-neutral-400">Number 1</p>
+          <p className="mb-1 text-[11px] text-ink-muted">Number 1</p>
           <div className="grid grid-cols-2 gap-2">
             {digitField(num1First5, setNum1First5, "First 5 digits")}
             {digitField(num1Last5, setNum1Last5, "Last 5 digits")}
@@ -290,7 +290,7 @@ function AdminResetPasswordForm({
         </div>
 
         <div>
-          <p className="mb-1 text-[11px] text-neutral-400">Number 2</p>
+          <p className="mb-1 text-[11px] text-ink-muted">Number 2</p>
           <div className="grid grid-cols-2 gap-2">
             {digitField(num2First5, setNum2First5, "First 5 digits")}
             {digitField(num2Last5, setNum2Last5, "Last 5 digits")}
@@ -303,15 +303,15 @@ function AdminResetPasswordForm({
           onChange={(e) => setNewPassword(e.target.value)}
           placeholder="New password (min 8 characters)"
           autoComplete="new-password"
-          className="w-full rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm text-neutral-100 focus:outline-none"
+          className="w-full rounded-lg border border-line bg-transparent px-3 py-2 text-sm text-ink focus:outline-none"
         />
 
-        {error && <p className="text-[11px] text-red-400">{error}</p>}
+        {error && <p className="text-[11px] text-danger">{error}</p>}
 
         <button
           type="submit"
           disabled={!formValid || busy}
-          className="w-full rounded-lg bg-emerald-600 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
+          className="w-full rounded-lg bg-ink py-2 text-sm font-medium text-white hover:bg-ink/85 disabled:opacity-50"
         >
           {busy ? "Resetting…" : "Reset password"}
         </button>
@@ -319,7 +319,7 @@ function AdminResetPasswordForm({
         <button
           type="button"
           onClick={onCancel}
-          className="w-full text-center text-[11px] text-neutral-400 hover:underline"
+          className="w-full text-center text-[11px] text-ink-muted hover:underline"
         >
           Back to sign in
         </button>

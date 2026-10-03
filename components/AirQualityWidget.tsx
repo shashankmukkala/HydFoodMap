@@ -45,20 +45,20 @@ export default function AirQualityWidget({ pill = false }: AirQualityWidgetProps
     return (
       <div
         title={`Air quality: ${label}`}
-        className="flex shrink-0 items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-2 text-sm font-medium whitespace-nowrap text-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+        className="flex shrink-0 items-center gap-1.5 rounded-full bg-ink/5 px-3 py-2 text-sm font-medium whitespace-nowrap text-ink"
       >
         <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: color }} />
         <span className="tabular-nums">{aqi.aqi}</span>
-        <span className="hidden text-neutral-400 md:inline">AQI</span>
+        <span className="hidden text-ink-muted md:inline">AQI</span>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center gap-1 rounded-2xl bg-neutral-50 px-2 py-3 text-center ring-1 ring-neutral-100 dark:bg-neutral-800/60 dark:ring-neutral-800">
+    <div className="flex flex-col items-center gap-1 rounded-2xl bg-paper px-2 py-3 text-center ring-1 ring-line">
       <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: color }} />
-      <div className="text-[15px] font-semibold tabular-nums text-neutral-800 dark:text-neutral-100">{aqi.aqi}</div>
-      <div className="text-[10px] leading-tight text-neutral-500 dark:text-neutral-400">{label}</div>
+      <div className="text-[15px] font-semibold tabular-nums text-ink">{aqi.aqi}</div>
+      <div className="text-[10px] leading-tight text-ink-muted">{label}</div>
     </div>
   );
 }

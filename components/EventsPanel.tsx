@@ -29,7 +29,7 @@ export default function EventsPanel({ events, isAdmin, onAddClick, onDelete, onC
         isAdmin && (
           <button
             onClick={onAddClick}
-            className="rounded-full bg-amber-500 px-3 py-1 text-xs font-medium text-white hover:bg-amber-600"
+            className="rounded-full bg-ink px-3 py-1 text-xs font-medium text-white hover:bg-ink/85"
           >
             + Add
           </button>
@@ -37,33 +37,33 @@ export default function EventsPanel({ events, isAdmin, onAddClick, onDelete, onC
       }
     >
       {upcoming.length === 0 && (
-        <div className="px-3 py-6 text-center text-sm text-neutral-400">
+        <div className="px-3 py-6 text-center text-sm text-ink-muted">
           {isAdmin ? "No events yet. Add the first one." : "No events yet — check back soon."}
         </div>
       )}
       {upcoming.map((event) => (
         <div
           key={event.id}
-          className="group relative flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.03] px-3 py-3 transition-colors hover:border-amber-400/20 hover:bg-white/[0.07]"
+          className="group relative flex items-start gap-3 rounded-2xl border border-line bg-white/[0.03] px-3 py-3 transition-colors hover:border-line-strong hover:bg-ink/5"
         >
-          <div className={`flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-xl leading-none ${event.event_date === today ? "bg-rose-950/70" : "bg-amber-950/70"}`}>
-            <span className={`text-[9px] font-bold tracking-wide uppercase ${event.event_date === today ? "text-rose-300" : "text-amber-300"}`}>
+          <div className={`flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-xl leading-none ${event.event_date === today ? "bg-danger/10" : "bg-lamp/20"}`}>
+            <span className={`text-[9px] font-bold tracking-wide uppercase ${event.event_date === today ? "text-danger" : "text-lamp-ink"}`}>
               {event.event_date === today ? "LIVE" : new Date(`${event.event_date}T00:00:00`).toLocaleDateString("en-IN", { month: "short" })}
             </span>
-            <span className={`mt-1 text-sm font-bold ${event.event_date === today ? "text-rose-200" : "text-amber-200"}`}>
+            <span className={`mt-1 text-sm font-bold ${event.event_date === today ? "text-danger" : "text-lamp-ink"}`}>
               {event.event_date === today ? "NOW" : new Date(`${event.event_date}T00:00:00`).getDate()}
             </span>
           </div>
           <div className="min-w-0 flex-1">
-            <div className="truncate text-sm font-semibold text-neutral-100">
+            <div className="truncate text-sm font-semibold text-ink">
               {event.name}
             </div>
-            <div className="mt-0.5 truncate text-xs text-neutral-400">
+            <div className="mt-0.5 truncate text-xs text-ink-muted">
               {formatDate(event.event_date)}
               {event.location ? ` · ${event.location}` : ""}
             </div>
             {event.description && (
-              <div className="mt-1.5 line-clamp-2 text-xs leading-4 text-neutral-400">
+              <div className="mt-1.5 line-clamp-2 text-xs leading-4 text-ink-muted">
                 {event.description}
               </div>
             )}
@@ -71,7 +71,7 @@ export default function EventsPanel({ events, isAdmin, onAddClick, onDelete, onC
           {isAdmin && (
             <button
               onClick={() => onDelete(event.id)}
-              className="shrink-0 rounded-full p-1.5 text-neutral-300 opacity-100 hover:bg-white/10 hover:text-neutral-100 sm:opacity-0 sm:group-hover:opacity-100"
+              className="shrink-0 rounded-full p-1.5 text-ink-muted opacity-100 hover:bg-ink/5 hover:text-ink sm:opacity-0 sm:group-hover:opacity-100"
               aria-label={`Delete ${event.name}`}
             >
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">

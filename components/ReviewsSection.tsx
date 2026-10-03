@@ -171,7 +171,7 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
   }
 
   return (
-    <div className="border-t border-neutral-100 px-4 py-3 dark:border-neutral-800">
+    <div className="border-t border-line px-4 py-3">
       {/* No rating, no "be the first", no verified explainer and no trigger
           here any more — the seal at the top of the card already says all
           four, and saying them twice in one card read as the card repeating
@@ -181,20 +181,20 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
       {!isAdmin && formOpen && (
         <div className="mt-2.5">
           {gate.status === "confirm" && (
-            <div className="rounded-md bg-neutral-50 px-2.5 py-2 text-xs text-neutral-600 dark:bg-neutral-800/60 dark:text-neutral-300">
+            <div className="rounded-md bg-paper px-2.5 py-2 text-xs text-ink-muted">
               <p>We&apos;ll ask your browser for your location, just to confirm you&apos;re at this cafe — that&apos;s what keeps reviews here real. It&apos;s only checked once, right now.</p>
               <div className="mt-2 flex gap-2">
                 <button
                   type="button"
                   onClick={checkLocation}
-                  className="rounded-md bg-amber-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-600"
+                  className="rounded-md bg-ink px-3 py-1.5 text-xs font-medium text-white hover:bg-ink/85"
                 >
                   Share location & continue
                 </button>
                 <button
                   type="button"
                   onClick={cancelReview}
-                  className="rounded-md px-3 py-1.5 text-xs text-neutral-400 hover:bg-white/10"
+                  className="rounded-md px-3 py-1.5 text-xs text-ink-muted hover:bg-ink/5"
                 >
                   Cancel
                 </button>
@@ -202,18 +202,18 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
             </div>
           )}
           {gate.status === "locating" && (
-            <p className="text-xs text-neutral-400">Checking you&apos;re actually here…</p>
+            <p className="text-xs text-ink-muted">Checking you&apos;re actually here…</p>
           )}
           {gate.status === "checking-in" && (
-            <p className="text-xs text-neutral-400">Starting a secure visit check-in…</p>
+            <p className="text-xs text-ink-muted">Starting a secure visit check-in…</p>
           )}
           {gate.status === "waiting" && (
-            <div className="rounded-md bg-emerald-50 px-2.5 py-2 text-xs text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
+            <div className="rounded-md bg-awning/10 px-2.5 py-2 text-xs text-awning">
               ✓ Visit started. Stay here for {gate.secondsLeft} more seconds while we confirm this visit.
             </div>
           )}
           {gate.status === "too-far" && (
-            <div className="rounded-md bg-amber-50 px-2.5 py-2 text-xs text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
+            <div className="rounded-md bg-lamp/15 px-2.5 py-2 text-xs text-lamp-ink">
               You need to be at the cafe to leave a review — this keeps reviews real.{" "}
               <button onClick={cancelReview} className="font-medium underline">
                 Close
@@ -221,7 +221,7 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
             </div>
           )}
           {gate.status === "low-accuracy" && (
-            <div className="rounded-md bg-amber-50 px-2.5 py-2 text-xs text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
+            <div className="rounded-md bg-lamp/15 px-2.5 py-2 text-xs text-lamp-ink">
               Your location is not precise enough yet. Move outside or enable precise location, then try again.{' '}
               <button onClick={cancelReview} className="font-medium underline">
                 Close
@@ -229,7 +229,7 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
             </div>
           )}
           {gate.status === "error" && (
-            <div className="rounded-md bg-red-50 px-2.5 py-2 text-xs text-red-600 dark:bg-red-950/50 dark:text-red-400">
+            <div className="rounded-md bg-danger/10 px-2.5 py-2 text-xs text-danger">
               {gate.message}{" "}
               <button onClick={cancelReview} className="font-medium underline">
                 Close
@@ -239,15 +239,15 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
 
           {gate.status === "ready" && (
             <form onSubmit={submitReview} className="space-y-2">
-              <p className="text-[11px] text-emerald-600 dark:text-emerald-400">✓ Verified visit confirmed</p>
-              <p className="text-[11px] text-emerald-600 dark:text-emerald-400">✓ Precise location confirmed</p>
+              <p className="text-[11px] text-awning">✓ Verified visit confirmed</p>
+              <p className="text-[11px] text-awning">✓ Precise location confirmed</p>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
                     type="button"
                     onClick={() => setRating((prev) => (prev === star ? 0 : star))}
-                    className={`text-xl leading-none ${star <= rating ? "text-amber-400" : "text-neutral-200 dark:text-neutral-700"}`}
+                    className={`text-xl leading-none ${star <= rating ? "text-lamp-ink" : "text-ink"}`}
                     aria-label={`${star} star${star > 1 ? "s" : ""}`}
                   >
                     ★
@@ -258,14 +258,14 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
                 value={favoriteFood}
                 onChange={(e) => setFavoriteFood(e.target.value)}
                 placeholder="Food you liked the most (optional)"
-                className="w-full rounded-md border border-neutral-200 px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-neutral-700 dark:bg-neutral-800"
+                className="w-full rounded-md border border-line px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-ink/20"
               />
               <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 rows={2}
                 placeholder="What did you think? (optional)"
-                className="w-full rounded-md border border-neutral-200 px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-neutral-700 dark:bg-neutral-800"
+                className="w-full rounded-md border border-line px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-ink/20"
               />
 
               <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
@@ -276,7 +276,7 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
                   <button
                     type="button"
                     onClick={() => setPhotoDataUrl(null)}
-                    className="text-xs text-neutral-400 hover:underline"
+                    className="text-xs text-ink-muted hover:underline"
                   >
                     Remove photo
                   </button>
@@ -285,26 +285,26 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="rounded-md border border-dashed border-neutral-300 px-2.5 py-1.5 text-xs text-neutral-500 hover:border-amber-400 hover:text-amber-500 dark:border-neutral-600 dark:text-neutral-400"
+                  className="rounded-md border border-dashed border-line-strong px-2.5 py-1.5 text-xs text-ink-muted hover:border-ink hover:text-lamp-ink"
                 >
                   📸 Add a photo (optional)
                 </button>
               )}
 
-              {submitError && <p className="text-xs text-red-500">{submitError}</p>}
+              {submitError && <p className="text-xs text-danger">{submitError}</p>}
 
               <div className="flex gap-2">
                 <button
                   type="submit"
                   disabled={rating === 0 || submitting}
-                  className="rounded-md bg-amber-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-600 disabled:opacity-50"
+                  className="rounded-md bg-ink px-3 py-1.5 text-xs font-medium text-white hover:bg-ink/85 disabled:opacity-50"
                 >
                   {submitting ? "Posting…" : "Post review"}
                 </button>
                 <button
                   type="button"
                   onClick={cancelReview}
-                  className="rounded-md px-3 py-1.5 text-xs text-neutral-400 hover:bg-white/10"
+                  className="rounded-md px-3 py-1.5 text-xs text-ink-muted hover:bg-ink/5"
                 >
                   Cancel
                 </button>
@@ -328,21 +328,21 @@ export default function ReviewsSection({ cafeId, cafeLat, cafeLng, isAdmin = fal
               )}
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-amber-500">{"★".repeat(review.rating)}</span>
-                  <span className="text-neutral-400">
+                  <span className="text-lamp-ink">{"★".repeat(review.rating)}</span>
+                  <span className="text-ink-muted">
                     {review.authorName ? `${review.authorName} · ` : ""}
                     {timeAgo(review.created_at)}
                   </span>
                 </div>
                 {review.isVerified && (
-                  <span className="mt-1 inline-flex items-center rounded-full bg-emerald-50 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400">
+                  <span className="mt-1 inline-flex items-center rounded-full bg-awning/10 px-1.5 py-0.5 text-[10px] font-medium text-awning">
                     ✓ Verified visit
                   </span>
                 )}
                 {review.favorite_food && (
-                  <p className="mt-0.5 text-amber-600 dark:text-amber-400">🍽️ {review.favorite_food}</p>
+                  <p className="mt-0.5 text-lamp-ink">🍽️ {review.favorite_food}</p>
                 )}
-                {review.comment && <p className="mt-0.5 text-neutral-600 dark:text-neutral-300">{review.comment}</p>}
+                {review.comment && <p className="mt-0.5 text-ink-muted">{review.comment}</p>}
               </div>
             </div>
           ))}

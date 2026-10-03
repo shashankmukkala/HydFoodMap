@@ -50,3 +50,8 @@ next-env.d.ts
 
 # one-off local backups from data migration scripts
 scripts/*.bak
+
+# Source art for scripts/build-home-art.mjs. The generated crops in
+# public/home-*.webp are what actually ship and are committed; the 2.5MB
+# source does not need to live in git history forever.
+/assets

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "node scripts/copy-maplibre-worker.mjs"
+    "postinstall": "node scripts/copy-maplibre-worker.mjs",
+    "build:art": "node scripts/build-home-art.mjs",
+    "build:logo": "node scripts/build-logo-assets.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

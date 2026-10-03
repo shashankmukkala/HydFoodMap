@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import ExplorerWidget from "@/components/ExplorerWidget";
 import PointsWidget from "@/components/PointsWidget";
@@ -178,19 +179,17 @@ export default function Sidebar({
     const isCollapsed = collapsed && !forceExpanded;
     return (
       <div className="mb-5 flex items-center gap-2 px-0.5">
-        <span className="brand-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white shadow-sm">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
-            <path d="M4 9h13a3 3 0 0 1 0 6h-1" />
-            <path d="M4 9v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9" />
-            <path d="M8 3c0 1-1 1-1 2s1 1 1 2M12 3c0 1-1 1-1 2s1 1 1 2" />
-          </svg>
-        </span>
+        {/* The mark links home — the cover is the one place that says what
+            this is, and the drawer is where people look for a way back. */}
+        <Link href="/" aria-label="HydCafeMap home" className="brand-mark flex h-9 w-9 shrink-0 items-center justify-center">
+          <Image src="/logo-mark.png" alt="" width={256} height={256} className="h-8 w-8" />
+        </Link>
         <div
           className={`min-w-0 flex-1 overflow-hidden ${SIDEBAR_TRANSITION} ${
             isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"
           }`}
         >
-          <div className="truncate text-[15px] font-semibold whitespace-nowrap tracking-tight text-neutral-900 dark:text-neutral-100">
+          <div className="display truncate text-[21px] leading-none whitespace-nowrap text-ink">
             HydCafeMap
           </div>
         </div>
@@ -205,8 +204,8 @@ export default function Sidebar({
       <nav className="flex flex-col gap-0.5">
         {navItems.map((item) => {
           const isActive = item.href ? false : item.tab === activeTab;
-          const className = `group flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium ${SIDEBAR_TRANSITION} ${
-            isActive ? "nav-item-active" : "text-neutral-400 hover:bg-white/10 hover:text-neutral-100"
+          const className = `group flex items-center gap-2.5 rounded-md px-3 py-2.5 text-[13.5px] font-medium ${SIDEBAR_TRANSITION} ${
+            isActive ? "nav-item-active" : "text-ink-muted hover:bg-ink/5 hover:text-ink"
           }`;
           const content = (
             <>
@@ -243,8 +242,8 @@ export default function Sidebar({
           );
         })}
         {showBillboards && onPlaceBillboard && onPlaceAircraft && onPlaceRail && (
-          <div className="mt-4 border-t border-white/10 pt-3">
-            <div className={`mb-1.5 px-3 text-[10px] font-semibold tracking-[0.16em] text-neutral-500 uppercase ${isCollapsed ? "sr-only" : ""}`}>
+          <div className="mt-4 border-t border-line pt-3">
+            <div className={`mb-1.5 px-3 text-[10px] font-semibold tracking-[0.16em] text-ink-muted uppercase ${isCollapsed ? "sr-only" : ""}`}>
               Ad placements
             </div>
             {onPlaceCafe && (
@@ -254,7 +253,7 @@ export default function Sidebar({
                   onMobileClose();
                 }}
                 title={isCollapsed ? "Pin a cafe" : undefined}
-                className="group flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-100"
+                className="group flex w-full items-center gap-2.5 rounded-md px-3 py-2.5 text-[13.5px] font-medium text-ink-muted transition-colors hover:bg-ink/5 hover:text-ink"
               >
                 <span className="shrink-0">☕</span>
                 <span className={`overflow-hidden whitespace-nowrap ${SIDEBAR_TRANSITION} ${isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"}`}>
@@ -268,7 +267,7 @@ export default function Sidebar({
                 onMobileClose();
               }}
               title={isCollapsed ? "Place billboard" : undefined}
-              className="group flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-100"
+              className="group flex w-full items-center gap-2.5 rounded-md px-3 py-2.5 text-[13.5px] font-medium text-ink-muted transition-colors hover:bg-ink/5 hover:text-ink"
             >
               <span className="shrink-0">📢</span>
               <span className={`overflow-hidden whitespace-nowrap ${SIDEBAR_TRANSITION} ${isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"}`}>
@@ -281,7 +280,7 @@ export default function Sidebar({
                 onMobileClose();
               }}
               title={isCollapsed ? "Place rail ad" : undefined}
-              className="group flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-100"
+              className="group flex w-full items-center gap-2.5 rounded-md px-3 py-2.5 text-[13.5px] font-medium text-ink-muted transition-colors hover:bg-ink/5 hover:text-ink"
             >
               <span className="shrink-0">▦</span>
               <span className={`overflow-hidden whitespace-nowrap ${SIDEBAR_TRANSITION} ${isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"}`}>
@@ -294,7 +293,7 @@ export default function Sidebar({
                 onMobileClose();
               }}
               title={isCollapsed ? "Aircraft banner" : undefined}
-              className="group flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-100"
+              className="group flex w-full items-center gap-2.5 rounded-md px-3 py-2.5 text-[13.5px] font-medium text-ink-muted transition-colors hover:bg-ink/5 hover:text-ink"
             >
               <span className="shrink-0">✈</span>
               <span className={`overflow-hidden whitespace-nowrap ${SIDEBAR_TRANSITION} ${isCollapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"}`}>
@@ -316,7 +315,7 @@ export default function Sidebar({
     return (
       <div className="flex justify-center overflow-hidden pt-3">
         <span
-          className={`text-center text-[10px] whitespace-nowrap text-neutral-400 ${SIDEBAR_TRANSITION} ${
+          className={`text-center text-[10px] whitespace-nowrap text-ink-muted ${SIDEBAR_TRANSITION} ${
             isCollapsed ? "max-w-0 opacity-0" : "max-w-[200px] opacity-100"
           }`}
         >
@@ -331,7 +330,7 @@ export default function Sidebar({
       <button
         onClick={() => setCollapsed((v) => !v)}
         aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-neutral-400 hover:bg-white/10 hover:text-amber-400"
+        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-ink-muted hover:bg-ink/5 hover:text-ink"
       >
         <svg
           viewBox="0 0 20 20"

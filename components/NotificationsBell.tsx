@@ -34,7 +34,7 @@ export default function NotificationsBell() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={unreadCount > 0 ? `${unreadCount} unread notifications` : "Notifications"}
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200"
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink/5 text-ink hover:bg-ink/10"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
           <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -46,15 +46,15 @@ export default function NotificationsBell() {
       {open && (
         <div className="notifications-dropdown panel-elevated absolute top-full right-0 z-20 mt-2 max-h-[70vh] w-80 max-w-[85vw] overflow-y-auto rounded-2xl p-3">
           <div className="mb-1 flex items-center justify-between">
-            <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">Notifications</span>
+            <span className="text-xs font-semibold text-ink-muted">Notifications</span>
             {unreadCount > 0 && (
-              <button type="button" onClick={markAllRead} className="text-[11px] font-medium text-amber-600 hover:underline dark:text-amber-400">
+              <button type="button" onClick={markAllRead} className="text-[11px] font-medium text-lamp-ink hover:underline">
                 Mark all read
               </button>
             )}
           </div>
           {notifications.length === 0 ? (
-            <p className="px-1 py-3 text-xs text-neutral-400">Nothing yet.</p>
+            <p className="px-1 py-3 text-xs text-ink-muted">Nothing yet.</p>
           ) : (
             <ul className="flex flex-col gap-1">
               {notifications.map((n) => (
@@ -63,11 +63,11 @@ export default function NotificationsBell() {
                     type="button"
                     onClick={() => markRead(n.id)}
                     className={`w-full rounded-xl px-2.5 py-2 text-left text-xs leading-snug ${
-                      n.readAt ? "text-neutral-500 dark:text-neutral-400" : "bg-amber-500/10 text-neutral-900 dark:text-neutral-100"
+                      n.readAt ? "text-ink-muted" : "bg-lamp/15 text-ink"
                     }`}
                   >
                     <span>{n.message}</span>
-                    <span className="mt-0.5 block text-[10px] text-neutral-400">{timeAgo(n.createdAt)}</span>
+                    <span className="mt-0.5 block text-[10px] text-ink-muted">{timeAgo(n.createdAt)}</span>
                   </button>
                 </li>
               ))}

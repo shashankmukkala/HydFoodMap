@@ -29,19 +29,19 @@ export default function WelcomeBonusCard() {
   if (!unseen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 px-4">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-ink/40 px-4">
       <ConfettiBurst />
       <div className="panel-elevated w-full max-w-sm rounded-3xl p-6 text-center">
         <div className="text-4xl">🎉</div>
-        <h2 className="mt-2 text-lg font-semibold text-neutral-100">Welcome bonus!</h2>
-        <p className="mt-1 text-sm text-neutral-300">
-          You got <span className="font-semibold text-amber-400">{unseen.amount ?? 0} points</span>
+        <h2 className="mt-2 text-lg font-semibold text-ink">Welcome bonus!</h2>
+        <p className="mt-1 text-sm text-ink-muted">
+          You got <span className="font-semibold text-lamp-ink">{unseen.amount ?? 0} points</span>
         </p>
-        {unseen.message && <p className="mt-2 text-xs text-neutral-400">{unseen.message}</p>}
+        {unseen.message && <p className="mt-2 text-xs text-ink-muted">{unseen.message}</p>}
         <button
           type="button"
           onClick={() => markRead(unseen.id)}
-          className="mt-4 w-full rounded-full bg-amber-500 py-2 text-sm font-medium text-white hover:bg-amber-600"
+          className="mt-4 w-full rounded-full bg-ink py-2 text-sm font-medium text-white hover:bg-ink/85"
         >
           Nice!
         </button>

@@ -100,7 +100,7 @@ export default function TopBar({
       <button
         onClick={onMenuClick}
         aria-label="Open menu"
-        className={`menu-trigger flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-700 transition-colors hover:bg-emerald-100 hover:text-emerald-700 sm:h-8 sm:w-8 ${publicMode ? "" : "lg:hidden"} dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-300`}
+        className={`menu-trigger flex h-10 w-10 shrink-0 items-center justify-center transition-colors sm:h-8 sm:w-8 ${publicMode ? "" : "lg:hidden"}`}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
           <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
@@ -127,10 +127,8 @@ export default function TopBar({
       <div ref={vibeRef} className="topbar-filters relative">
         <button
           onClick={() => setVibeOpen((v) => !v)}
-          className={`flex min-h-10 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors sm:min-h-0 ${
-            activeTags.size > 0 || minRating > 0 || maxDistanceKm > 0
-              ? "bg-amber-500 text-white"
-              : "bg-neutral-100 text-neutral-700 hover:bg-emerald-100 hover:text-emerald-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-300"
+          className={`chip min-h-10 px-3 py-1.5 text-sm sm:min-h-0 ${
+            activeTags.size > 0 || minRating > 0 || maxDistanceKm > 0 ? "is-active" : ""
           }`}
         >
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-3.5 w-3.5">
@@ -139,16 +137,16 @@ export default function TopBar({
           Filters
           {activeCategory && <span className="hidden max-w-20 truncate sm:inline">· {CATEGORY_SHORT_LABELS[activeCategory]}</span>}
           {(activeTags.size > 0 || minRating > 0 || maxDistanceKm > 0) && (
-            <span className="rounded-full bg-white/25 px-1.5">
+            <span className="chip-count">
               {activeTags.size + (minRating > 0 ? 1 : 0) + (maxDistanceKm > 0 ? 1 : 0)}
             </span>
           )}
         </button>
 
         {vibeOpen && (
-          <div className="panel-elevated no-scrollbar absolute top-full left-0 z-20 mt-2 max-h-[70vh] w-72 max-w-[85vw] space-y-3 overflow-y-auto rounded-2xl p-3">
+          <div className="panel-elevated no-scrollbar absolute top-full left-0 z-20 mt-2 max-h-[70vh] w-72 max-w-[85vw] space-y-4 overflow-y-auto rounded-2xl p-3.5">
             <div className="flex items-center justify-between">
-              <div className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+              <div className="text-xs font-semibold text-ink-muted">
                 Drill down by vibe, price, cuisine or hours
               </div>
               {(activeCategory || activeTags.size > 0 || minRating > 0 || maxDistanceKm > 0) && (
@@ -160,14 +158,14 @@ export default function TopBar({
                     onSelectMaxDistance(0);
                     setVibeOpen(false);
                   }}
-                  className="shrink-0 text-[11px] font-medium text-amber-600 hover:underline dark:text-amber-400"
+                  className="shrink-0 text-[11px] font-semibold text-brand hover:underline"
                 >
                   Clear
                 </button>
               )}
             </div>
             <div>
-              <div className="mb-1.5 text-[11px] font-semibold tracking-wide text-neutral-400 uppercase">Cafe type</div>
+              <div className="mb-1.5 text-[11px] font-semibold tracking-[0.16em] text-ink-muted uppercase">Cafe type</div>
               <div className="flex flex-wrap gap-1.5">
                 <Chip active={activeCategory === null} onClick={() => pickOne(() => onSelectCategory(null))}>🗺️ All</Chip>
                 {CATEGORY_OPTIONS.map((option) => (
@@ -178,7 +176,7 @@ export default function TopBar({
               </div>
             </div>
             <div>
-              <div className="mb-1.5 text-[11px] font-semibold tracking-wide text-neutral-400 uppercase">
+              <div className="mb-1.5 text-[11px] font-semibold tracking-[0.16em] text-ink-muted uppercase">
                 Verified rating
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -197,10 +195,10 @@ export default function TopBar({
               </div>
             </div>
             <div>
-              <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-semibold tracking-wide text-neutral-400 uppercase">
+              <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.16em] text-ink-muted uppercase">
                 Distance
                 {locationStatus === "locating" && (
-                  <span className="normal-case text-amber-500">· locating…</span>
+                  <span className="normal-case text-lamp-ink">· locating…</span>
                 )}
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -222,14 +220,14 @@ export default function TopBar({
                   permanent hint here would be redundant noise the rest
                   of the time. */}
               {locationStatus === "denied" && (
-                <p className="mt-1.5 text-[11px] text-red-500">
+                <p className="mt-1.5 text-[11px] text-danger">
                   Couldn&apos;t get your location — check location permissions and try again.
                 </p>
               )}
             </div>
             {TAG_GROUPS.map((group) => (
               <div key={group.key}>
-                <div className="mb-1.5 text-[11px] font-semibold tracking-wide text-neutral-400 uppercase">
+                <div className="mb-1.5 text-[11px] font-semibold tracking-[0.16em] text-ink-muted uppercase">
                   {group.label}
                 </div>
                 <div className="flex flex-wrap gap-1.5">
@@ -256,11 +254,7 @@ export default function TopBar({
       <div className="topbar-account ml-auto flex items-center gap-1.5">
         <button
           onClick={toggle3D}
-          className={`flex min-h-10 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium whitespace-nowrap transition-colors sm:min-h-0 ${
-            is3D
-              ? "bg-emerald-800 text-white"
-              : "bg-neutral-100 text-neutral-700 hover:bg-emerald-100 hover:text-emerald-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-300"
-          }`}
+          className={`chip min-h-10 px-3.5 py-1.5 text-sm sm:min-h-0 ${is3D ? "is-active" : ""}`}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="h-4 w-4">
             <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z" />
@@ -283,7 +277,7 @@ export default function TopBar({
             // avatar a beat later. This skeleton (same footprint as the
             // avatar, so nothing jumps once the real state lands) covers
             // that gap instead of showing either wrong state.
-            <div className="h-8 w-8 shrink-0 animate-pulse rounded-full bg-white/10" aria-hidden="true" />
+            <div className="h-8 w-8 shrink-0 animate-pulse rounded-full bg-ink/5" aria-hidden="true" />
           ) : isSignedIn ? (
             <Link href="/profile" title={profile?.display_name ?? email ?? "Your profile"} className="shrink-0">
               <Avatar
@@ -295,7 +289,7 @@ export default function TopBar({
           ) : (
             <button
               onClick={() => requireAuth(() => {})}
-              className="flex min-h-10 items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-emerald-700 sm:min-h-0"
+              className="chip chip-solid min-h-10 px-3 py-1.5 text-sm sm:min-h-0"
             >
               Sign up
             </button>
@@ -318,11 +312,7 @@ function Chip({
     <button
       type="button"
       onClick={onClick}
-      className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
-        active
-          ? "bg-emerald-600 text-white"
-          : "bg-neutral-100 text-neutral-600 hover:bg-emerald-100 hover:text-emerald-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-emerald-500/20 dark:hover:text-emerald-300"
-      }`}
+      className={`chip gap-1 px-2.5 py-1 text-xs ${active ? "is-active" : ""}`}
     >
       {children}
     </button>

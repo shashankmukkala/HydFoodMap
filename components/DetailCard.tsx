@@ -219,7 +219,7 @@ export default function DetailCard(props: DetailCardProps) {
             </div>
             <button
               onClick={onClose}
-              className="panel-close-button shrink-0 rounded-full text-neutral-400 hover:bg-white/10 hover:text-neutral-200"
+              className="panel-close-button shrink-0 rounded-full text-ink-muted hover:bg-ink/5 hover:text-ink"
               aria-label="Close"
             >
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
@@ -298,15 +298,15 @@ export default function DetailCard(props: DetailCardProps) {
         )}
 
         {billboard && (
-          <div className="mt-3 rounded-2xl border border-amber-900/40 bg-amber-950/35 px-3 py-2.5">
-            <div className="text-[10px] font-semibold tracking-[0.16em] text-amber-400 uppercase">Sponsored placement</div>
-            <div className="mt-1 text-sm font-medium text-amber-50">{billboard.name}</div>
+          <div className="mt-3 rounded-2xl border border-lamp/40 bg-lamp/15 px-3 py-2.5">
+            <div className="text-[10px] font-semibold tracking-[0.16em] text-lamp-ink uppercase">Sponsored placement</div>
+            <div className="mt-1 text-sm font-medium text-ink">{billboard.name}</div>
             {billboard.target_url && (
               <a
                 href={billboard.target_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 inline-block text-xs font-medium text-amber-300 hover:underline"
+                className="mt-2 inline-block text-xs font-medium text-lamp-ink hover:underline"
               >
                 Visit brand
               </a>
@@ -396,12 +396,12 @@ export default function DetailCard(props: DetailCardProps) {
 
             {collectionsOpen && (
               <div className="panel-elevated absolute right-0 bottom-full z-20 mb-2 w-56 max-w-[85vw] rounded-2xl p-3">
-                <div className="mb-2 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                <div className="mb-2 text-xs font-semibold text-ink-muted">
                   Add to collection
                 </div>
                 <div className="max-h-40 space-y-1 overflow-y-auto">
                   {collections.length === 0 && (
-                    <div className="text-xs text-neutral-400">No collections yet.</div>
+                    <div className="text-xs text-ink-muted">No collections yet.</div>
                   )}
                   {collections.map((collection) => {
                     const inThis = collection.cafeIds.includes(item.id);
@@ -415,10 +415,10 @@ export default function DetailCard(props: DetailCardProps) {
                               : addCafeToCollection(collection.id, item.id)
                           )
                         }
-                        className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-white/10"
+                        className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-ink/5"
                       >
                         <span
-                          className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${inThis ? "border-[#79e2b2] bg-[#79e2b2] text-[#06231a]" : "border-neutral-300 dark:border-neutral-600"}`}
+                          className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${inThis ? "border-ink bg-ink text-paper" : "border-line-strong"}`}
                         >
                           {inThis && (
                             <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth={2} className="h-3 w-3">
@@ -426,22 +426,22 @@ export default function DetailCard(props: DetailCardProps) {
                             </svg>
                           )}
                         </span>
-                        <span className="truncate text-neutral-700 dark:text-neutral-200">{collection.name}</span>
+                        <span className="truncate text-ink">{collection.name}</span>
                       </button>
                     );
                   })}
                 </div>
-                <form onSubmit={submitNewCollection} className="mt-2 flex gap-1.5 border-t border-neutral-100 pt-2 dark:border-neutral-800">
+                <form onSubmit={submitNewCollection} className="mt-2 flex gap-1.5 border-t border-line pt-2">
                   <input
                     value={newCollectionName}
                     onChange={(e) => setNewCollectionName(e.target.value)}
                     placeholder="New collection…"
-                    className="min-w-0 flex-1 rounded-md border border-neutral-200 px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-[#79e2b2]/60 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100"
+                    className="min-w-0 flex-1 rounded-md border border-line px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-[#79e2b2]/60"
                   />
                   <button
                     type="submit"
                     disabled={!newCollectionName.trim()}
-                    className="rounded-md bg-[#79e2b2] px-2 py-1 text-xs font-semibold text-[#06231a] hover:bg-[#8ceac0] disabled:opacity-50"
+                    className="rounded-md bg-ink px-2 py-1 text-xs font-semibold text-paper hover:bg-ink/85 disabled:opacity-50"
                   >
                     Add
                   </button>

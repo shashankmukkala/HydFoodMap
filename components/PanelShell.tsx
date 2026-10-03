@@ -20,19 +20,19 @@ type PanelShellProps = {
 export default function PanelShell({ title, subtitle, headerAction, onClose, footer, children }: PanelShellProps) {
   return (
     <div className="panel-elevated flex max-h-full w-full flex-col rounded-3xl">
-      <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3.5 dark:border-neutral-800/80">
+      <div className="flex items-center justify-between border-b border-line px-4 py-3.5">
         <div className="min-w-0">
-          <div className="truncate text-[13.5px] font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
+          <div className="truncate text-[13.5px] font-semibold tracking-tight text-ink">
             {title}
           </div>
-          {subtitle && <div className="text-[11px] text-neutral-400">{subtitle}</div>}
+          {subtitle && <div className="text-[11px] text-ink-muted">{subtitle}</div>}
         </div>
         <div className="flex shrink-0 items-center gap-1">
           {headerAction}
           {onClose && (
             <button
               onClick={onClose}
-              className="panel-close-button rounded-full text-neutral-400 transition-colors hover:bg-white/10 hover:text-neutral-200"
+              className="panel-close-button rounded-full text-ink-muted transition-colors hover:bg-ink/5 hover:text-ink"
               aria-label="Close"
             >
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" className="h-4 w-4">

@@ -89,16 +89,16 @@ export default function EditCafeTaxonomy({ cafe, accessToken, onSaved }: Props) 
   }
 
   return (
-    <div className="border-t border-neutral-100 px-4 py-3 dark:border-neutral-800">
-      <div className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">Edit photo, category & tags (admin)</div>
+    <div className="border-t border-line px-4 py-3">
+      <div className="text-xs font-semibold text-ink-muted">Edit photo, category & tags (admin)</div>
 
       <div className="mt-2 flex items-center gap-2.5">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-amber-50 dark:bg-amber-950">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-lamp/15">
           {imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={imageUrl} alt="" className="h-full w-full object-cover" />
           ) : (
-            <span className="text-lg text-neutral-400">☕</span>
+            <span className="text-lg text-ink-muted">☕</span>
           )}
         </div>
         <div className="flex flex-1 flex-col gap-1.5">
@@ -106,7 +106,7 @@ export default function EditCafeTaxonomy({ cafe, accessToken, onSaved }: Props) 
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="rounded-md border border-dashed border-neutral-300 px-2.5 py-1.5 text-[11px] text-neutral-500 hover:border-amber-400 hover:text-amber-500 dark:border-neutral-600 dark:text-neutral-400"
+            className="rounded-md border border-dashed border-line-strong px-2.5 py-1.5 text-[11px] text-ink-muted hover:border-ink hover:text-lamp-ink"
           >
             {imageUrl ? "Replace photo" : "📸 Upload a photo"}
           </button>
@@ -114,7 +114,7 @@ export default function EditCafeTaxonomy({ cafe, accessToken, onSaved }: Props) 
             <button
               type="button"
               onClick={() => setImageUrl(null)}
-              className="text-left text-[11px] text-neutral-400 hover:underline"
+              className="text-left text-[11px] text-ink-muted hover:underline"
             >
               Remove photo
             </button>
@@ -125,11 +125,11 @@ export default function EditCafeTaxonomy({ cafe, accessToken, onSaved }: Props) 
       <select
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-        className="mt-3 w-full rounded-md border border-neutral-200 bg-transparent px-2.5 py-1.5 text-xs text-neutral-700 focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-neutral-700 dark:text-neutral-200"
+        className="mt-3 w-full rounded-md border border-line bg-transparent px-2.5 py-1.5 text-xs text-ink focus:outline-none focus:ring-2 focus:ring-ink/20"
       >
         <option value="">No category</option>
         {CATEGORY_OPTIONS.map((option) => (
-          <option key={option} value={option} className="text-neutral-900">
+          <option key={option} value={option} className="text-ink">
             {CATEGORY_SHORT_LABELS[option]}
           </option>
         ))}
@@ -138,7 +138,7 @@ export default function EditCafeTaxonomy({ cafe, accessToken, onSaved }: Props) 
       <div className="mt-2.5 space-y-2">
         {TAG_GROUPS.map((group) => (
           <div key={group.key}>
-            <div className="mb-1 text-[10px] font-semibold tracking-wide text-neutral-400 uppercase">{group.label}</div>
+            <div className="mb-1 text-[10px] font-semibold tracking-wide text-ink-muted uppercase">{group.label}</div>
             <div className="flex flex-wrap gap-1.5">
               {group.tags.map((tag) => (
                 <button
@@ -147,8 +147,8 @@ export default function EditCafeTaxonomy({ cafe, accessToken, onSaved }: Props) 
                   onClick={() => toggleTag(tag)}
                   className={`rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors ${
                     tags.has(tag)
-                      ? "bg-amber-500 text-white"
-                      : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300"
+                      ? "bg-ink text-white"
+                      : "bg-ink/5 text-ink-muted hover:bg-ink/10"
                   }`}
                 >
                   {tag}
@@ -159,13 +159,13 @@ export default function EditCafeTaxonomy({ cafe, accessToken, onSaved }: Props) 
         ))}
       </div>
 
-      {error && <p className="mt-2 text-xs text-red-500">{error}</p>}
+      {error && <p className="mt-2 text-xs text-danger">{error}</p>}
 
       <button
         type="button"
         onClick={save}
         disabled={!dirty || saving}
-        className="mt-2.5 w-full rounded-md bg-amber-500 py-1.5 text-xs font-medium text-white hover:bg-amber-600 disabled:opacity-50"
+        className="mt-2.5 w-full rounded-md bg-ink py-1.5 text-xs font-medium text-white hover:bg-ink/85 disabled:opacity-50"
       >
         {saving ? "Saving…" : "Save changes"}
       </button>

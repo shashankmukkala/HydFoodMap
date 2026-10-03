@@ -71,12 +71,12 @@ export default function VisitCheckin({ cafeId, cafeLat, cafeLng, visitedBefore, 
 
   if (result) {
     return (
-      <div className="border-t border-neutral-100 px-4 py-2.5 dark:border-neutral-800">
+      <div className="border-t border-line px-4 py-2.5">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+          <span className="text-xs font-medium text-awning">
             ✓ Visit logged{result.points > 0 ? ` — +${result.points} points` : ""}
           </span>
-          <button onClick={reset} className="text-xs text-neutral-400 hover:underline">
+          <button onClick={reset} className="text-xs text-ink-muted hover:underline">
             Close
           </button>
         </div>
@@ -86,13 +86,13 @@ export default function VisitCheckin({ cafeId, cafeLat, cafeLng, visitedBefore, 
 
   if (gate.status === "idle") {
     return (
-      <div className="flex items-center justify-between border-t border-neutral-100 px-4 py-2.5 dark:border-neutral-800">
-        <span className="text-xs font-medium text-neutral-600 dark:text-neutral-300">
+      <div className="flex items-center justify-between border-t border-line px-4 py-2.5">
+        <span className="text-xs font-medium text-ink-muted">
           {visitedBefore ? "Been here again?" : "Have you been here?"}
         </span>
         <button
           onClick={() => requireAuth(() => start())}
-          className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300"
+          className="rounded-full bg-ink/5 px-3 py-1 text-xs font-medium text-ink hover:bg-ink/10"
         >
           {visitedBefore ? "Verify another visit" : "✓ Verify my visit"}
         </button>
@@ -101,34 +101,34 @@ export default function VisitCheckin({ cafeId, cafeLat, cafeLng, visitedBefore, 
   }
 
   return (
-    <div className="border-t border-neutral-100 px-4 py-2.5 dark:border-neutral-800">
+    <div className="border-t border-line px-4 py-2.5">
       {gate.status === "confirm" && (
-        <div className="rounded-md bg-neutral-50 px-2.5 py-2 text-xs text-neutral-600 dark:bg-neutral-800/60 dark:text-neutral-300">
+        <div className="rounded-md bg-paper px-2.5 py-2 text-xs text-ink-muted">
           <p>We&apos;ll ask your browser for your location to confirm you&apos;re actually at this cafe — that&apos;s what keeps visits (and the points they earn) real.</p>
           <div className="mt-2 flex gap-2">
             <button
               type="button"
               onClick={confirm}
-              className="rounded-md bg-amber-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-600"
+              className="rounded-md bg-ink px-3 py-1.5 text-xs font-medium text-white hover:bg-ink/85"
             >
               Share location & continue
             </button>
-            <button type="button" onClick={reset} className="rounded-md px-3 py-1.5 text-xs text-neutral-400 hover:bg-white/10">
+            <button type="button" onClick={reset} className="rounded-md px-3 py-1.5 text-xs text-ink-muted hover:bg-ink/5">
               Cancel
             </button>
           </div>
         </div>
       )}
-      {gate.status === "locating" && <p className="text-xs text-neutral-400">Checking you&apos;re actually here…</p>}
-      {gate.status === "checking-in" && <p className="text-xs text-neutral-400">Starting a secure visit check-in…</p>}
+      {gate.status === "locating" && <p className="text-xs text-ink-muted">Checking you&apos;re actually here…</p>}
+      {gate.status === "checking-in" && <p className="text-xs text-ink-muted">Starting a secure visit check-in…</p>}
       {gate.status === "waiting" && (
-        <div className="rounded-md bg-emerald-50 px-2.5 py-2 text-xs text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
+        <div className="rounded-md bg-awning/10 px-2.5 py-2 text-xs text-awning">
           ✓ Visit started. Stay here for {gate.secondsLeft} more seconds while we confirm this visit.
         </div>
       )}
-      {gate.status === "ready" && logging && <p className="text-xs text-neutral-400">Logging your visit…</p>}
+      {gate.status === "ready" && logging && <p className="text-xs text-ink-muted">Logging your visit…</p>}
       {gate.status === "too-far" && (
-        <div className="rounded-md bg-amber-50 px-2.5 py-2 text-xs text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
+        <div className="rounded-md bg-lamp/15 px-2.5 py-2 text-xs text-lamp-ink">
           You need to be at the cafe to log a visit.{" "}
           <button onClick={reset} className="font-medium underline">
             Close
@@ -136,7 +136,7 @@ export default function VisitCheckin({ cafeId, cafeLat, cafeLng, visitedBefore, 
         </div>
       )}
       {gate.status === "low-accuracy" && (
-        <div className="rounded-md bg-amber-50 px-2.5 py-2 text-xs text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
+        <div className="rounded-md bg-lamp/15 px-2.5 py-2 text-xs text-lamp-ink">
           Your location is not precise enough yet. Move outside or enable precise location, then try again.{" "}
           <button onClick={reset} className="font-medium underline">
             Close
@@ -144,7 +144,7 @@ export default function VisitCheckin({ cafeId, cafeLat, cafeLng, visitedBefore, 
         </div>
       )}
       {(gate.status === "error" || error) && (
-        <div className="rounded-md bg-red-50 px-2.5 py-2 text-xs text-red-600 dark:bg-red-950/50 dark:text-red-400">
+        <div className="rounded-md bg-danger/10 px-2.5 py-2 text-xs text-danger">
           {error || (gate.status === "error" ? gate.message : "")}{" "}
           <button onClick={reset} className="font-medium underline">
             Close

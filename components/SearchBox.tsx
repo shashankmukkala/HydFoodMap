@@ -251,7 +251,7 @@ export default function SearchBox({ map, cafes, onSelectCafe, onGroupMatch, clea
   return (
     <div className="relative w-full">
       <svg
-        className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-neutral-400"
+        className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-ink-muted"
         viewBox="0 0 20 20"
         fill="none"
         stroke="currentColor"
@@ -265,7 +265,7 @@ export default function SearchBox({ map, cafes, onSelectCafe, onGroupMatch, clea
         onChange={(e) => search(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Search cafes, areas, vibes..."
-        className="w-full rounded-full border border-black/5 bg-neutral-100 py-2.5 pr-4 pl-9 text-sm text-neutral-700 placeholder:text-neutral-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-white/5 dark:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800"
+        className="w-full rounded-md border border-line-strong bg-white py-2.5 pr-4 pl-9 text-sm text-ink placeholder:text-ink-soft focus:border-ink focus:ring-3 focus:ring-ink/10 focus:outline-none"
       />
       {showDropdown && (
         <div className="panel-elevated absolute top-full mt-2 max-h-80 w-full overflow-y-auto rounded-2xl">
@@ -273,28 +273,28 @@ export default function SearchBox({ map, cafes, onSelectCafe, onGroupMatch, clea
             <button
               key={cafe.id}
               onClick={() => selectCafe(cafe)}
-              className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm hover:bg-amber-50 dark:text-neutral-200 dark:hover:bg-amber-950/50"
+              className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm hover:bg-ink/5"
             >
               <span>☕</span>
               <span className="min-w-0 flex-1 truncate">
                 <span className="font-medium">{cafe.name}</span>
-                {cafe.category && <span className="text-neutral-400"> · {cafe.category}</span>}
+                {cafe.category && <span className="text-ink-muted"> · {cafe.category}</span>}
               </span>
             </button>
           ))}
 
-          {status === "loading" && !groupMatch && <div className="px-4 py-2 text-sm text-neutral-400">Searching…</div>}
+          {status === "loading" && !groupMatch && <div className="px-4 py-2 text-sm text-ink-muted">Searching…</div>}
           {status === "error" && !groupMatch && (
-            <div className="px-4 py-2 text-sm text-red-500">Couldn&apos;t reach the map search service.</div>
+            <div className="px-4 py-2 text-sm text-danger">Couldn&apos;t reach the map search service.</div>
           )}
           {status === "idle" && !showPlaces && matchingCafes.length === 0 && !groupMatch && (
-            <div className="px-4 py-2 text-sm text-neutral-400">No results.</div>
+            <div className="px-4 py-2 text-sm text-ink-muted">No results.</div>
           )}
           {showPlaces && places.map((result) => (
             <button
               key={`${result.lat},${result.lon}`}
               onClick={() => selectPlace(result)}
-              className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm hover:bg-amber-50 dark:text-neutral-200 dark:hover:bg-amber-950/50"
+              className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm hover:bg-ink/5"
             >
               <span>📍</span>
               <span className="truncate">{result.display_name}</span>
