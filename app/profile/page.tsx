@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import PageBanner from "@/components/PageBanner";
+import SiteFooter from "@/components/SiteFooter";
 import { useAuth } from "@/lib/useAuth";
 import { supabase } from "@/lib/supabase";
 import type { Profile } from "@/lib/supabase";
@@ -114,34 +116,29 @@ export default function ProfilePage() {
   }
 
   if (loading) {
-    return <CenteredMessage>Loading…</CenteredMessage>;
+    return (
+      <ProfileShell>
+        <div className="admin-enquiries-empty">Loading…</div>
+      </ProfileShell>
+    );
   }
 
   if (!session) {
     return (
-      <CenteredMessage>
-        <p className="text-sm text-neutral-300">Sign up or sign in to see your personal details.</p>
-        <button
-          onClick={() => signInWithGoogle()}
-          className="mt-4 rounded-full bg-white px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-200"
-        >
-          Continue with Google
-        </button>
-        <Link href="/" className="mt-4 block text-xs text-neutral-400 hover:underline">
-          ← Back to map
-        </Link>
-      </CenteredMessage>
+      <ProfileShell>
+        <div className="rounded-[10px] border border-line bg-white px-6 py-10 text-center">
+          <p className="text-sm text-ink-muted">Sign up or sign in to see your personal details.</p>
+          <button onClick={() => signInWithGoogle()} className="btn-primary mt-5">
+            Continue with Google
+          </button>
+        </div>
+      </ProfileShell>
     );
   }
 
   return (
-    <div className="flex min-h-dvh w-dvw justify-center bg-[#0b0b0d] px-4 py-10">
-      <div className="w-full max-w-sm">
-        <Link href="/" className="mb-6 block text-xs text-neutral-400 hover:underline">
-          ← Back to map
-        </Link>
-
-        <div className="panel-elevated space-y-5 rounded-3xl p-6">
+    <ProfileShell>
+        <div className="space-y-5 rounded-[10px] border border-line bg-white p-6">
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -152,15 +149,15 @@ export default function ProfilePage() {
               <Avatar
                 avatarUrl={profile?.avatar_url ?? null}
                 label={profile?.display_name ?? email ?? "?"}
-                className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-amber-500 text-lg font-semibold text-white"
+                className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-ink text-lg font-semibold text-white"
               />
               <span className="profile-avatar-edit-badge" aria-hidden="true">✎</span>
             </button>
             <div className="min-w-0">
-              <h1 className="truncate text-lg font-semibold text-neutral-100">
+              <h2 className="display truncate text-[26px] leading-tight text-ink">
                 {profileLoading ? "…" : (profile?.display_name ?? "Your details")}
-              </h1>
-              <p className="truncate text-xs text-neutral-400">{email}</p>
+              </h2>
+              <p className="truncate text-xs text-ink-muted">{email}</p>
             </div>
           </div>
 
@@ -202,7 +199,7 @@ export default function ProfilePage() {
           {stats && <p className="profile-redeem-note">Redeem your points for discounts or cash — coming soon!</p>}
 
           <form onSubmit={handleSave} className="space-y-2.5">
-            <label className="block text-[11px] font-medium tracking-wide text-neutral-400 uppercase">
+            <label className="block text-[11px] font-medium tracking-wide text-ink-muted uppercase">
               Display name
             </label>
             <input
@@ -210,51 +207,52 @@ export default function ProfilePage() {
               onChange={(e) => setName(e.target.value)}
               placeholder="Your name"
               disabled={profileLoading}
-              className="w-full rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm text-neutral-100 focus:outline-none disabled:opacity-50"
+              className="field"
             />
             {/* This name is seeded from the Google account at signup, and
                 the leaderboard is public — so people should be told what
                 others actually see before deciding whether to change it.
                 The shortening happens server-side in
                 public_display_name() (0039); this only describes it. */}
-            <p className="text-[11px] text-neutral-400">
+            <p className="text-[11px] text-ink-muted">
               On the public leaderboard this shows as{" "}
-              <span className="text-neutral-200">{publicNamePreview(name)}</span>. Use a nickname if you
+              <span className="text-ink">{publicNamePreview(name)}</span>. Use a nickname if you
               would rather not show your real name.
             </p>
-            {error && <p className="text-[11px] text-red-400">{error}</p>}
+            {error && <p className="text-[11px] text-danger">{error}</p>}
             <button
               type="submit"
               disabled={profileLoading || saving}
-              className="w-full rounded-lg bg-emerald-600 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
+              className="btn-primary w-full"
             >
               {saving ? "Saving…" : saved ? "Saved" : "Save changes"}
             </button>
           </form>
 
           {profile && (
-            <p className="text-[11px] text-neutral-500">
+            <p className="text-[11px] text-ink-muted">
               Member since {new Date(profile.created_at).toLocaleDateString()}
             </p>
           )}
 
           <button
             onClick={() => signOut()}
-            className="w-full rounded-lg bg-white/10 py-2 text-sm font-medium text-white hover:bg-white/15"
+            className="btn-secondary w-full"
           >
             Sign out
           </button>
         </div>
-      </div>
-    </div>
+    </ProfileShell>
   );
 }
 
-function CenteredMessage({ children }: { children: React.ReactNode }) {
+function ProfileShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-dvh w-dvw flex-col items-center justify-center bg-[#0b0b0d] px-4 text-center">
-      {children}
-    </div>
+    <main className="min-h-dvh bg-paper text-ink">
+      <PageBanner compact eyebrow="Your account" title="Your details" />
+      <div className="mx-auto w-full max-w-md px-4 py-8">{children}</div>
+      <SiteFooter />
+    </main>
   );
 }
 

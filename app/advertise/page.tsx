@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import PageBanner from "@/components/PageBanner";
+import SiteFooter from "@/components/SiteFooter";
+import { UPI } from "@/lib/payments";
 import { useState } from "react";
 
 type AdFormat = "map_rail" | "billboard" | "aircraft";
@@ -44,16 +47,16 @@ export default function AdvertisePage() {
 
   return (
     <main className="advertise-page">
-      <div className="advertise-glow advertise-glow-one" />
-      <div className="advertise-glow advertise-glow-two" />
+      <PageBanner
+        active="advertise"
+        eyebrow="Advertise with us"
+        title="Put your brand in Hyderabad’s city view."
+        lede="Reach people while they are choosing where to eat, meet, work and unwind."
+      />
       <div className="advertise-layout">
         <section className="advertise-intro">
-          <Link href="/" className="advertise-back">← Back to map</Link>
-          <div className="advertise-brand"><span>☕</span> HydCafeMap</div>
-          <span className="ad-rail-kicker">ADVERTISE WITH US</span>
-          <h1>Put your brand in Hyderabad&apos;s city view.</h1>
-          <p>Reach people while they are actively choosing where to eat, meet, work, and unwind.</p>
-          <div className="advertise-proof-list">
+          <span className="ad-rail-kicker">How it works</span>
+          <div className="advertise-proof-list mt-4">
             <div><span>01</span><strong>Choose your format</strong><small>Rail, billboard, or aircraft.</small></div>
             <div><span>02</span><strong>Send your creative</strong><small>We review every placement.</small></div>
             <div><span>03</span><strong>Go live with confidence</strong><small>Your ad launches after approval.</small></div>
@@ -67,7 +70,7 @@ export default function AdvertisePage() {
               <span className="ad-rail-kicker">ENQUIRY RECEIVED</span>
               <h2>Your brand is on our radar.</h2>
               <p>We&apos;ll review your request and contact you before anything goes live.</p>
-              <Link href="/" className="ad-enquiry-primary">Return to map</Link>
+              <Link href="/map" className="ad-enquiry-primary px-5">Return to map</Link>
             </div>
           ) : (
             <form onSubmit={submit}>
@@ -94,19 +97,53 @@ export default function AdvertisePage() {
 
               <div className="advertise-field-grid"><label>Start date<input name="campaign_start" type="date" /></label><label>End date<input name="campaign_end" type="date" /></label></div>
               <label>Campaign notes<textarea name="message" rows={3} placeholder="Tell us what you want people to notice..." /></label>
-              <div className="advertise-payment">
-                <div className="advertise-payment-heading"><div><span className="ad-rail-kicker">STEP 2 · PAYMENT</span><h3>Pay {FORMAT_PRICES[format].amount} via UPI</h3></div><span className="advertise-payment-badge">UPI</span></div>
-                <div className="advertise-payment-body"><div className="advertise-qr-placeholder"><span>QR</span><small>Paste QR here</small></div><div><strong>Replace these details</strong><p>Scan with any UPI app and pay {FORMAT_PRICES[format].amount}.</p><code>your-upi-id@bank</code></div></div>
-                <label>Payment proof URL<input name="payment_proof_url" type="url" placeholder="Paste screenshot link (optional for now)" /></label>
-              </div>
+              {/* Only rendered once a real VPA is configured — see
+                  lib/payments.ts. Until then the form says what actually
+                  happens (we confirm the slot, then send payment details)
+                  rather than showing a placeholder QR beside a real price. */}
+              {UPI.configured ? (
+                <div className="advertise-payment">
+                  <div className="advertise-payment-heading"><div><span className="ad-rail-kicker">STEP 2 · PAYMENT</span><h3>Pay {FORMAT_PRICES[format].amount} via UPI</h3></div><span className="advertise-payment-badge">UPI</span></div>
+                  <div className="advertise-payment-body">
+                    {UPI.qrUrl ? (
+                      /* A plain <img>: the QR is an operator-supplied file of
+                         unknown dimensions, and next/image would need them
+                         up front. It must also never be resampled — a
+                         re-encoded QR can stop scanning. */
+                      // eslint-disable-next-line @next/next/no-img-element -- see above: unknown dimensions, and a re-encoded QR can stop scanning
+                      <img src={UPI.qrUrl} alt={`UPI QR code for ${UPI.payeeName ?? "HydCafeMap"}`} className="advertise-qr" />
+                    ) : (
+                      <div className="advertise-qr-placeholder"><span>UPI</span><small>Pay to the ID shown</small></div>
+                    )}
+                    <div>
+                      <strong>Scan or pay to this UPI ID</strong>
+                      <p>Pay {FORMAT_PRICES[format].amount} with any UPI app, then paste the screenshot link below.</p>
+                      <code>{UPI.id}</code>
+                      {UPI.payeeName && <p>Your app should show the payee as {UPI.payeeName}.</p>}
+                    </div>
+                  </div>
+                  <label>Payment proof URL<input name="payment_proof_url" type="url" placeholder="Paste screenshot link (optional for now)" /></label>
+                </div>
+              ) : (
+                <div className="advertise-inline-note">
+                  We&apos;ll confirm availability for your dates first, then send payment details — nothing
+                  is charged when you submit this form.
+                </div>
+              )}
               <label className="advertise-check"><input type="checkbox" required /> <span>I confirm I&apos;m authorised to advertise this brand and agree to manual review.</span></label>
               {status === "error" && <div className="ad-enquiry-error">{error}</div>}
               <button type="submit" className="ad-enquiry-primary" disabled={status === "sending"}>{status === "sending" ? "Submitting…" : "Submit for review"}</button>
-              <small className="advertise-footnote">No payment is collected at this stage. We&apos;ll contact you with availability and pricing.</small>
+              <small className="advertise-footnote">
+                {UPI.configured
+                  ? "Submitting this form is an enquiry, not a booking — we review every placement before it goes live."
+                  : "No payment is collected at this stage. We'll contact you with availability and pricing."}{" "}
+                See our <Link href="/refunds">refund policy</Link>.
+              </small>
             </form>
           )}
         </section>
       </div>
+      <SiteFooter />
     </main>
   );
 }

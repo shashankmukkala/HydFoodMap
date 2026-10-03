@@ -46,18 +46,38 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* The IVORY palette (defined at the bottom of this file), exposed as
+     utilities — text-ink, bg-paper, border-line, text-brand and so on —
+     so components use the palette rather than Tailwind's neutral greys,
+     which are cool and read as a different product next to warm paper. */
+  --font-display: var(--font-display);
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--ink-line);
+  --color-line-strong: var(--ink-line-strong);
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-lamp: var(--lamp);
+  --color-lamp-ink: var(--lamp-ink);
+  --color-awning: var(--awning);
+  --color-plum: var(--plum);
+  --color-danger: var(--danger);
 }
 
 html,
 body {
-  height: 100%;
-  /* Dark is the only theme (see app/layout.tsx) — without this, native
-     controls (date/time picker icons, scrollbars, checkboxes) render
-     using the browser's light-mode chrome by default, which on a dark
-     background means a near-invisible dark-on-dark calendar icon inside
-     <input type="datetime-local">/<input type="date"> — it's there, just
-     impossible to see or click. */
-  color-scheme: dark;
+  /* No height: 100% here. It pins the document to exactly the viewport,
+     so any page taller than one screen paints its overflow with nothing
+     to scroll. The map manages its own height (map-experience-shell). */
+
+  /* Light is the only theme (see app/layout.tsx). This tells the browser
+     which chrome to draw native controls in — date-picker icons,
+     scrollbars, checkboxes — so it has to track the theme. */
+  color-scheme: light;
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
@@ -2739,4 +2759,1718 @@ body {
     align-items: center;
     padding-inline: 14px;
   }
+}
+
+/* ==========================================================================
+   IVORY — the HydCafeMap visual system
+   --------------------------------------------------------------------------
+   Everything above was written for a dark product. This section relights
+   it, following the system built for WhatsNearYou: paper, not white; ink,
+   not black; a hairline where there used to be a shadow; tight corners;
+   one serif for headlines.
+
+   INK BUTTONS, NOT GRADIENT PILLS. The primary action is the most-repeated
+   shape in the interface, so it sets the tone more than anything else. A
+   flat near-black rectangle asserts nothing and therefore reads as
+   confident; gradient-and-glow reads as every consumer app of the last
+   five years.
+
+   RULES, NOT SHADOWS. Surfaces sit on a 1px line at ~12% ink with the
+   faintest lift. Heavy shadow says "app"; a rule says "printed".
+
+   SHARPER CORNERS. 10px surfaces, 6px controls, where this was 24px/12px.
+   Very round reads soft; tighter reads precise.
+
+   SERIF DISPLAY. Instrument Serif for headlines, Inter for everything
+   else.
+
+   THE PALETTE IS SAMPLED FROM THE COVER PAINTING, not picked, so the home
+   page and the map are lit by the same afternoon. ONE COLOUR, ONE MEANING:
+
+     terracotta #9A3A24  the product's own voice: selection, links
+                         — the cafe wall, #772A1D in shade to #D24B2F in sun
+     awning     #2F5B4E  verified, confirmed — the awning, #223F37
+     lamplight  #EBA258  points, what's on — the pendant lamps. Too light
+                         to set text in, so #96570F is its readable form
+     plum       #6B4A7D  SPONSORED ONLY — the one colour that is not in the
+                         painting, so a paid placement can never borrow the
+                         product's voice
+
+   SPECIFICITY. The dark sheet above carries compound selectors
+   (.is-public .panel-elevated, .is-public .detail-card, ...). A plain
+   .panel-elevated override loses to those whatever the source order, so
+   every rule here matches or beats the one it replaces — and resets
+   background-IMAGE where the original used the background shorthand,
+   since an image paints over any colour set underneath it.
+   ========================================================================== */
+
+:root,
+.map-experience-shell {
+  --paper: #f7f3ec;
+  --paper-deep: #efe8dc;
+
+  --ink: #24211e;
+  --ink-muted: #24211ea8;
+  --ink-soft: #24211e7a;
+  --ink-line: #24211e1f;
+  --ink-line-strong: #24211e38;
+  --ink-hover: #24211e0a;
+
+  --brand: #9a3a24;
+  --brand-deep: #6e2718;
+  --brand-tint: #9a3a241c;
+
+  --awning: #2f5b4e;
+  --awning-tint: #2f5b4e1c;
+
+  --lamp: #eba258;
+  --lamp-ink: #96570f;
+  --lamp-tint: #eba25833;
+
+  --plum: #6b4a7d;
+  --plum-tint: #6b4a7d17;
+  --plum-line: #6b4a7d3d;
+
+  --danger: #a3301c;
+  --danger-tint: #a3301c14;
+
+  --shadow-card: 0 1px 2px #24211e0a, 0 8px 24px -18px #24211e2e;
+  --shadow-panel: 0 1px 2px #24211e0a, 0 14px 36px -22px #24211e40;
+
+  --radius-card: 10px;
+  --radius-control: 6px;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* shadcn primitives, re-pointed so dialogs, sheets and popovers inherit
+     the paper instead of staying neutral grey. `--accent` is shadcn's
+     hover wash, not a brand colour — which is why the brand is --brand. */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: #ffffff;
+  --card-foreground: var(--ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: #fffaf4;
+  --secondary: var(--paper-deep);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper-deep);
+  --muted-foreground: var(--ink-muted);
+  --accent: var(--paper-deep);
+  --accent-foreground: var(--ink);
+  --destructive: var(--danger);
+  --border: var(--ink-line);
+  --input: var(--ink-line-strong);
+  --ring: var(--ink);
+}
+
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--lamp-tint);
+}
+
+/* ---- Display type ------------------------------------------------------ */
+
+/* Headlines only. One weight, so size and tracking do the work. */
+h1,
+.display {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+/* ---- Shell ------------------------------------------------------------- */
+
+/* The aurora is gone: it existed to give a black page depth, and on paper
+   it would read as a stain. */
+.map-experience-shell {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ---- Surfaces ---------------------------------------------------------- */
+
+.panel-elevated,
+.is-public .panel-elevated,
+.is-admin .panel-elevated {
+  border: 1px solid var(--ink-line);
+  background-color: #fffffff2;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-panel);
+  color: var(--ink);
+}
+
+/* Panels are written with rounded-3xl/2xl utilities; the radius is a
+   system decision, so it is taken back here rather than per component. */
+.panel-elevated.rounded-3xl,
+.panel-elevated.rounded-2xl {
+  border-radius: var(--radius-card);
+}
+
+.is-public .topbar-shell,
+.is-admin .topbar-shell {
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-card);
+  background: #fffffff2;
+  box-shadow: var(--shadow-panel);
+}
+
+.is-public .detail-card,
+.is-admin .detail-card {
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-card);
+  background-image: none;
+  background-color: #ffffff;
+  box-shadow: var(--shadow-panel);
+}
+
+.navigation-drawer {
+  border: 0 !important;
+  border-right: 1px solid var(--ink-line) !important;
+  background-image: none;
+  background-color: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--shadow-panel);
+}
+
+/* Every panel arrives with the same short rise. Cheap, and it is most of
+   what makes an interface feel considered rather than assembled. */
+@keyframes ivory-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.is-public .detail-card,
+.is-public .map-panels-column > .panel-elevated {
+  animation: ivory-rise 280ms var(--ease-out) both;
+}
+
+/* ---- Brand mark and navigation ----------------------------------------- */
+
+.navigation-drawer .brand-mark,
+.is-public .map-sidebar-rail .brand-mark,
+.brand-mark {
+  background: none;
+  box-shadow: none;
+}
+
+.nav-item-active {
+  background: var(--brand-tint) !important;
+  color: var(--brand-deep) !important;
+  box-shadow: inset 2px 0 0 var(--brand);
+}
+
+.nav-item-icon-active {
+  color: var(--brand) !important;
+}
+
+.navigation-drawer button:hover,
+.is-public .map-sidebar-rail button:hover {
+  color: var(--ink);
+}
+
+/* ---- Controls ---------------------------------------------------------- */
+
+/* Outlined at rest, ink when on — "on" is a state, not an alarm. Used by
+   the top bar's buttons and the filter chips. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--ink-line-strong);
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--ink-muted);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.chip:hover {
+  border-color: var(--ink);
+  background: var(--ink-hover);
+  color: var(--ink);
+}
+
+.chip.is-active,
+.chip-solid {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fffaf4;
+}
+
+.chip-solid:hover {
+  border-color: #3a352f;
+  background: #3a352f;
+  color: #fffaf4;
+}
+
+.chip-count {
+  border-radius: 999px;
+  background: #ffffff2e;
+  padding-inline: 6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 40px;
+  border-radius: var(--radius-control);
+  padding: 0.55rem 1.05rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: #fffaf4;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #3a352f;
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  border: 1px solid var(--ink-line-strong);
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--ink);
+  background: var(--ink-hover);
+}
+
+.field {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--ink-line-strong);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  padding: 0.55rem 0.8rem;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field::placeholder {
+  color: var(--ink-soft);
+}
+
+.field:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px #24211e14;
+}
+
+.field:disabled {
+  opacity: 0.5;
+}
+
+/* ---- Editorial marks --------------------------------------------------- */
+
+.eyebrow,
+.known-for-eyebrow {
+  color: var(--lamp-ink);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ---- Pins -------------------------------------------------------------- */
+
+/* A small framed photo, like a print pinned to the map: white mount, 6px
+   corners, a hairline. On a pale basemap the pin has to supply its own
+   contrast, and the mount is what does it against roads and parkland. */
+.cafe-pin {
+  border: 1px solid var(--ink-line-strong);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  box-shadow: 0 1px 2px #24211e14, 0 6px 14px -8px #24211e59;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), padding 0.2s var(--ease-out);
+}
+
+.cafe-pin:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 1px 2px #24211e14, 0 10px 20px -10px #24211e73;
+}
+
+.cafe-pin-icon {
+  border-radius: 4px;
+  background: var(--paper-deep);
+  color: var(--brand-deep);
+}
+
+.cafe-pin-icon-fallback {
+  background: var(--paper-deep);
+}
+
+.cafe-pin-label {
+  color: var(--ink);
+}
+
+/* Selected is terracotta: the wall colour, and the product's voice for
+   "this one". The photo keeps a white mount so it stays readable. */
+.cafe-pin-selected {
+  border-color: var(--brand);
+  background: var(--brand);
+  box-shadow: 0 10px 22px -10px #6e2718a6;
+}
+
+.cafe-pin-selected .cafe-pin-icon {
+  background: #ffffff;
+}
+
+.cafe-pin-selected .cafe-pin-label {
+  color: #fffaf4;
+}
+
+.pending-pin {
+  border-radius: var(--radius-control);
+  transform: none;
+  background: var(--ink);
+  border: 2px solid #ffffff;
+  box-shadow: var(--shadow-panel);
+}
+
+/* Sponsored pins: plum, and only plum. */
+.billboard-pin {
+  border: 1px solid var(--plum-line);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  color: var(--ink);
+  box-shadow: 0 1px 2px #24211e14, 0 6px 14px -8px #6b4a7d73;
+}
+
+.billboard-pin:hover {
+  box-shadow: 0 1px 2px #24211e14, 0 10px 20px -10px #6b4a7d8c;
+}
+
+.billboard-pin-icon {
+  border-radius: 4px;
+  background: var(--plum);
+  color: #fffaf4;
+}
+
+.billboard-pin-label {
+  color: var(--ink);
+}
+
+.billboard-pin-selected {
+  border-color: var(--plum);
+  background: var(--plum);
+  box-shadow: 0 10px 22px -10px #6b4a7da6;
+}
+
+.billboard-pin-selected .billboard-pin-label {
+  color: #fffaf4;
+}
+
+.billboard-pin-aircraft {
+  border-color: var(--plum-line);
+  background: #ffffff;
+}
+
+/* The aircraft banner keeps its own saturated palette on purpose: it is an
+   advertiser's creative towed across the sky, not a surface of ours, and a
+   paper banner over a paper map would vanish. The admin preview frame
+   around it is ours, though. */
+.aircraft-preview {
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-control);
+  background-image: none;
+  background-color: var(--paper-deep);
+}
+
+.aircraft-preview-stage {
+  border: 1px solid var(--ink-line);
+  border-radius: 4px;
+  background: #dfe7ee;
+}
+
+/* ---- Map controls ------------------------------------------------------ */
+
+/* These float on pale tiles, so they need real contrast: a translucent
+   white control over a white road is a control nobody can find. */
+.map-control-orb,
+.map-rotation-pad,
+.map-action-button,
+.map-add-button {
+  border: 1px solid var(--ink-line-strong) !important;
+  background: #ffffff !important;
+  color: var(--ink) !important;
+  box-shadow: var(--shadow-card) !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.map-control-orb {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-card);
+}
+
+.map-rotation-pad {
+  border-radius: var(--radius-card) !important;
+}
+
+.map-control-orb:hover,
+.map-control-orb-open {
+  transform: none;
+  border-color: var(--ink) !important;
+  background: var(--ink) !important;
+  color: #fffaf4 !important;
+}
+
+.map-rotation-pad button {
+  border-radius: 4px;
+  color: var(--ink);
+}
+
+.map-rotation-pad button:hover {
+  transform: none;
+  background: var(--ink-hover);
+  color: var(--ink);
+}
+
+.map-rotation-pad button:nth-child(5) {
+  background: var(--brand-tint);
+  color: var(--brand);
+}
+
+.map-action-button:hover {
+  transform: none;
+  border-color: var(--ink) !important;
+}
+
+@media (max-width: 639px) {
+  .map-control-orb {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+.maplibregl-ctrl-group {
+  border: 1px solid var(--ink-line-strong) !important;
+  border-radius: var(--radius-control) !important;
+  background: #ffffff !important;
+  box-shadow: var(--shadow-card) !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* The dark sheet inverted MapLibre's own icons to read on charcoal. */
+.maplibregl-ctrl-group button {
+  border-color: var(--ink-line) !important;
+  filter: none;
+}
+
+.maplibregl-ctrl-group button:hover {
+  background-color: var(--ink-hover) !important;
+}
+
+@media (pointer: coarse) {
+  .maplibregl-ctrl-group button {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+.billboard-compass {
+  border: 1px solid var(--ink-line-strong);
+  background: #ffffff;
+}
+
+.billboard-compass-north {
+  color: var(--brand);
+}
+
+.billboard-compass-arrow {
+  background: linear-gradient(var(--brand) 0 48%, var(--ink-soft) 48% 100%);
+}
+
+.billboard-compass-dot {
+  border-color: #ffffff;
+  background: var(--ink);
+}
+
+/* ---- Top bar ticker and the News tab ----------------------------------- */
+
+.live-ticker-label {
+  border-right: 1px solid var(--ink-line);
+}
+
+.live-dot {
+  background: var(--lamp);
+  box-shadow: 0 0 0 4px var(--lamp-tint);
+}
+
+.live-ticker-item,
+.live-ticker-place {
+  color: var(--ink-muted);
+}
+
+.live-ticker-flag-live {
+  color: var(--lamp-ink);
+}
+
+.live-ticker-flag {
+  color: var(--ink-soft);
+}
+
+.live-ticker-headline {
+  color: var(--ink);
+}
+
+.topbar-broadcast .live-ticker {
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-control);
+  background: var(--paper);
+}
+
+.news-launcher {
+  border: 1px solid var(--ink-line-strong);
+  border-right: 0;
+  border-radius: var(--radius-control) 0 0 var(--radius-control);
+  background: #ffffff;
+  color: var(--lamp-ink);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.news-launcher:hover,
+.news-launcher[aria-expanded="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fffaf4;
+}
+
+/* ---- The ad rail ------------------------------------------------------- */
+
+/* Paid inventory beside the product's own controls, so it speaks in plum
+   and nothing else. */
+.ad-rail {
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-card);
+  background: #fffffff5;
+  box-shadow: var(--shadow-panel);
+}
+
+.ad-rail-kicker {
+  color: var(--plum);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.advertise-intro .ad-rail-kicker {
+  font-size: 11px;
+}
+
+.ad-rail-header strong,
+.ad-rail-slot-copy strong,
+.ad-rail-slot {
+  color: var(--ink);
+}
+
+.ad-rail-slot {
+  border-radius: var(--radius-control);
+}
+
+.ad-rail-slot-copy small,
+.ad-rail-footer,
+.ad-rail-collapse,
+.ad-rail-reopen {
+  color: var(--ink-muted);
+}
+
+.ad-rail-collapse:hover,
+.ad-rail-reopen:hover {
+  background: var(--ink-hover);
+  color: var(--ink);
+}
+
+.ad-rail-collapse {
+  width: 40px;
+  height: 40px;
+}
+
+.ad-rail-slot-filled {
+  border: 1px solid var(--plum-line);
+  background: var(--plum-tint);
+}
+
+.ad-rail-slot-filled:hover,
+.ad-rail-slot-filled:focus-visible {
+  border-color: var(--plum);
+  background: #6b4a7d24;
+}
+
+.ad-rail-slot-empty {
+  border: 1px dashed var(--ink-line-strong);
+  color: var(--ink-muted);
+}
+
+.ad-rail-slot-empty:hover,
+.ad-rail-slot-empty:focus-visible {
+  border-color: var(--plum);
+  background: var(--plum-tint);
+  color: var(--plum);
+}
+
+.ad-rail-slot-image {
+  border-radius: 4px;
+  background: var(--plum);
+  color: #fffaf4;
+}
+
+.ad-rail-arrow,
+.ad-rail-empty-plus,
+.ad-rail-footer span,
+.ad-rail-footer strong {
+  color: var(--plum);
+}
+
+.ad-rail-footer {
+  min-height: 40px;
+  border-top: 1px solid var(--ink-line);
+  font-size: 11px;
+}
+
+.ad-rail-reopen span:first-child {
+  background: var(--plum);
+  color: #fffaf4;
+}
+
+.ad-rail-full-notice {
+  border: 1px solid var(--plum-line);
+  border-radius: var(--radius-control);
+  background: var(--plum-tint);
+  color: var(--plum);
+}
+
+@media (max-width: 639px) {
+  .ad-rail {
+    border-radius: var(--radius-card);
+  }
+
+  .ad-rail-slot-copy strong,
+  .ad-rail-slot-empty {
+    font-size: 10.5px;
+  }
+}
+
+/* ---- Enquiry modal and /advertise --------------------------------------- */
+
+.ad-enquiry-backdrop {
+  background: #24211e59;
+}
+
+.ad-enquiry-modal {
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-card);
+  background-image: none;
+  background-color: #ffffff;
+  color: var(--ink);
+  box-shadow: var(--shadow-panel);
+}
+
+.ad-enquiry-modal h2,
+.advertise-form-heading h2,
+.advertise-success h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+.ad-enquiry-intro,
+.ad-enquiry-success p,
+.ad-enquiry-modal label,
+.ad-enquiry-close {
+  color: var(--ink-muted);
+}
+
+.ad-enquiry-close:hover {
+  background: var(--ink-hover);
+  color: var(--ink);
+}
+
+.ad-enquiry-modal input,
+.ad-enquiry-modal textarea,
+.advertise-form-card input:not([type="checkbox"]),
+.advertise-form-card select,
+.advertise-form-card textarea {
+  border: 1px solid var(--ink-line-strong);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.ad-enquiry-modal input::placeholder,
+.ad-enquiry-modal textarea::placeholder,
+.advertise-form-card input::placeholder,
+.advertise-form-card textarea::placeholder {
+  color: var(--ink-soft);
+}
+
+.ad-enquiry-modal input:focus,
+.ad-enquiry-modal textarea:focus,
+.advertise-form-card input:focus,
+.advertise-form-card select:focus,
+.advertise-form-card textarea:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px #24211e14;
+}
+
+.advertise-form-card select option {
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.ad-enquiry-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: var(--radius-control);
+  background: var(--ink);
+  color: #fffaf4;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
+}
+
+.ad-enquiry-primary:hover:not(:disabled) {
+  transform: none;
+  filter: none;
+  background: #3a352f;
+}
+
+.ad-enquiry-error {
+  color: var(--danger);
+}
+
+.ad-enquiry-success-icon {
+  background: var(--awning-tint);
+  color: var(--awning);
+}
+
+/* The banner carries the headline now (see PageBanner), so the page below
+   is a plain two-column sheet: how it works, and the form. */
+.advertise-page {
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.advertise-layout {
+  width: min(1040px, calc(100% - 40px));
+  min-height: 0;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(32px, 6vw, 80px);
+  padding: 40px 0 64px;
+}
+
+.advertise-proof-list {
+  margin-top: 0;
+  gap: 0;
+}
+
+.advertise-proof-list > div {
+  padding: 16px 0;
+  border-top: 1px solid var(--ink-line);
+}
+
+.advertise-proof-list span {
+  color: var(--brand);
+  font-size: 11px;
+}
+
+.advertise-proof-list strong {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.advertise-proof-list small {
+  color: var(--ink-muted);
+  font-size: 13px;
+}
+
+.advertise-form-card {
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-card);
+  background-image: none;
+  background-color: #ffffff;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.advertise-form-card .ad-rail-kicker,
+.advertise-intro .ad-rail-kicker,
+.advertise-success .ad-rail-kicker {
+  color: var(--lamp-ink);
+}
+
+.advertise-form-heading h2 {
+  font-size: 26px;
+}
+
+.advertise-step,
+.advertise-footnote {
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.advertise-form-card label {
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.advertise-format-note,
+.advertise-inline-note {
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-control);
+  background: var(--paper);
+  font-size: 12px;
+}
+
+.advertise-format-note > b {
+  color: var(--ink);
+}
+
+.advertise-format-note > b small,
+.advertise-format-note span,
+.advertise-inline-note,
+.advertise-payment-body p,
+.advertise-success p {
+  color: var(--ink-muted);
+}
+
+.advertise-check {
+  color: var(--ink-muted) !important;
+  font-size: 12px;
+}
+
+.advertise-check input {
+  accent-color: var(--ink);
+}
+
+.advertise-payment {
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-control);
+  background: var(--paper);
+}
+
+.advertise-payment-heading h3,
+.advertise-payment-body strong {
+  color: var(--ink);
+}
+
+.advertise-payment-badge {
+  border: 1px solid var(--ink-line-strong);
+  border-radius: 4px;
+  color: var(--ink-muted);
+}
+
+.advertise-qr-placeholder {
+  border: 1px dashed var(--ink-line-strong);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  color: var(--ink-muted);
+}
+
+/* The real QR, once one is configured (lib/payments.ts). Same footprint as
+   the placeholder it replaces so the payment row does not reflow when the
+   operator sets NEXT_PUBLIC_UPI_QR_URL.
+
+   image-rendering: pixelated is deliberate and the one case where it is
+   correct: a QR is a bitmap of hard-edged modules, and smooth interpolation
+   blurs module boundaries enough that some scanners stop reading it. White
+   padding because the quiet zone around a QR is part of the spec, not
+   margin — a QR flush to a coloured edge fails to decode. */
+.advertise-qr {
+  width: 82px;
+  height: 82px;
+  flex: 0 0 82px;
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  padding: 4px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.advertise-payment-body code {
+  color: var(--brand);
+}
+
+@media (max-width: 800px) {
+  .advertise-layout {
+    width: min(100% - 32px, 560px);
+    padding: 28px 0 40px;
+  }
+
+  /* The dark sheet hid these on a phone; they are the page's only
+     explanation now that the headline moved into the banner. */
+  .advertise-proof-list {
+    display: grid;
+    margin-bottom: 24px;
+  }
+
+  .advertise-form-card {
+    margin-top: 0;
+    border-radius: var(--radius-card);
+  }
+}
+
+/* ---- Detail card ------------------------------------------------------- */
+
+.detail-card-name {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.detail-card-meta {
+  color: var(--ink-muted);
+}
+
+/* The signature element: ratings only from people whose phone confirmed
+   they were standing here. Awning green, the trust colour. */
+.verified-seal {
+  border: 1px solid #2f5b4e40;
+  border-radius: var(--radius-control);
+  background: var(--awning-tint);
+}
+
+.verified-seal-mark {
+  background: var(--awning);
+  color: #fffaf4;
+}
+
+.verified-seal-score,
+.verified-seal-label {
+  color: var(--awning);
+}
+
+.verified-seal-empty {
+  border-color: var(--ink-line);
+  background: var(--paper);
+}
+
+.verified-seal-empty .verified-seal-mark {
+  background: var(--ink-line);
+  color: var(--ink-muted);
+}
+
+.verified-seal-empty .verified-seal-label,
+.verified-seal-done {
+  color: var(--ink-muted);
+}
+
+.verified-seal-cta {
+  border-radius: var(--radius-control);
+  background: var(--awning);
+  color: #fffaf4;
+}
+
+.verified-seal-cta:hover {
+  background: #244a3f;
+}
+
+.verified-seal-empty .verified-seal-cta {
+  background: var(--ink);
+  color: #fffaf4;
+}
+
+.verified-seal-empty .verified-seal-cta:hover {
+  background: #3a352f;
+}
+
+.known-for {
+  border-left: 2px solid var(--lamp);
+  border-radius: 0 var(--radius-control) var(--radius-control) 0;
+  background: var(--paper);
+}
+
+.known-for-text {
+  color: var(--ink);
+}
+
+.detail-card-tag {
+  border: 1px solid var(--ink-line);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink-muted);
+}
+
+.detail-card-tag-more {
+  color: var(--ink-soft);
+}
+
+.detail-card-actions {
+  border-top: 1px solid var(--ink-line);
+}
+
+.detail-card-action-primary {
+  border-radius: var(--radius-control);
+  background: var(--ink);
+  color: #fffaf4;
+  font-weight: 600;
+}
+
+.detail-card-action-primary:hover {
+  background: #3a352f;
+}
+
+.detail-card-action-static {
+  background: var(--plum-tint);
+  color: var(--plum);
+}
+
+.detail-card-action-icon {
+  border: 1px solid var(--ink-line-strong);
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--ink-muted);
+}
+
+.detail-card-action-icon:hover {
+  border-color: var(--ink);
+  background: var(--ink-hover);
+  color: var(--ink);
+}
+
+.detail-card-action-icon.is-active {
+  border-color: var(--brand);
+  background: var(--brand-tint);
+  color: var(--brand);
+}
+
+.detail-card-action-badge {
+  background: var(--brand);
+  color: #fffaf4;
+}
+
+.detail-card-link {
+  color: var(--brand);
+}
+
+.detail-card-link:hover {
+  color: var(--brand-deep);
+}
+
+@media (max-width: 1023px) {
+  .map-experience-shell .detail-card-grabber > span {
+    background: var(--ink-line-strong);
+  }
+
+  .map-experience-shell .detail-card-grabber:active > span {
+    background: var(--ink-soft);
+  }
+}
+
+.panel-close-button {
+  color: var(--ink-muted);
+}
+
+/* ---- Sidebar widgets --------------------------------------------------- */
+
+.points-widget {
+  border-radius: var(--radius-control);
+  background: var(--lamp-tint);
+  box-shadow: inset 0 0 0 1px #eba25866;
+}
+
+.points-widget:hover {
+  box-shadow: inset 0 0 0 1px var(--lamp);
+}
+
+.notifications-badge {
+  background: var(--brand);
+  color: #fffaf4;
+}
+
+/* ---- Leaderboard, profile, admin lists --------------------------------- */
+
+.profile-stat,
+.kpi-card,
+.admin-enquiry-item {
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+}
+
+/* A ruled table, not a stack of cards: rows share their borders. */
+.leaderboard-row {
+  border: 1px solid var(--ink-line);
+  border-radius: 0;
+  background: #ffffff;
+}
+
+.leaderboard-row + .leaderboard-row {
+  margin-top: -1px;
+}
+
+.leaderboard-row:first-of-type {
+  border-top-left-radius: var(--radius-control);
+  border-top-right-radius: var(--radius-control);
+}
+
+.leaderboard-row:last-of-type {
+  border-bottom-left-radius: var(--radius-control);
+  border-bottom-right-radius: var(--radius-control);
+}
+
+.leaderboard-row-me {
+  position: relative;
+  z-index: 1;
+  border-color: var(--lamp);
+  background: #fdf6ec;
+}
+
+.leaderboard-rank,
+.leaderboard-visited,
+.leaderboard-me-hint,
+.profile-stat-label,
+.profile-redeem-note,
+.kpi-label {
+  color: var(--ink-muted);
+}
+
+.leaderboard-name,
+.profile-stat-value,
+.kpi-value {
+  color: var(--ink);
+}
+
+.leaderboard-points,
+.profile-stat-link .profile-stat-value {
+  color: var(--lamp-ink);
+}
+
+.leaderboard-me-row {
+  border-bottom: 1px solid var(--ink-line);
+}
+
+.profile-stat-value,
+.kpi-value {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.profile-stat-link:hover {
+  border-color: var(--lamp);
+}
+
+.profile-avatar-edit-badge {
+  border-color: #ffffff;
+  background: var(--ink);
+  color: #fffaf4;
+}
+
+.profile-avatar-option:hover {
+  border-color: var(--ink);
+}
+
+.admin-user-avatar {
+  background: var(--paper-deep);
+  color: var(--ink);
+}
+
+.admin-enquiries-panel {
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-card);
+  background: #ffffff;
+}
+
+.admin-enquiries-header {
+  border-bottom: 1px solid var(--ink-line);
+}
+
+.admin-enquiries-header h2,
+.admin-enquiry-item h3,
+.admin-user-identity h3,
+.ranked-bar-label,
+.ranked-bar-value,
+.incomplete-listings-list li,
+.bulk-bonus-count {
+  color: var(--ink);
+}
+
+.admin-enquiries-header p,
+.admin-enquiries-header > button,
+.admin-enquiry-meta,
+.admin-enquiries-empty,
+.admin-enquiry-message,
+.admin-user-section-label,
+.admin-user-filters label,
+.admin-user-filters-clear,
+.admin-user-reviews li,
+.admin-user-reviews li p,
+.admin-user-select-all,
+.welcome-bonus-toggle,
+.welcome-bonus-row label,
+.welcome-bonus-field,
+.welcome-bonus-hint,
+.points-config-row,
+.ranked-bar-hint,
+.category-table-row,
+.category-table-head,
+.plain-chip-list li,
+.rail-form-label {
+  color: var(--ink-muted);
+}
+
+.admin-enquiries-header > button:hover,
+.admin-enquiry-links a:hover {
+  background: var(--ink-hover);
+  color: var(--ink);
+}
+
+.admin-enquiry-format {
+  color: var(--plum);
+}
+
+.status-pending {
+  background: var(--lamp-tint);
+  color: var(--lamp-ink);
+}
+
+.status-approved {
+  background: var(--awning-tint);
+  color: var(--awning);
+}
+
+.status-rejected {
+  background: var(--danger-tint);
+  color: var(--danger);
+}
+
+.admin-enquiry-links a {
+  border: 1px solid var(--ink-line-strong);
+  border-radius: 4px;
+  color: var(--ink);
+}
+
+.admin-enquiry-actions button,
+.admin-user-bonus-form button,
+.admin-user-delete,
+.admin-user-ban,
+.welcome-bonus-save,
+.bulk-bonus-bar button,
+.preset-amount-btn,
+.analytics-tab,
+.rail-slot-options button {
+  border-radius: var(--radius-control);
+}
+
+.admin-enquiry-approve,
+.admin-user-bonus-form button,
+.welcome-bonus-save,
+.bulk-bonus-bar-inner > button[type="button"]:not(.bulk-bonus-cancel) {
+  border: 1px solid var(--ink) !important;
+  background: var(--ink) !important;
+  color: #fffaf4 !important;
+}
+
+.admin-enquiry-approve:hover {
+  filter: none;
+  background: #3a352f !important;
+}
+
+.admin-enquiry-reject,
+.admin-user-delete {
+  border: 1px solid #a3301c4d;
+  background: transparent;
+  color: var(--danger);
+}
+
+.admin-enquiry-reject:hover,
+.admin-user-delete:hover {
+  background: var(--danger-tint);
+}
+
+.admin-user-ban {
+  border: 1px solid #96570f4d;
+  background: transparent;
+  color: var(--lamp-ink);
+}
+
+.admin-user-banned-badge,
+.admin-user-action-error,
+.kpi-card-warn .kpi-value {
+  color: var(--danger);
+}
+
+.admin-user-banned-badge {
+  background: var(--danger-tint);
+}
+
+.kpi-card-warn {
+  border-color: #a3301c4d;
+  background: #fbf1ee;
+}
+
+.admin-user-points {
+  border: 1px solid #96570f40;
+  background: var(--lamp-tint);
+  color: var(--lamp-ink);
+}
+
+.admin-user-reviews li strong,
+.incomplete-missing {
+  color: var(--lamp-ink);
+}
+
+.admin-user-actions {
+  border-top: 1px solid var(--ink-line);
+}
+
+.admin-user-bonus-form input,
+.welcome-bonus-row input,
+.welcome-bonus-field input,
+.points-config-row input,
+.admin-user-search,
+.admin-user-filters input,
+.admin-user-filters select,
+.bulk-bonus-bar input {
+  border: 1px solid var(--ink-line-strong);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.admin-user-bonus-form input:focus,
+.admin-user-search:focus {
+  border-color: var(--ink);
+}
+
+.admin-user-filters select option {
+  color: var(--ink);
+}
+
+.admin-user-item-selected {
+  border-color: var(--ink);
+  background: var(--paper);
+}
+
+.bulk-bonus-bar {
+  border: 1px solid var(--ink-line-strong);
+  border-radius: var(--radius-card);
+}
+
+.bulk-bonus-cancel {
+  border: 1px solid var(--ink-line-strong);
+  color: var(--ink-muted);
+}
+
+.preset-amount-btn {
+  border: 1px solid var(--ink-line-strong);
+  background: #ffffff;
+  color: var(--ink-muted);
+}
+
+.analytics-tab {
+  border: 1px solid var(--ink-line-strong);
+  background: transparent;
+  color: var(--ink-muted);
+}
+
+.analytics-tab-active {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fffaf4;
+}
+
+.ranked-bar-track {
+  background: var(--paper-deep);
+}
+
+.ranked-bar-fill,
+.day-bar-fill {
+  background: var(--brand);
+}
+
+.ranked-bar-fill-warn {
+  background: var(--danger);
+}
+
+.category-table-row,
+.incomplete-listings-list li {
+  border-bottom: 1px solid var(--ink-line);
+}
+
+.category-table-head {
+  border-bottom-color: var(--ink-line-strong);
+}
+
+.plain-chip-list li {
+  border: 1px solid var(--ink-line);
+  border-radius: 4px;
+  background: transparent;
+}
+
+.rail-slot-picker {
+  border: 1px solid var(--plum-line);
+  border-radius: var(--radius-control);
+  background: var(--plum-tint);
+}
+
+.rail-slot-options button {
+  border: 1px solid var(--ink-line-strong);
+  background: #ffffff;
+  color: var(--ink-muted);
+}
+
+.rail-slot-options button.selected {
+  border-color: var(--plum);
+  background: var(--plum);
+  color: #fffaf4;
+  box-shadow: none;
+}
+
+/* ---- The cover and the banner ------------------------------------------ */
+
+/* Marks the two deliberately dark, painted screens. */
+.cover-screen {
+  color-scheme: dark;
+}
+
+.cover-screen h1 {
+  color: #f6ece0;
+}
+
+/* The painting settles in rather than snapping on — a slow ease back from
+   slightly close, the way a camera finds its frame. Transform and opacity
+   only, so it costs the compositor nothing. */
+@keyframes cover-settle {
+  from { opacity: 0; transform: scale(1.06); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes cover-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+.cover-art {
+  animation: cover-settle 1.6s var(--ease-out) both;
+}
+
+.cover-rise {
+  animation: cover-rise 0.9s var(--ease-out) 0.25s both;
+}
+
+.cover-rise-late {
+  animation-delay: 0.5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-art,
+  .cover-rise,
+  .is-public .detail-card,
+  .is-public .map-panels-column > .panel-elevated {
+    animation: none;
+  }
+}
+
+/* A link set on top of artwork. The device is borrowed from the painting's
+   own lettering — cream letterspaced capitals with a short rule beneath.
+   The rule is the affordance: short at rest, running out to the full width
+   of the label on hover. Motion rather than a box, because a box drawn on
+   a painting is a sticker. */
+.painted-link {
+  display: inline-block;
+  color: #f6ece0d6;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition: color 0.2s ease;
+}
+
+.painted-link:hover {
+  color: #f6ece0;
+}
+
+.painted-link .rule {
+  display: block;
+  height: 1px;
+  margin-top: 0.5rem;
+  margin-left: auto;
+  background: #f6ece08c;
+  transform: scaleX(0.28);
+  transform-origin: right;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.painted-link:hover .rule,
+.painted-link:focus-visible .rule {
+  transform: scaleX(1);
+}
+
+/* The main way in: a heavier rule, in lamplight — the one place the raw
+   lamp colour is used for anything but a glow. */
+.painted-link--primary {
+  color: #f6ece0;
+}
+
+.painted-link--primary .rule {
+  height: 2px;
+  background: var(--lamp);
+  transform: scaleX(0.4);
+}
+
+.painted-link--start .rule {
+  margin-left: 0;
+  transform-origin: left;
+}
+
+.painted-link .arrow {
+  display: inline-block;
+  margin-left: 0.75rem;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.painted-link:hover .arrow {
+  transform: translateX(4px);
+}
+
+.painted-link:focus-visible {
+  outline: 1px solid #f6ece0;
+  outline-offset: 6px;
+  border-radius: 2px;
+}
+
+/* ---- Touch ------------------------------------------------------------- */
+
+/* Pins stay small — a dot on a map reads at this size, and bigger pins
+   turn a busy area into a pile of buttons — so the target grows instead,
+   on a pseudo-element that cannot move the marker off its coordinate. */
+@media (pointer: coarse) {
+  .cafe-pin {
+    position: relative;
+  }
+
+  .cafe-pin::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+  }
+}
+
+/* ---- Legal prose ------------------------------------------------------- */
+
+/* /privacy, /terms and /refunds are the only long-form reading in this
+   product. Everything else is interface, set tight; a policy set to
+   interface spacing is the reason nobody reads one. So these get a real
+   measure (~46rem, held by the page container), a looser line, and headings
+   that separate sections instead of merely labelling them.
+
+   Scoped to .legal-prose rather than applied to bare h2/p, because those
+   elements appear all over the map UI where this rhythm would be wrong. */
+.legal-prose {
+  color: var(--ink-muted);
+  font-size: 15.5px;
+  line-height: 1.75;
+}
+
+.legal-prose > * + * {
+  margin-top: 1.1rem;
+}
+
+.legal-prose h2 {
+  /* Serif, matching the page titles — the display face is what ties these
+     pages to the rest of the site, since they have no art of their own
+     below the banner. */
+  font-family: var(--font-display), serif;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  color: var(--ink);
+  /* A hairline above each heading does the sectioning, so the eye can find
+     "Deleting your data" while scrolling without reading anything. */
+  margin-top: 2.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ink-line);
+}
+
+/* The first heading sits directly under the "last updated" line, which is
+   already a rule's worth of separation. */
+.legal-prose > h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.legal-prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.legal-prose em {
+  font-style: italic;
+}
+
+.legal-prose ul {
+  /* Outside markers so wrapped lines align with the text, not the bullet. */
+  list-style: disc outside;
+  padding-left: 1.15rem;
+}
+
+.legal-prose li + li {
+  margin-top: 0.6rem;
+}
+
+.legal-prose code {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.875em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--paper-deep);
+  color: var(--ink);
+}
+
+.legal-prose a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--ink-line-strong);
+  transition: text-decoration-color 0.2s var(--ease-out);
+}
+
+.legal-prose a:hover {
+  text-decoration-color: currentColor;
 }

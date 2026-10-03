@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import PageBanner from "@/components/PageBanner";
+import SiteFooter from "@/components/SiteFooter";
 import { useAuth } from "@/lib/useAuth";
 import Avatar from "@/components/Avatar";
 import type { LeaderboardEntry } from "@/app/api/leaderboard/route";
@@ -50,50 +51,26 @@ export default function LeaderboardPage() {
   const meInTop = me && top.some((entry) => entry.isMe);
 
   // Waiting on the auth check rather than assuming signed-out, so someone
-  // arriving with a valid session never sees the sign-in screen flash
+  // arriving with a valid session never sees the sign-in prompt flash
   // before their own ranking loads.
+  let body: React.ReactNode;
   if (authLoading) {
-    return (
-      <div className="flex min-h-dvh w-full items-center justify-center bg-[#0b0b0d] px-4 text-sm text-neutral-400">
-        Loading…
-      </div>
-    );
-  }
-
-  if (!session) {
-    return (
-      <div className="flex min-h-dvh w-full flex-col items-center justify-center bg-[#0b0b0d] px-4 text-center">
-        <span className="text-3xl" aria-hidden="true">🏆</span>
-        <h1 className="mt-3 text-lg font-semibold text-neutral-100">Leaderboard</h1>
-        <p className="mt-1 max-w-xs text-sm text-neutral-400">
+    body = <div className="admin-enquiries-empty">Loading…</div>;
+  } else if (!session) {
+    body = (
+      <div className="rounded-[10px] border border-line bg-white px-6 py-10 text-center">
+        <h2 className="display text-[26px] leading-tight text-ink">A board you join, not one you watch.</h2>
+        <p className="mx-auto mt-2 max-w-sm text-sm text-ink-muted">
           Sign up to see who is leading — and to start earning points for the places you visit.
         </p>
-        <button
-          onClick={() => signInWithGoogle()}
-          className="mt-5 rounded-full bg-white px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-200"
-        >
+        <button onClick={() => signInWithGoogle()} className="btn-primary mt-6">
           Continue with Google
         </button>
-        <Link href="/" className="mt-4 text-xs text-neutral-400 hover:underline">
-          ← Back to map
-        </Link>
       </div>
     );
-  }
-
-  return (
-    <div className="min-h-dvh bg-[#0b0b0d] text-neutral-100">
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-white/10 bg-[#0b0b0d]/95 px-5 py-4 backdrop-blur">
-        <div>
-          <Link href="/" className="text-xs text-neutral-400 hover:underline">
-            ← Back to map
-          </Link>
-          <h1 className="mt-1 text-lg font-semibold">Leaderboard</h1>
-          <p className="text-xs text-neutral-400">Top point earners, ranked</p>
-        </div>
-      </header>
-
-      <div className="mx-auto max-w-lg px-4 py-5">
+  } else {
+    body = (
+      <>
         {loading && <div className="admin-enquiries-empty">Loading…</div>}
         {error && !loading && <div className="admin-enquiries-empty">{error}</div>}
 
@@ -108,13 +85,28 @@ export default function LeaderboardPage() {
           <div className="admin-enquiries-empty">No one has earned points yet — be the first!</div>
         )}
 
-        {!loading &&
-          !error &&
-          top.map((entry) => (
-            <LeaderboardRow key={entry.rank} entry={entry} highlight={entry.isMe} />
-          ))}
-      </div>
-    </div>
+        {!loading && !error && top.length > 0 && (
+          <div>
+            {top.map((entry) => (
+              <LeaderboardRow key={entry.rank} entry={entry} highlight={entry.isMe} />
+            ))}
+          </div>
+        )}
+      </>
+    );
+  }
+
+  return (
+    <main className="min-h-dvh bg-paper text-ink">
+      <PageBanner
+        active="leaderboard"
+        eyebrow="Leaderboard"
+        title="Who has been everywhere."
+        lede="Points for every visit your phone can vouch for, and every review you leave."
+      />
+      <div className="mx-auto max-w-2xl px-4 py-8 sm:py-10">{body}</div>
+      <SiteFooter />
+    </main>
   );
 }
 
