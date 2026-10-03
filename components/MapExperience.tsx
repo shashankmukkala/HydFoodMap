@@ -32,7 +32,7 @@ import { useAdminAuth } from "@/lib/useAdminAuth";
 import { adminFetch } from "@/lib/adminFetch";
 import { MOBILE_QUERY, useMediaQuery } from "@/lib/useMediaQuery";
 import { TAG_ICONS, type Tag } from "@/lib/tags";
-import { BACKGROUND_GRADIENTS, CATEGORY_ICONS, CATEGORY_OPTIONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
+import { CATEGORY_ICONS, CATEGORY_SHORT_LABELS, type Category } from "@/lib/categories";
 import { distanceMeters } from "@/lib/geo";
 import type { Billboard, Cafe, CafeEvent } from "@/lib/supabase";
 import type { CafeRating } from "@/app/api/cafes/ratings/route";
@@ -72,6 +72,11 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [locationStatus, setLocationStatus] = useState<"idle" | "locating" | "denied">("idle");
   const [ratings, setRatings] = useState<Record<string, CafeRating>>({});
+  // /api/cafes used to answer a dead database with the local seed file, so
+  // this could not happen — the map always had pins. Now that it returns
+  // 503 instead, an empty map needs to say why, or it reads as "Hyderabad
+  // has no cafes" rather than "we couldn't reach the database".
+  const [cafesFailed, setCafesFailed] = useState(false);
   const [selected, setSelected] = useState<Selected>(null);
   const [searchMatch, setSearchMatch] = useState<SearchGroupMatch>(null);
   const [searchClearSignal, setSearchClearSignal] = useState(0);
@@ -96,9 +101,19 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
 
   useEffect(() => {
     fetch("/api/cafes")
-      .then((res) => res.json())
-      .then((data) => Array.isArray(data) && setCafes(data))
-      .catch(() => {});
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`/api/cafes ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data)) throw new Error("/api/cafes: unexpected shape");
+        setCafes(data);
+        setCafesFailed(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setCafesFailed(true);
+      });
     fetch("/api/billboards")
       .then((res) => res.json())
       .then((data) => Array.isArray(data) && setBillboards(data))
@@ -641,8 +656,6 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     });
   }
 
-  const bgKey: Category | "all" = activeCategory ?? "all";
-
   return (
     // `has-open-panel` lets CSS get out of the way of a sheet on small
     // screens — chiefly the ad rail, which shares the exact same bottom
@@ -650,43 +663,13 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
     // rather than sitting beside it. Same pattern as a native map app,
     // where bottom chrome yields to an open place sheet.
     <div className={`map-experience-shell relative isolate flex h-dvh w-dvw gap-1 overflow-hidden p-1 pb-[calc(0.25rem+env(safe-area-inset-bottom))] sm:gap-1.5 sm:p-2 ${isAdmin ? "is-admin" : "is-public"} ${hasOpenPanel ? "has-open-panel" : ""}`}>
-      {/* The aurora backdrop lives on this fixed base layer's own
-          background (not a separately z-indexed overlay child) — a
-          negative-z-index element only stays contained "behind its own
-          siblings" if some ancestor actually establishes a stacking
-          context; plain `relative` with no z-index doesn't, so the
-          negative-z child was escaping to the document root's stacking
-          context and painting *underneath* the page's own background,
-          which is why nothing showed. `isolate` on the root forces that
-          stacking context explicitly instead of relying on it happening
-          to work. One base layer + one crossfading overlay (opacity only,
-          so the base is never see-through) keeps the "type" filter's
-          smooth transition. */}
-      {/* Admin is a working tool, not the browsing experience the colorful
-          per-category aurora is meant for — it gets one flat, uniform
-          background matching the rest of the admin chrome (the panels,
-          "Admin mode" pill, etc.) instead of the mixed pink/red/purple/
-          amber blobs, which read as distracting noise here.
-          The same flat background also covers the public map until
-          MapView's onMapReady fires (map state goes non-null only once
-          MapLibre's "load" event has actually painted tiles) — before
-          that, the map canvas is empty/transparent, so the full-screen
-          aurora sat fully exposed for a beat on every reload before the
-          map covered it, reading as an unwanted colorful flash. */}
-      {isAdmin || !map ? (
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(160deg,#0b0b0d_0%,#111113_55%,#0a0a0c_100%)]" />
-      ) : (
-        <div className={`absolute inset-0 -z-10 ${BACKGROUND_GRADIENTS.all}`}>
-          {CATEGORY_OPTIONS.map((key) => (
-            <div
-              key={key}
-              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${BACKGROUND_GRADIENTS[key]} ${
-                bgKey === key ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          ))}
-        </div>
-      )}
+      {/* A flat paper ground. It used to be a per-category aurora of
+          coloured blobs, which gave a black page depth; on paper it would
+          read as a stain, and the only time it was ever visible was the
+          beat before the tiles paint — when the same colour as the page
+          is exactly what should show. `isolate` on the root is still what
+          keeps this negative-z layer behind its siblings. */}
+      <div className="absolute inset-0 -z-10 bg-paper" />
 
       <div className="map-sidebar-rail">
       <Sidebar
@@ -708,7 +691,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
       <div className="map-main-shell min-h-0 flex min-w-0 flex-1 flex-col gap-2 overflow-y-auto sm:gap-3 lg:overflow-hidden">
         {isAdmin && (
           <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex justify-center pt-2">
-            <div className="rounded-full bg-neutral-900 px-4 py-1 text-xs font-medium tracking-wide text-white uppercase">
+            <div className="rounded-full bg-ink px-4 py-1 text-xs font-medium tracking-wide text-white uppercase">
               Admin mode
             </div>
           </div>
@@ -743,7 +726,29 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
           />
         </div>
 
-        {!isAdmin && <OnboardingBanner />}
+        {cafesFailed && (
+          <div
+            role="status"
+            className="panel-elevated pointer-events-auto flex items-start gap-3 rounded-3xl px-4 py-3"
+          >
+            <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-danger/15 text-sm">
+              ⚠
+            </span>
+            <div className="min-w-0 flex-1 text-xs text-ink-muted">
+              <span className="font-semibold text-ink">The map couldn&apos;t load its places.</span>{" "}
+              This is on our side, not yours — the connection to our database dropped. Reload in a
+              moment and they should be back.
+            </div>
+            <button
+              onClick={() => window.location.reload()}
+              className="shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold text-ink hover:bg-ink/5"
+            >
+              Reload
+            </button>
+          </div>
+        )}
+
+        {!isAdmin && !cafesFailed && <OnboardingBanner />}
 
         {!isAdmin && (
           <button
@@ -803,7 +808,7 @@ export default function MapExperience({ isAdmin }: MapExperienceProps) {
 
             {placingMode && !pendingCoords && (
               <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center">
-                <div className="rounded-full bg-neutral-900/90 px-4 py-2 text-sm text-white shadow-lg">
+                <div className="rounded-full bg-ink/90 px-4 py-2 text-sm text-white shadow-lg">
                   Click anywhere on the map to{" "}
                   {placingMode === "cafe" ? "pin a cafe" : "place a billboard"}
                 </div>

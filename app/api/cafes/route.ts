@@ -4,6 +4,8 @@ import { localGetAll, localInsert } from "@/lib/localCafeStore";
 import { requireAdmin } from "@/lib/adminAuth";
 
 export async function GET() {
+  // The local store is the *unconfigured* case only: a fresh clone with no
+  // .env.local, so the map has something to draw. It is a dev convenience.
   if (!isSupabaseConfigured()) {
     return NextResponse.json(localGetAll());
   }
@@ -13,15 +15,26 @@ export async function GET() {
     .select("*")
     .order("created_at", { ascending: false });
 
+  // This used to fall through to localGetAll() on any error, and again on
+  // an empty table. Both were silent, and both were worse than failing:
+  // the seed file is a stale snapshot with no photos, no addresses and
+  // places that have since been removed or corrected (0041), so a
+  // Supabase outage served a map that looked completely normal and was
+  // wrong — admin edits apparently reverted, deleted cafes reappeared, and
+  // nothing anywhere said the database was down. An error the client can
+  // see is recoverable; confident wrong data is not.
   if (error) {
-    return NextResponse.json(localGetAll());
+    console.error("[/api/cafes] Supabase read failed:", error.message);
+    return NextResponse.json(
+      { error: "Cafes are temporarily unavailable." },
+      { status: 503, headers: { "Retry-After": "30" } }
+    );
   }
 
-  if (!data || data.length === 0) {
-    return NextResponse.json(localGetAll());
-  }
-
-  return NextResponse.json(data);
+  // An empty table is a legitimate answer, not a failure. Returning [] lets
+  // the client say "no cafes yet" instead of quietly showing 140 seeded
+  // ones that are not in the database.
+  return NextResponse.json(data ?? []);
 }
 
 export async function POST(request: NextRequest) {
