@@ -81,7 +81,13 @@ Still MVP or pending:
 - Photo storage. Review photos and admin-uploaded cafe photos are embedded
   in the row as data URLs. This is fine at five photos and will not be at
   eighty-five: `/api/cafes` returns every cafe with its photo on every page
-  load. Move to Supabase Storage before bulk-adding logos.
+  load, uncached. Move to Supabase Storage before bulk-adding logos.
+- No automated tests. The points ledger and the GPS check-in are where a
+  bug costs money and trust, and both are covered only by manual testing.
+- No error reporting. `app/error.tsx` and `app/global-error.tsx` exist and
+  catch render failures, but they only `console.error` — a production bug
+  leaves no trace anywhere you will look.
+- No Content-Security-Policy. See "Deployment" for why it is not guessed.
 - Automatic conversion of approved enquiries into live ads.
 - Real UPI QR code and UPI ID configuration.
 - Payment gateway or automated payment reconciliation.
@@ -353,9 +359,16 @@ supabase/migrations/
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Public Hyderabad cafe map |
+| `/` | Landing cover. Forwards any query string to `/map` |
+| `/map` | Public Hyderabad cafe map |
 | `/admin` | Admin map and management workspace |
 | `/advertise` | Public advertising enquiry page |
+| `/leaderboard` | Public points ranking |
+| `/profile` | The signed-in user's profile |
+| `/privacy` | Privacy policy |
+| `/terms` | Terms of use |
+| `/refunds` | Refund and cancellation policy |
+| `/robots.txt`, `/sitemap.xml` | Generated from `NEXT_PUBLIC_SITE_URL` |
 
 ### API Routes
 
@@ -534,11 +547,16 @@ join auth.users u on u.id = a.user_id;
 
 ### Environment
 
-Create `.env.local` in the project root with:
+Copy `.env.local.example` to `.env.local` and fill it in. That file is the
+authoritative list — it documents every variable, which are required, and
+what breaks when one is missing.
+
+The minimum for local development:
 
 ```text
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ```
 
 Do not commit `.env.local` or expose service-role keys in browser code.
@@ -581,6 +599,57 @@ npm run build
 ```
 
 The current project has been repeatedly validated with lint and TypeScript checks. Physical testing on a range of mobile devices is still required before production launch.
+
+## Deployment
+
+### Required environment variables
+
+Everything in `.env.local.example` marked required must be set on the host.
+Two are easy to forget because nothing fails locally without them:
+
+| Variable | Why it matters in production |
+| --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | The canonical origin, no trailing slash. Feeds `metadataBase`, so it decides what every Open Graph card, Twitter card and canonical link points at, and what `robots.txt` and `sitemap.xml` advertise. Unset, it falls back to `http://localhost:3000` and every share preview and indexed URL is wrong. |
+| `NEXT_PUBLIC_LEGAL_ENTITY`, `NEXT_PUBLIC_LEGAL_EMAIL` | Shown on `/privacy`, `/terms` and `/refunds`. **A production build fails while these are unset** — see the guard in `lib/legal.ts`. Google OAuth verification and payment onboarding both read those pages. |
+
+`NEXT_PUBLIC_UPI_ID` is optional: with no UPI configured, `/advertise` drops
+its payment step and says details follow once the slot is confirmed, which
+matches the manual review-then-publish flow. Setting it turns the step on.
+
+### Security headers
+
+`next.config.ts` sets `X-Frame-Options`, `X-Content-Type-Options`,
+`Referrer-Policy`, `Permissions-Policy` (geolocation first-party only,
+everything else denied), and `Cross-Origin-Opener-Policy` on every route,
+plus `no-store` on `/admin/*` and `/api/*`.
+
+Two are deliberately **not** set there:
+
+- **CSP.** A working policy has to allow MapLibre's `blob:` worker, the tile
+  and sprite hosts from `lib/mapStyle.ts`, Supabase REST and realtime,
+  Google Fonts, the weather/AQI endpoints, and `data:` images for every cafe
+  photo still stored as a data URL. Guessing that list yields a policy that
+  either breaks the map or is permissive enough to be theatre. Build it from
+  the real `connect-src` list and ship it as
+  `Content-Security-Policy-Report-Only` first.
+- **HSTS.** Vercel already sends it for custom domains, and setting
+  `max-age` from the app on a domain that is not yet fully HTTPS-only is the
+  one header that can take a site down and keep it down for the max-age.
+
+### Pre-launch checklist
+
+- [ ] `NEXT_PUBLIC_SITE_URL` set to the real domain.
+- [ ] `NEXT_PUBLIC_LEGAL_ENTITY` / `NEXT_PUBLIC_LEGAL_EMAIL` set (the build
+      will tell you if not).
+- [ ] `/privacy`, `/terms` and `/refunds` read by someone qualified. The
+      drafts are accurate about what the code does; they are not legal advice.
+- [ ] Real UPI ID and QR configured, or the payment step left off.
+- [ ] Google OAuth consent screen out of testing mode, with the privacy URL.
+- [ ] Share previews checked once live — paste the URL into WhatsApp and X.
+- [ ] Cafe photos moved to Supabase Storage **before** bulk-adding logos; see
+      the note under "Still MVP or pending".
+- [ ] An error reporter wired to `app/error.tsx` and `app/global-error.tsx`,
+      which currently only `console.error`.
 
 ## Design System
 
